@@ -1,0 +1,23 @@
+.footer {
+    display: flex;
+    flex-direction: column;
+    background-color: antiquewhite;
+    position: fixed;
+    bottom: 0;
+    max-width: 100% !important;
+    right: 0;
+    left: 0;
+
+    .disclaimer {
+        align-self: center;
+        font-size: 18px;
+    }
+}
+
+.horizontal-closing-line {
+    position: absolute;
+    left: 12.5%;
+    right: 12.5%;
+    margin-top: 25px;
+    border-top: 1px solid black;
+}
