@@ -1,10 +1,23 @@
 <div class="header">
   <img class="main-logo" [src]="" alt="">
-  <!-- webshopLogoUrl -->
+  <!-- We need to look for projects, that this user might have! -->
+  <!-- We need to help the user set up a project for his github projects -->
+  <!-- Add tickets to it, and stuff -->
+  <!-- We will need a project page -->
+  <!-- Import export from there -->
+  <!-- Search bar, header same(?) again -->
+  <!-- User can search for own profile -->
+  <!-- If he starts a ticket system for a project -> Admin automatically -->
+  <!-- He can add new users to it -->
+  <!-- He can promote users to admin -->
+  <!-- On the left side -> sidebar -> Issues, Discussions, Statistics(!!), etc.  -->
+  <!-- Right side -> If we are in a ticket -> Assignee, Creator, due date, etc. -->
+  <!-- If we are searching between stuff, tickets, etc., then possibly nothing? TO BE DECIDED -->
+  
   <nav>
     <ul>
-      <li><a routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</a></li>
-      <li><a routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</a></li>
+      <li><span routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</span></li>
+      <li><span routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</span></li>
       <!-- *ngIf="this.userService.isUserLoggedIn()" -->
     </ul>
   </nav>
@@ -24,7 +37,7 @@
   </div> -->
   <!-- *ngIf="!this.userService.isUserLoggedIn()" -->
   <div class="user-data">
-    <p><a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a></p>
-    <p><a routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</a></p>
+    <p><span routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</span></p>
+    <p><span routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</span></p>
   </div>
 </div>

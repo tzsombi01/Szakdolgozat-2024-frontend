@@ -8,6 +8,15 @@
     gap: 8px;
 }
 
+.user-data p span,
+.header nav ul li span {
+    cursor: pointer;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
 .main-logo {
     width: 200px;
     border-radius: 25%;
