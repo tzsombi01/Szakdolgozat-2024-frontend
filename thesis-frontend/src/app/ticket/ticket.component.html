@@ -1,1 +1,19 @@
-<p>ticket works!</p>
+
+<h1 class="ticket-caption">Tickets</h1>
+
+<div *ngIf="!isTicketsEmpty()" class="container">
+    <table class="ticket-table" *ngFor="let ticket of tickets; let i = index;">
+        <tr>
+            <th>Ticket Number</th>
+            <th>Assignee</th>
+            <th>Creator</th>
+        </tr>
+        <th> {{ ticket.ticketNumber }} </th>
+        <th> {{ ticket.assignee }} </th>
+        <th> {{ ticket.creator }} </th>
+    </table>
+</div>
+
+<div *ngIf="isTicketsEmpty()" class="no-tickets-container">
+    <p class="no-tickets-text">No tickets found!</p>
+</div>

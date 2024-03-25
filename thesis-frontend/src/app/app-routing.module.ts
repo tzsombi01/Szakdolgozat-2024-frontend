@@ -5,6 +5,9 @@ import { NoAccessPageComponent } from './no-access-page/no-access-page.component
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
+import { DiscussionComponent } from './discussion/discussion.component';
+import { StatisticComponent } from './statistic/statistic.component';
+import { TicketComponent } from './ticket/ticket.component';
 
 const routes: Routes = [
   {
@@ -19,6 +22,18 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+  },
+  {
+    path: 'discussions',
+    component: DiscussionComponent,
+  },
+  {
+    path: 'statistics',
+    component: StatisticComponent,
+  },
+  {
+    path: 'tickets',
+    component: TicketComponent,
   },
   {
     path: 'access-denied',

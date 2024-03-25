@@ -16,6 +16,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { StatisticComponent } from './statistic/statistic.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

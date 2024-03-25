@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+
+    #ticket-caption {
+        font-size: 36px;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+}
+
+.ticket-table {
+    border: 8px solid;
+    border-style: groove;
+}
+
+.no-tickets-container {
+    display: flex;
+    justify-content: center;
+
+    .no-tickets-text {
+        font-size: 25px;
+        font-style: italic;
+    }
+}
+
+.ticket-caption {
+    text-align: center;
+    font-size: 24px;
+}  
