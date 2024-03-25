@@ -1,7 +1,17 @@
 .container {
     display: flex;
     flex-direction: column;
-    margin: 30px;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2rem;
+    max-width: 100% !important;
+    margin-top: 40px;
+}
+
+.ticket-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
 
     #ticket-caption {
         font-size: 36px;
@@ -11,6 +21,7 @@
 }
 
 .ticket-table {
+    max-width: 100% !important;
     border: 8px solid;
     border-style: groove;
 }
