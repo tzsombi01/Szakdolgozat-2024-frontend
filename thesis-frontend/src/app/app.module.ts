@@ -12,6 +12,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProfileComponent } from './profile/profile.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { TicketComponent } from './ticket/ticket.component';
+import { DiscussionComponent } from './discussion/discussion.component';
+import { StatisticComponent } from './statistic/statistic.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     FooterComponent,
     HeaderComponent,
     ProfileComponent,
-    SidebarComponent
+    SidebarComponent,
+    ProjectsComponent,
+    TicketComponent,
+    DiscussionComponent,
+    StatisticComponent
   ],
   imports: [
     BrowserModule,
