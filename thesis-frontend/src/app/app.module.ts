@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { TicketComponent } from './ticket/ticket.component';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -34,11 +36,13 @@ import { MatGridListModule } from '@angular/material/grid-list';
     StatisticComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatPaginatorModule,
-    MatGridListModule
+    MatGridListModule,
+    HighchartsChartModule
   ],
   providers: [],
   bootstrap: [AppComponent]
