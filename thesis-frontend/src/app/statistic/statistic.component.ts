@@ -11,6 +11,7 @@ export class StatisticComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
 
   chartOptions: Highcharts.Options = {
+    title: undefined,
     series: [
       {
         type: 'line',
@@ -20,7 +21,7 @@ export class StatisticComponent implements OnInit {
   };
 
   constructor() {
-    this.Highcharts = Highcharts;
+    
   }
 
   ngOnInit(): void {

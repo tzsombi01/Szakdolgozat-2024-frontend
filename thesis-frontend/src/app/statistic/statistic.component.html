@@ -1,4 +1,40 @@
-<highcharts-chart
-  [Highcharts]="Highcharts"
-  [options]="chartOptions"
-></highcharts-chart>
+<app-header></app-header>
+
+<div class="container">
+  <h1>Statistics</h1>
+
+  <div class="chart-container">
+    <h2>Daily commits</h2>
+    <highcharts-chart 
+      [Highcharts]="Highcharts" 
+      [options]="chartOptions">
+    </highcharts-chart>
+  </div>
+
+  <div class="chart-container">
+    <h2>Lines per day</h2>
+    <highcharts-chart 
+      [Highcharts]="Highcharts" 
+      [options]="chartOptions">
+    </highcharts-chart>
+  </div>
+
+  <div class="chart-container">
+    <h2 title="How many tickets did you put into 'Done' category per week?">Ticket per week</h2>
+    <highcharts-chart 
+      [Highcharts]="Highcharts" 
+      [options]="chartOptions">
+    </highcharts-chart>
+  </div>
+
+  <div class="chart-container">
+    <h2>Commit per project</h2>
+    <!-- Choose project somehow ?? -->
+    <highcharts-chart 
+      [Highcharts]="Highcharts" 
+      [options]="chartOptions">
+    </highcharts-chart>
+  </div>
+</div>
+
+<app-footer></app-footer>

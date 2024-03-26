@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit {
   }
 
   logout(): void {
-    console.log("SACASCSAFSA FGWDESAFW")
+    
   }
 
 }
