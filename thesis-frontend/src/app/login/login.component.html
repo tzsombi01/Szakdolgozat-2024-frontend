@@ -5,13 +5,12 @@
 
 <form [formGroup]="formData" (ngSubmit)="onSubmit()">
     <label>Username</label>
-    <input type="text" formControlName="Username">
+    <input type="text" formControlName="userName">
   
     <label>Password</label>
-    <input type="password" formControlName="Password">
+    <input type="password" formControlName="password">
 
     <button type="submit">Submit</button>
-  </form>
-  
+</form>
 
 <app-footer></app-footer>

@@ -15,8 +15,8 @@ export class LoginComponent implements OnInit {
     private router: Router
   ) {
     this.formData = new FormGroup({
-      firstName: new FormControl(''),
-      lastName: new FormControl('')
+      userName: new FormControl(''),
+      password: new FormControl('')
     });
   }
 
