@@ -8,6 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { TicketComponent } from './ticket/ticket.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'tickets',
     component: TicketComponent,
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
   },
   {
     path: 'access-denied',

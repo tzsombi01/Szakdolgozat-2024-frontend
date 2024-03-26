@@ -1,1 +1,24 @@
-<p>projects works!</p>
+<app-header></app-header>
+
+<div class="container">
+    <h1 class="project-caption">Projects</h1>
+
+    <div *ngIf="!isProjectsEmpty()" class="project-container">
+        <table class="project-table" *ngFor="let project of projects; let i = index;">
+            <tr>
+                <th>Project Number</th>
+                <th>Assignee</th>
+                <th>Creator</th>
+            </tr>
+            <th> {{ project.ticketNumber }} </th>
+            <th> {{ project.assignee }} </th>
+            <th> {{ project.creator }} </th>
+        </table>
+    </div>
+    
+    <div *ngIf="isProjectsEmpty()" class="no-projects-container">
+        <p class="no-projects-text">No projects found!</p>
+    </div>
+</div>
+
+<app-footer></app-footer>

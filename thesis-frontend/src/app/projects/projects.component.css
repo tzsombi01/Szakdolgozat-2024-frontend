@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2rem;
+    max-width: 100% !important;
+    margin-top: 40px;
+}
+
+.project-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+
+    #project-caption {
+        font-size: 36px;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
+}
+
+.projects-table {
+    max-width: 100% !important;
+    border: 8px solid;
+    border-style: groove;
+}
+
+.no-projects-container {
+    display: flex;
+    justify-content: center;
+
+    .no-projects-text {
+        font-size: 25px;
+        font-style: italic;
+    }
+}
+
+.project-caption {
+    text-align: center;
+    font-size: 24px;
+}  
