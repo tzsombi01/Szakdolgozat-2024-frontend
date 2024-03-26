@@ -21,6 +21,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { RegisterComponent } from './register/register.component';
     BrowserAnimationsModule,
     MatPaginatorModule,
     MatGridListModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

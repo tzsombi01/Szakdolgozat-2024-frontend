@@ -1,4 +1,17 @@
+<div class="login-header">
+    <div class="back-button-container"> <button class="back-button" (click)="back()">Back</button> </div>
+    <div class="title-container"> <p class="title">Login</p> </div>
+</div>
 
+<form [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <label>Username</label>
+    <input type="text" formControlName="Username">
+  
+    <label>Password</label>
+    <input type="password" formControlName="Password">
 
+    <button type="submit">Submit</button>
+  </form>
+  
 
 <app-footer></app-footer>

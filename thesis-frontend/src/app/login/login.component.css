@@ -1,0 +1,82 @@
+/* Container for the login header */
+.login-header {
+    background-color: beige;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Back button container */
+.back-button-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Back button */
+.back-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Title container */
+.title-container {
+    text-align: center;
+    flex-grow: 1; /* Allow the title container to grow and take up available space */
+    margin-left: -65px;
+}
+
+/* Login title */
+.title {
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center form elements horizontally */
+    margin: auto;
+    max-width: 70%; 
+}
+
+/* Form labels */
+label {
+    font-size: medium;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Form inputs */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Submit button */
+button[type="submit"] {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: large;
+    width: 40%;
+}
+
+/* Hover effect for buttons */
+button:hover {
+    background-color: darkblue;
+}
