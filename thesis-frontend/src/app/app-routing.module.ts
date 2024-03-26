@@ -9,12 +9,22 @@ import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { TicketComponent } from './ticket/ticket.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 const routes: Routes = [
   {
     path: '',
     children: [],
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
   },
   {
     path: 'home',

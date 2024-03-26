@@ -19,6 +19,8 @@ import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { HighchartsChartModule } from 'highcharts-angular';
     ProjectsComponent,
     TicketComponent,
     DiscussionComponent,
-    StatisticComponent
+    StatisticComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
