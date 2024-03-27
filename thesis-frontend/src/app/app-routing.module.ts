@@ -11,6 +11,7 @@ import { TicketComponent } from './ticket/ticket.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'discussions',
     component: DiscussionComponent,
+  },
+  {
+    path: 'documentations',
+    component: DocumentationComponent,
   },
   {
     path: 'statistics',

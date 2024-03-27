@@ -22,6 +22,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DocumentationComponent } from './documentation/documentation.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     DiscussionComponent,
     StatisticComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DocumentationComponent
   ],
   imports: [
     CommonModule,
