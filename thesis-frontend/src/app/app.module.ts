@@ -23,6 +23,10 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, metaReducers } from 'src/store/reducers/reducers';
+import { TicketEffects } from 'src/store/effects/ticket.effects';
 
 @NgModule({
   declarations: [
@@ -43,6 +47,10 @@ import { DocumentationComponent } from './documentation/documentation.component'
     DocumentationComponent
   ],
   imports: [
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([
+      TicketEffects
+    ]),
     CommonModule,
     BrowserModule,
     AppRoutingModule,
