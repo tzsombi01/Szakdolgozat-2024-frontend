@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { ApolloModule } from 'apollo-angular';
+import { GridModule } from '@progress/kendo-angular-grid';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -65,6 +66,7 @@ import { HttpClientModule } from '@angular/common/http';
     ApolloModule,
     GraphQLModule,
     HttpClientModule,
+    GridModule
   ],
   providers: [],
   bootstrap: [AppComponent]

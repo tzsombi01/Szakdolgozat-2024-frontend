@@ -8,6 +8,9 @@ import { State } from '@progress/kendo-data-query';
 import { getTicketsWithTotal } from 'src/store/selectors/ticket.selector';
 import { getTicketsRequest } from 'src/store/actions/ticket.actions';
 import { QueryOptions } from 'src/models/query-options';
+import { getQueryOptions } from 'src/shared/common-functions';
+import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
+import { ActivatedRoute } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -16,12 +19,6 @@ import { QueryOptions } from 'src/models/query-options';
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
-
-  // public tickets: any[] = [
-  //   { ticketNumber: 1, assignee: 'John Doe', creator: 'Jane Smith' },
-  //   { ticketNumber: 2, assignee: 'Alice Johnson', creator: 'Bob Brown' },
-  //   { ticketNumber: 3, assignee: 'Charlie Parker', creator: 'David Wilson' }
-  // ];
 
   tickets$: Observable<Ticket[] | any>;
   tickets: Ticket[] = [];
@@ -36,12 +33,15 @@ export class TicketComponent implements OnInit {
   };
 
   constructor(
+    public route: ActivatedRoute,
     private ticketStore: Store<TicketState>
   ) {
     this.tickets$ = this.ticketStore.select(getTicketsWithTotal);
   }
 
   ngOnInit(): void {
+    this.onSiteOpen();
+
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
       this.tickets = tickets;
       console.log(tickets)
@@ -50,9 +50,9 @@ export class TicketComponent implements OnInit {
   }
 
   onSiteOpen(): void {
-    const queryOptions: QueryOptions = getQueryOptions(state, this.selectedSite!, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
 
-    this.ticketStore.dispatch(getTicketsRequest({ queryOptions }))
+    this.ticketStore.dispatch(getTicketsRequest({ queryOptions }));
   }
 
   isTicketsEmpty(): boolean {
