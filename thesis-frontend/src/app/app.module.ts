@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+import { ApolloModule } from 'apollo-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from 'src/store/reducers/reducers';
 import { TicketEffects } from 'src/store/effects/ticket.effects';
+import { GraphQLModule } from './graphql.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { TicketEffects } from 'src/store/effects/ticket.effects';
     MatPaginatorModule,
     MatGridListModule,
     HighchartsChartModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ApolloModule,
+    GraphQLModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
