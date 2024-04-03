@@ -1,0 +1,24 @@
+<app-header></app-header>
+
+<div class="container">
+    <h1 class="comment-caption">Comments</h1>
+
+    <div *ngIf="!isCommentsEmpty()" class="comment-container">
+        <table class="comment-table" *ngFor="let comment of comments; let i = index;">
+            <tr>
+                <th>Creator</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td> {{ comment.creator }} </td>
+                <td> {{ comment.description }} </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div *ngIf="isCommentsEmpty()" class="no-comments-container">
+        <p class="no-comments-text">No comments found!</p>
+    </div>
+</div>
+
+<app-footer></app-footer>

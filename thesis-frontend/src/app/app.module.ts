@@ -31,6 +31,8 @@ import { reducers, metaReducers } from 'src/store/reducers/reducers';
 import { TicketEffects } from 'src/store/effects/ticket.effects';
 import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
+import { CommentEffects } from 'src/store/effects/comment.effects';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -48,12 +50,14 @@ import { HttpClientModule } from '@angular/common/http';
     StatisticComponent,
     LoginComponent,
     RegisterComponent,
-    DocumentationComponent
+    DocumentationComponent,
+    CommentComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
-      TicketEffects
+      TicketEffects,
+      CommentEffects
     ]),
     CommonModule,
     BrowserModule,
