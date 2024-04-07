@@ -2,10 +2,14 @@ import { Action, ActionReducer, ActionReducerMap, MetaReducer } from "@ngrx/stor
 import { AppState } from "../app.states";
 import { ticketReducer } from "./ticket.reducer";
 import { commentReducer } from "./comment.teducers";
+import { discussionReducer } from "./discussion.reducers";
+import { documentationReducer } from "./documentation.reducers";
 
 export const reducers: ActionReducerMap<AppState> = {
     ticketState: ticketReducer,
-    commentState: commentReducer
+    commentState: commentReducer,
+    discussionState: discussionReducer,
+    documentationState: documentationReducer,
 };
 
 export function clearState(reducer: ActionReducer<AppState>): ActionReducer<AppState> {

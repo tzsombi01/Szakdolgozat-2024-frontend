@@ -1,1 +1,24 @@
-<p>documentation works!</p>
+<app-header></app-header>
+
+<div class="container">
+    <h1 class="documentation-caption">Documentations</h1>
+
+    <div *ngIf="!isDocumentationsEmpty()" class="documentation-container">
+        <table class="documentation-table" *ngFor="let documentation of documentations; let i = index;">
+            <tr>
+                <th>Documentation Name</th>
+                <th>Description</th>
+                <th>Creator</th>
+            </tr>
+            <th> {{ documentation.name }} </th>
+            <th> {{ documentation.description }} </th>
+            <th> {{ documentation.creator }} </th>
+        </table>
+    </div>
+    
+    <div *ngIf="isDocumentationsEmpty()" class="no-documentations-container">
+        <p class="no-documentations-text">No documentations found!</p>
+    </div>
+</div>
+
+<app-footer></app-footer>
