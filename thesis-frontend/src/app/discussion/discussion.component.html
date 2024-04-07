@@ -1,1 +1,26 @@
-<p>discussion works!</p>
+<app-header></app-header>
+
+<div class="container">
+    <h1 class="discussion-caption">Discussions</h1>
+
+    <div *ngIf="!isDiscussionsEmpty()" class="discussion-container">
+        <table class="discussion-table" *ngFor="let discussion of discussions; let i = index;">
+            <tr>
+                <th>Name</th>
+                <th>Creator</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td> {{ discussion.name }} </td>
+                <td> {{ discussion.creator }} </td>
+                <td> {{ discussion.description }} </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div *ngIf="isDiscussionsEmpty()" class="no-discussions-container">
+        <p class="no-discussions-text">No discussions found!</p>
+    </div>
+</div>
+
+<app-footer></app-footer>
