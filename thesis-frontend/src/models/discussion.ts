@@ -7,7 +7,7 @@ export interface Discussion extends Entity {
     comments: string[];
 }
 
-export interface DiscussionInput extends Entity {
+export interface DiscussionInput {
     creator: string;
     description?: string;
     name: string;

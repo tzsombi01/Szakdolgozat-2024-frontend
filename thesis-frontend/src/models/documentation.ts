@@ -7,7 +7,7 @@ export interface Documentation extends Entity {
     comments: string[];
 }
 
-export interface DocumentationInput extends Entity {
+export interface DocumentationInput {
     creator: string;
     description?: string;
     name: string;

@@ -6,7 +6,7 @@ export interface Comment extends Entity {
     edited: boolean;
 }
 
-export interface CommentInput extends Entity {
+export interface CommentInput {
     creator: string;
     description?: string;
     edited: boolean;

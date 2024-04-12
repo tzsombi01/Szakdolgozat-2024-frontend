@@ -11,7 +11,7 @@ export interface Ticket extends Entity {
     mentionedInCommits: string[];
 }
 
-export interface TicketInput extends Entity {
+export interface TicketInput {
     assignee?: string;
     creator: string;
     description?: string;
