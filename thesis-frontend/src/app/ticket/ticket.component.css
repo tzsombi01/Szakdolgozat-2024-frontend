@@ -39,4 +39,48 @@
 .ticket-caption {
     text-align: center;
     font-size: 24px;
-}  
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    padding-bottom: 2rem;
+    max-width: 100% !important;
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 1000px;
+}
+
+.dialog-content button {
+    margin-top: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.buttonContainer button {
+    width: calc(50% - 5px);
+}

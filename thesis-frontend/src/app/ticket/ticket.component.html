@@ -16,10 +16,41 @@
         </table>
     </div>
 
-    <button (click)="send()">Click me TEST YEYESESESEAE AS</button>
-    
+    <button (click)="open('create')">Create ticket</button>
+    <button (click)="open('edit')">Edit ticket</button>
+
     <div *ngIf="isTicketsEmpty()" class="no-tickets-container">
         <p class="no-tickets-text">No tickets found!</p>
+    </div>
+
+    <div *ngIf="isDialogOpen">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h4>Create Ticket</h4>
+
+            <label for="assignee">Assignee:</label>
+            <input type="text" id="assignee" formControlName="assignee">
+
+            <label for="creator">Creator:</label>
+            <input type="text" id="creator" formControlName="creator">
+
+            <label for="description">Description:</label>
+            <textarea id="description" formControlName="description"></textarea>
+
+            <label>Statuses:</label>
+            <select id="statuses" multiple>
+                <option value="status1">Status 1</option>
+                <option value="status2">Status 2</option>
+            </select>
+
+            <div class="comments-section">
+                <h2>Comments</h2>
+            </div>
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button (click)="close('submit')">Submit</button>
+            </div>
+        </div>
     </div>
 </div>
 

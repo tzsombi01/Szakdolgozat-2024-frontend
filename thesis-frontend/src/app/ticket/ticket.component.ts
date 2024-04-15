@@ -11,7 +11,8 @@ import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
 import { ActivatedRoute } from '@angular/router';
-import { HttpBackend, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @UntilDestroy()
 @Component({
@@ -20,6 +21,9 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
+
+  isDialogOpen: boolean = false;
+  isEdit: boolean = false;
 
   tickets$: Observable<Ticket[] | any>;
   tickets: Ticket[] = [];
@@ -32,6 +36,14 @@ export class TicketComponent implements OnInit {
       logic: 'and'
     }
   };
+
+  selectedStatuses: string[] = [];
+
+  formData: UntypedFormGroup = new UntypedFormGroup({
+    assignee: new UntypedFormControl(),
+    creator: new UntypedFormControl(),
+    description: new UntypedFormControl(),
+  });
 
   constructor(
     public route: ActivatedRoute,
@@ -57,18 +69,38 @@ export class TicketComponent implements OnInit {
     this.ticketStore.dispatch(getTicketsRequest({ queryOptions }));
   }
 
-  send(): void {
-    const newTicket: TicketInput = {
-      comments: [],
-      assignee: '5' ?? '',
-      creator: '21',
-      mentionedInCommits: [],
-      statuses: ['Done'],
-      ticketReferences: ['2'],
-      description: 'Wuhuhu description'
-    };
+  open(type: ('create' | 'edit'), id?: string): void {
+    if (type === 'create') {
+      this.isEdit = false;
+    } else if (type === 'edit') {
+      this.isEdit = true;
 
-    this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions}));
+      // Filter selected item!
+    }
+
+    this.isDialogOpen = true;
+  }
+
+  close(type: ('cancel' | 'submit')): void {
+    if (type === 'submit') {
+      if (!this.isEdit) {
+        const newTicket: TicketInput = {
+          comments: [],
+          assignee: '5' ?? '',
+          creator: '21',
+          mentionedInCommits: [],
+          statuses: ['Done'],
+          ticketReferences: ['2'],
+          description: 'Wuhuhu description'
+        };
+
+        this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
+      }
+    } else {
+
+    }
+
+    this.isDialogOpen = false;
   }
 
   isTicketsEmpty(): boolean {

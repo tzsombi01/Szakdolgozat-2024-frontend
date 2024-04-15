@@ -33,6 +33,7 @@ import { GraphQLModule } from './graphql.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentEffects } from 'src/store/effects/comment.effects';
 import { CommentComponent } from './comment/comment.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { CommentComponent } from './comment/comment.component';
     BrowserAnimationsModule,
     MatPaginatorModule,
     MatGridListModule,
+    MatDialogModule,
     HighchartsChartModule,
     ReactiveFormsModule,
     ApolloModule,
