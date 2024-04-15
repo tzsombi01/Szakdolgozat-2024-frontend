@@ -1,89 +1,32 @@
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
 import { QueryOptions } from 'src/models/query-options';
 import { DocumentationInput } from 'src/models/documentation';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentationService {
 
-  constructor(private apollo: Apollo) { }
+  private readonly BASE_URL: string = environment.baseUrl;
+
+  constructor(private http: HttpClient) { }
 
   public getDocumentations(queryOptions: QueryOptions): Observable<any> {
-    return this.apollo.query<any>({
-      query: gql`
-        ${this.CORE_DOCUMENTATION_FIELDS}
-        query GetDocumentations($queryOptions: QueryOptions!) {
-          getDocumentations(queryOptions: $queryOptions) {
-            content {
-              ... on Documentation {
-                ...CoreDocumentationFields
-              }
-            }
-            total
-          }
-        }
-      `,
-      variables: { queryOptions }
-    });
+    return this.http.post('/documentations', queryOptions);
   }
 
   public createDocumentation(documentation: DocumentationInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_DOCUMENTATION_FIELDS}
-        mutation CreateDocumentation($documentation: DocumentationInput!) {
-          createDocumentation(documentation: $documentation) {
-            ...CoreDocumentationFields
-          }
-        }
-      `,
-      variables: { documentation }
-    });
+    return this.http.post<any>(`${this.BASE_URL}/documentations`, documentation);
   }
 
   public editDocumentation(id: string, documentation: DocumentationInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_DOCUMENTATION_FIELDS}
-        mutation EditDocumentation($id: ID!, $documentation: DocumentationInput!) {
-          editDocumentation(id: $id, documentation: $documentation) {
-            ...CoreDocumentationFields
-          }
-        }
-      `,
-      variables: { id, documentation }
-    });
+    return this.http.put<any>(`${this.BASE_URL}/documentations/${id}`, documentation);
   }
 
   public deleteDocumentation(id: string): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        mutation DeleteDocumentation($id: ID!) {
-          deleteDocumentation(id: $id) {
-            id
-          }
-        }
-      `,
-      variables: { id }
-    });
+    return this.http.delete<any>(`${this.BASE_URL}/documentations/${id}`);
   }
-
-  CORE_DOCUMENTATION_FIELDS: any = gql`
-    fragment CoreDocumentationFields on Documentation {
-      id
-      createdAt
-      modifiedAt
-      createdBy
-      modifiedBy
-      deleted
-      creator
-      description
-      name
-      comments
-    }
-  `;
 }

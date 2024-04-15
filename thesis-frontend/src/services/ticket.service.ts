@@ -1,7 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { QueryOptions } from 'src/models/query-options';
 import { TicketInput } from 'src/models/ticket';
 
@@ -10,84 +10,23 @@ import { TicketInput } from 'src/models/ticket';
 })
 export class TicketService {
 
-  constructor(private apollo: Apollo) { }
+  private readonly BASE_URL: string = environment.baseUrl;
+
+  constructor(private http: HttpClient) { }
 
   public getTickets(queryOptions: QueryOptions): Observable<any> {
-    return this.apollo.query<any>({
-      query: gql`
-        ${this.CORE_TICKET_FIELDS}
-        query GetTickets($queryOptions: QueryOptions!) {
-          getTickets(queryOptions: $queryOptions) {
-            content {
-              ... on Ticket {
-                ...CoreTicketFields
-              }
-            }
-            total
-          }
-        }
-      `,
-      variables: { queryOptions }
-    });
+    return this.http.post('/tickets', queryOptions);
   }
 
   public createTicket(ticket: TicketInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_TICKET_FIELDS}
-        mutation CreateTicket($ticket: TicketInput!) {
-          createTicket(ticket: $ticket) {
-            ...CoreTicketFields
-          }
-        }
-      `,
-      variables: { ticket }
-    });
+    return this.http.post<any>(`${this.BASE_URL}/tickets`, ticket);
   }
 
   public editTicket(id: string, ticket: TicketInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_TICKET_FIELDS}
-        mutation EditTicket($id: ID!, $ticket: TicketInput!) {
-          editTicket(id: $id, ticket: $ticket) {
-            ...CoreTicketFields
-          }
-        }
-      `,
-      variables: { id, ticket }
-    });
+    return this.http.put<any>(`${this.BASE_URL}/tickets?${id}`, ticket);
   }
 
   public deleteTicket(id: string): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        mutation DeleteTicket($id: ID!) {
-          deleteTicket(id: $id) {
-            id
-          }
-        }
-      `,
-      variables: { id }
-    });
+    return this.http.delete<any>(`${this.BASE_URL}/tickets?${id}`);
   }
-
-  CORE_TICKET_FIELDS: any = gql`
-    fragment CoreTicketFields on Ticket {
-      id
-      createdAt
-      modifiedAt
-      createdBy
-      modifiedBy
-      deleted
-      ticketNumber
-      assignee
-      creator
-      description
-      ticketReferences
-      statuses
-      comments
-      mentionedInCommits
-    }
-  `;
 }

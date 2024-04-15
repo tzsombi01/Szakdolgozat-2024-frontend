@@ -1,88 +1,31 @@
-import { Injectable } from '@angular/core';
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 import { Observable } from 'rxjs';
-import { QueryOptions } from 'src/models/query-options';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { CommentInput } from 'src/models/comment';
+import { QueryOptions } from 'src/models/query-options';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
+  private readonly BASE_URL: string = environment.baseUrl;
 
-  constructor(private apollo: Apollo) { }
+  constructor(private http: HttpClient) {}
 
   public getComments(queryOptions: QueryOptions): Observable<any> {
-    return this.apollo.query<any>({
-      query: gql`
-        ${this.CORE_COMMENT_FIELDS}
-        query GetComments($queryOptions: QueryOptions!) {
-          getComments(queryOptions: $queryOptions) {
-            content {
-              ... on Comment {
-                ...CoreCommentFields
-              }
-            }
-            total
-          }
-        }
-      `,
-      variables: { queryOptions }
-    });
+    return this.http.post(`${this.BASE_URL}/comments`, queryOptions);
   }
 
   public createComment(comment: CommentInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_COMMENT_FIELDS}
-        mutation CreateComment($comment: CommentInput!) {
-          createComment(comment: $comment) {
-            ...CoreCommentFields
-          }
-        }
-      `,
-      variables: { comment }
-    });
+    return this.http.post<any>(`${this.BASE_URL}/comments`, comment);
   }
 
   public editComment(id: string, comment: CommentInput): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        ${this.CORE_COMMENT_FIELDS}
-        mutation EditComment($id: ID!, $comment: CommentInput!) {
-          editComment(id: $id, comment: $comment) {
-            ...CoreCommentFields
-          }
-        }
-      `,
-      variables: { id, comment }
-    });
+    return this.http.put<any>(`${this.BASE_URL}/comments/${id}`, comment);
   }
 
   public deleteComment(id: string): Observable<any> {
-    return this.apollo.mutate<any>({
-      mutation: gql`
-        mutation DeleteComment($id: ID!) {
-          deleteComment(id: $id) {
-            id
-          }
-        }
-      `,
-      variables: { id }
-    });
+    return this.http.delete<any>(`${this.BASE_URL}/comments/${id}`);
   }
-
-  CORE_COMMENT_FIELDS: any = gql`
-    fragment CoreCommentFields on Comment {
-      id
-      createdAt
-      modifiedAt
-      createdBy
-      modifiedBy
-      deleted
-      creator
-      description
-      edited
-    }
-  `;
 }

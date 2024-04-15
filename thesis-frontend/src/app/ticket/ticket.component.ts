@@ -58,29 +58,17 @@ export class TicketComponent implements OnInit {
   }
 
   send(): void {
-    const apiUrl = 'http://localhost:8081/api/v1/demo';
+    const newTicket: TicketInput = {
+      comments: [],
+      assignee: '5' ?? '',
+      creator: '21',
+      mentionedInCommits: [],
+      statuses: ['Done'],
+      ticketReferences: ['2'],
+      description: 'Wuhuhu description'
+    };
 
-    this.http.get(apiUrl).subscribe(
-      (response: any) => {
-        console.log('Response from GET request:', response);
-        // Handle the response data here
-      },
-      (error: any) => {
-        console.error('Error occurred while fetching demo data:', error);
-        // Handle errors here
-      }
-    ); 
-    // const newTicket: TicketInput = {
-    //   comments: [],
-    //   assignee: '5' ?? '',
-    //   creator: '21',
-    //   mentionedInCommits: [],
-    //   statuses: ['Done'],
-    //   ticketReferences: ['2'],
-    //   description: 'Wuhuhu description'
-    // };
-
-    // this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions}));
+    this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions}));
   }
 
   isTicketsEmpty(): boolean {
