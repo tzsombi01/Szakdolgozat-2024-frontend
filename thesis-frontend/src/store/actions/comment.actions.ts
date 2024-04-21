@@ -15,7 +15,7 @@ export const createCommentRequest = createAction('[ Comment ] CreateCommentReque
 export const createCommentSuccess = createAction('[ Comment ] CreateCommentSuccess', props<{ payload: Payload }>());
 export const createCommentError = createAction('[ Comment ] CreateCommentError', props<{ payload: Payload }>());
 
-export const editCommentRequest = createAction('[ Comment ] EditCommentRequest', props<{ id: string, comment: CommentInput, file: any, queryOptions?: QueryOptions }>());
+export const editCommentRequest = createAction('[ Comment ] EditCommentRequest', props<{ id: string, comment: CommentInput, queryOptions?: QueryOptions }>());
 export const editCommentSuccess = createAction('[ Comment ] EditCommentSuccess', props<{ payload: Payload }>());
 export const editCommentError = createAction('[ Comment ] EditCommentError', props<{ payload: Payload }>());
 

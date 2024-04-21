@@ -15,7 +15,7 @@ export const createDiscussionRequest = createAction('[ Discussion ] CreateDiscus
 export const createDiscussionSuccess = createAction('[ Discussion ] CreateDiscussionSuccess', props<{ payload: Payload }>());
 export const createDiscussionError = createAction('[ Discussion ] CreateDiscussionError', props<{ payload: Payload }>());
 
-export const editDiscussionRequest = createAction('[ Discussion ] EditDiscussionRequest', props<{ id: string, discussion: DiscussionInput, file: any, queryOptions?: QueryOptions }>());
+export const editDiscussionRequest = createAction('[ Discussion ] EditDiscussionRequest', props<{ id: string, discussion: DiscussionInput, queryOptions?: QueryOptions }>());
 export const editDiscussionSuccess = createAction(' [ Discussion ] EditDiscussionSuccess', props<{ payload: Payload }>());
 export const editDiscussionError = createAction('[ Discussion ] EditDiscussionError', props<{ payload: Payload }>());
 

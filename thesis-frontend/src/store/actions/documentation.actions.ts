@@ -15,7 +15,7 @@ export const createDocumentationRequest = createAction('[ Documentation ] Create
 export const createDocumentationSuccess = createAction('[ Documentation ] CreateDocumentationSuccess', props<{ payload: Payload }>());
 export const createDocumentationError = createAction('[ Documentation ] CreateDocumentationError', props<{ payload: Payload }>());
 
-export const editDocumentationRequest = createAction('[ Documentation ] EditDocumentationRequest', props<{ id: string, documentation: DocumentationInput, file: any, queryOptions?: QueryOptions }>());
+export const editDocumentationRequest = createAction('[ Documentation ] EditDocumentationRequest', props<{ id: string, documentation: DocumentationInput, queryOptions?: QueryOptions }>());
 export const editDocumentationSuccess = createAction(' [Documentation ] EditDocumentationSuccess', props<{ payload: Payload }>());
 export const editDocumentationError = createAction('[ Documentation ] EditDocumentationError', props<{ payload: Payload }>());
 

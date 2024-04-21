@@ -92,7 +92,7 @@ export class DiscussionEffects {
   editDiscussion$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editDiscussionRequest),
-      mergeMap(({ id, discussion, file, queryOptions }) => {
+      mergeMap(({ id, discussion, queryOptions }) => {
         return this.discussionService.editDiscussion(id, discussion).pipe(
           mergeMap(({ data }) => {
             let actions = [

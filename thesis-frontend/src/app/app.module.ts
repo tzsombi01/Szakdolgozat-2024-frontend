@@ -34,6 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommentEffects } from 'src/store/effects/comment.effects';
 import { CommentComponent } from './comment/comment.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DocumentationEffects } from 'src/store/effects/documentation.effects';
+import { DiscussionEffects } from 'src/store/effects/discussion.effects';
+import { UserEffects } from 'src/store/effects/user.effects';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
       TicketEffects,
-      CommentEffects
+      CommentEffects,
+      DocumentationEffects,
+      DiscussionEffects,
+      UserEffects
     ]),
     CommonModule,
     BrowserModule,

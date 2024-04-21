@@ -1,41 +1,42 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { DocumentationService } from "src/services/documentation.service";
+import { UserService } from "src/services/user.service";
 import {
-    createDocumentationError,
-    createDocumentationRequest,
-    createDocumentationSuccess,
-    editDocumentationError,
-    editDocumentationRequest,
-    editDocumentationSuccess,
-    deleteDocumentationError,
-    deleteDocumentationRequest,
-    deleteDocumentationSuccess,
-    getDocumentationsError,
-    getDocumentationsSuccess,
-    getDocumentationsRequest,
-} from "../actions/documentation.actions";
+    createUserError,
+    createUserRequest,
+    createUserSuccess,
+    editUserError,
+    editUserRequest,
+    editUserSuccess,
+    deleteUserError,
+    deleteUserRequest,
+    deleteUserSuccess,
+    getUsersError,
+    getUsersSuccess,
+    getUsersRequest,
+} from "../actions/user.actions"; 
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 
 @Injectable()
-export class DocumentationEffects {
+export class UserEffects {
+  
   constructor(
     private actions$: Actions,
-    private documentationService: DocumentationService
+    private userService: UserService
   ) {}
 
-  getDocumentations$ = createEffect(() => {
+  getUsers$ = createEffect(() => {
     return this.actions$.pipe(
-        ofType(getDocumentationsRequest),
+        ofType(getUsersRequest),
         concatMap(({ queryOptions }) => {
-            return this.documentationService.getDocumentations(queryOptions).pipe(
+            return this.userService.getUsers(queryOptions).pipe(
                 map(({ data }) => {
-                    return getDocumentationsSuccess({
+                    return getUsersSuccess({
                         payload: {
                             data: {
-                                content: data.getDocumentations.content,
-                                total: data.getDocumentations.total
+                                content: data.getUsers.content,
+                                total: data.getUsers.total
                             },
                             error: '',
                             loading: false
@@ -43,7 +44,7 @@ export class DocumentationEffects {
                     });
                 }),
                 catchError((err) => {
-                    return of(getDocumentationsError({
+                    return of(getUsersError({
                         payload: {
                             data: [],
                             error: err,
@@ -56,26 +57,26 @@ export class DocumentationEffects {
     );
 });
 
-  createDocumentation$ = createEffect(() => {
+  createUser$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(createDocumentationRequest),
-      mergeMap(({ documentation, queryOptions }) => {
-        return this.documentationService.createDocumentation(documentation).pipe(
+      ofType(createUserRequest),
+      mergeMap(({ user, queryOptions }) => {
+        return this.userService.register(user).pipe(
           mergeMap(({ data }) => {
             return of(
-              createDocumentationSuccess({
+              createUserSuccess({
                 payload: {
-                  data: data.createDocumentation,
+                  data: data.createUser,
                   error: '',
                   loading: false,
                 },
               }),
-              getDocumentationsRequest({ queryOptions })
+              getUsersRequest({ queryOptions })
             );
           }),
           catchError((err) => {
             return of(
-              createDocumentationError({
+              createUserError({
                 payload: {
                   data: [],
                   error: err,
@@ -89,16 +90,16 @@ export class DocumentationEffects {
     );
   });
 
-  editDocumentation$ = createEffect(() => {
+  editUser$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(editDocumentationRequest),
-      mergeMap(({ id, documentation, queryOptions }) => {
-        return this.documentationService.editDocumentation(id, documentation).pipe(
+      ofType(editUserRequest),
+      mergeMap(({ id, user, queryOptions }) => {
+        return this.userService.editUser(id, user).pipe(
           mergeMap(({ data }) => {
             let actions = [
-              editDocumentationSuccess({
+              editUserSuccess({
                 payload: {
-                  data: data.editDocumentation,
+                  data: data.editUser,
                   error: '',
                   loading: false,
                 },
@@ -106,14 +107,14 @@ export class DocumentationEffects {
             ];
 
             if (queryOptions) {
-              actions.push(getDocumentationsRequest({ queryOptions }) as any);
+              actions.push(getUsersRequest({ queryOptions }) as any);
             }
 
             return of(...actions);
           }),
           catchError((err) => {
             return of(
-              editDocumentationError({
+              editUserError({
                 payload: {
                   data: [],
                   error: err,
@@ -127,26 +128,26 @@ export class DocumentationEffects {
     );
   });
 
-  deleteDocumentation$ = createEffect(() => {
+  deleteUser$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(deleteDocumentationRequest),
+      ofType(deleteUserRequest),
       mergeMap(({ id, queryOptions }) => {
-        return this.documentationService.deleteDocumentation(id).pipe(
+        return this.userService.deleteUser(id).pipe(
           mergeMap(({ data }) => {
             return of(
-              deleteDocumentationSuccess({
+              deleteUserSuccess({
                 payload: {
-                  data: data.deleteDocumentation,
+                  data: data.deleteUser,
                   error: '',
                   loading: false,
                 },
               }),
-              getDocumentationsRequest({ queryOptions })
+              getUsersRequest({ queryOptions })
             );
           }),
           catchError((err) => {
             return of(
-              deleteDocumentationError({
+              deleteUserError({
                 payload: {
                   data: [],
                   error: err,

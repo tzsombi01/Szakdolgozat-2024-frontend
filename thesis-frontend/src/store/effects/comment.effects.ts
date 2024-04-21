@@ -93,7 +93,7 @@ export class CommentEffects {
   editComment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editCommentRequest),
-      mergeMap(({ id, comment, file, queryOptions }) => {
+      mergeMap(({ id, comment, queryOptions }) => {
         return this.commentService.editComment(id, comment).pipe(
           mergeMap(({ data }) => {
             let actions = [
