@@ -6,13 +6,14 @@ import { Ticket, TicketInput } from 'src/models/ticket';
 import { TicketState } from 'src/store/app.states';
 import { State } from '@progress/kendo-data-query';
 import { getTicketsWithTotal } from 'src/store/selectors/ticket.selector';
-import { createTicketRequest, getTicketsRequest } from 'src/store/actions/ticket.actions';
+import { createTicketRequest, editTicketRequest, getTicketsRequest } from 'src/store/actions/ticket.actions';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { CommentInput } from 'src/models/comment';
 
 @UntilDestroy()
 @Component({
@@ -24,6 +25,9 @@ export class TicketComponent implements OnInit {
 
   isDialogOpen: boolean = false;
   isEdit: boolean = false;
+
+  // user$: Observable<User | any>;
+  // user: User;
 
   tickets$: Observable<Ticket[] | any>;
   tickets: Ticket[] = [];
@@ -38,10 +42,11 @@ export class TicketComponent implements OnInit {
   };
 
   selectedStatuses: string[] = [];
+  addedComments: CommentInput[] = [];
+  selectedAssignee: string | undefined;
+  selectedTicketReferences: string[] = [];
 
-  formData: UntypedFormGroup = new UntypedFormGroup({
-    assignee: new UntypedFormControl(),
-    creator: new UntypedFormControl(),
+  formGroup: UntypedFormGroup = new UntypedFormGroup({
     description: new UntypedFormControl(),
   });
 
@@ -85,21 +90,32 @@ export class TicketComponent implements OnInit {
     if (type === 'submit') {
       if (!this.isEdit) {
         const newTicket: TicketInput = {
-          comments: [],
-          assignee: '5' ?? '',
-          creator: '21',
+          description: this.formGroup.controls['description'].value,
+          assignee: this.selectedAssignee,
+          creator: '1', // this.user.id,
           mentionedInCommits: [],
-          statuses: ['Done'],
-          ticketReferences: ['2'],
-          description: 'Wuhuhu description'
+          statuses: this.selectedStatuses,
+          ticketReferences: this.selectedTicketReferences,
+          comments: [],
         };
 
         this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
       }
     } else {
+      const editedTicket: TicketInput = {
+        description: this.formGroup.controls['description'].value,
+        assignee: this.selectedAssignee,
+        creator: '1', // this.user.id,
+        mentionedInCommits: [],
+        statuses: this.selectedStatuses,
+        ticketReferences: this.selectedTicketReferences,
+        comments: [],
+      };
 
+      this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
     }
 
+    this.formGroup.reset();
     this.isDialogOpen = false;
   }
 

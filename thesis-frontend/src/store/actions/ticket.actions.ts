@@ -15,7 +15,7 @@ export const createTicketRequest = createAction('[ Ticket ] CreateTicketRequest'
 export const createTicketSuccess = createAction('[ Ticket ] CreateTicketSuccess', props<{ payload: Payload }>());
 export const createTicketError = createAction('[ Ticket ] CreateTicketError', props<{ payload: Payload }>());
 
-export const editTicketRequest = createAction('[ Ticket ] EditTicketRequest', props<{ id: string, ticket: TicketInput, file: any, queryOptions?: QueryOptions }>());
+export const editTicketRequest = createAction('[ Ticket ] EditTicketRequest', props<{ id: string, ticket: TicketInput, queryOptions?: QueryOptions }>());
 export const editTicketSuccess = createAction(' [Ticket ] EditTicketSuccess', props<{ payload: Payload }>());
 export const editTicketError = createAction('[ Ticket ] EditTicketError', props<{ payload: Payload }>());
 

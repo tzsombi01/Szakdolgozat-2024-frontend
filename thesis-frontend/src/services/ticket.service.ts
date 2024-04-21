@@ -15,18 +15,18 @@ export class TicketService {
   constructor(private http: HttpClient) { }
 
   public getTickets(queryOptions: QueryOptions): Observable<any> {
-    return this.http.post('/tickets', queryOptions);
+    return this.http.post(`${this.BASE_URL}/api/tickets/get`, queryOptions);
   }
 
   public createTicket(ticket: TicketInput): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/tickets`, ticket);
+    return this.http.post<any>(`${this.BASE_URL}/api/tickets`, ticket);
   }
 
   public editTicket(id: string, ticket: TicketInput): Observable<any> {
-    return this.http.put<any>(`${this.BASE_URL}/tickets?${id}`, ticket);
+    return this.http.put<any>(`${this.BASE_URL}/api/tickets?${id}`, ticket);
   }
 
   public deleteTicket(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.BASE_URL}/tickets?${id}`);
+    return this.http.delete<any>(`${this.BASE_URL}/api/tickets?${id}`);
   }
 }

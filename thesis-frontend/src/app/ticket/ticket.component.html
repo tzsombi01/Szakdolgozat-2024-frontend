@@ -13,11 +13,14 @@
             <th> {{ ticket.ticketNumber }} </th>
             <th> {{ ticket.assignee }} </th>
             <th> {{ ticket.creator }} </th>
-        </table>
-    </div>
 
-    <button (click)="open('create')">Create ticket</button>
-    <button (click)="open('edit')">Edit ticket</button>
+            <button (click)="open('edit', ticket.id)">Edit ticket</button>
+        </table>
+
+    </div>
+    <div>
+        <button (click)="open('create')">Create ticket</button>
+    </div>
 
     <div *ngIf="isTicketsEmpty()" class="no-tickets-container">
         <p class="no-tickets-text">No tickets found!</p>
@@ -25,14 +28,14 @@
 
     <div *ngIf="isDialogOpen">
         <div class="dialog-overlay"></div>
-        <div class="dialog-content">
-            <h4>Create Ticket</h4>
+        <form [formGroup]="formGroup" class="dialog-content">
+            <h3>Create Ticket</h3>
+            
+            <label>Assignee:</label>
+            <input type="text" id="assignee">
 
-            <label for="assignee">Assignee:</label>
-            <input type="text" id="assignee" formControlName="assignee">
-
-            <label for="creator">Creator:</label>
-            <input type="text" id="creator" formControlName="creator">
+            <label>Creator:</label>
+            <input type="text" id="creator">
 
             <label for="description">Description:</label>
             <textarea id="description" formControlName="description"></textarea>
@@ -46,11 +49,12 @@
             <div class="comments-section">
                 <h2>Comments</h2>
             </div>
+
             <div class="buttonContainer">
                 <button (click)="close('cancel')">Cancel</button>
-                <button (click)="close('submit')">Submit</button>
+                <button type="submit" (click)="close('submit')">Submit</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 

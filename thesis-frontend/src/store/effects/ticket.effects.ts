@@ -2,18 +2,18 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { TicketService } from "src/services/ticket.service";
 import {
-    createTicketError,
-    createTicketRequest,
-    createTicketSuccess,
-    editTicketError,
-    editTicketRequest,
-    editTicketSuccess,
-    deleteTicketError,
-    deleteTicketRequest,
-    deleteTicketSuccess,
-    getTicketsError,
-    getTicketsSuccess,
-    getTicketsRequest,
+  createTicketError,
+  createTicketRequest,
+  createTicketSuccess,
+  editTicketError,
+  editTicketRequest,
+  editTicketSuccess,
+  deleteTicketError,
+  deleteTicketRequest,
+  deleteTicketSuccess,
+  getTicketsError,
+  getTicketsSuccess,
+  getTicketsRequest,
 } from "../actions/ticket.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -23,45 +23,46 @@ export class TicketEffects {
   constructor(
     private actions$: Actions,
     private ticketService: TicketService
-  ) {}
+  ) { }
 
   getTickets$ = createEffect(() => {
     return this.actions$.pipe(
-        ofType(getTicketsRequest),
-        concatMap(({ queryOptions }) => {
-            return this.ticketService.getTickets(queryOptions).pipe(
-                map(({ data }) => {
-                    return getTicketsSuccess({
-                        payload: {
-                            data: {
-                                content: data.getTickets.content,
-                                total: data.getTickets.total
-                            },
-                            error: '',
-                            loading: false
-                        }
-                    });
-                }),
-                catchError((err) => {
-                    return of(getTicketsError({
-                        payload: {
-                            data: [],
-                            error: err,
-                            loading: false
-                        }
-                    }));
-                })
-            );
-        })
+      ofType(getTicketsRequest),
+      concatMap(({ queryOptions }) => {
+        return this.ticketService.getTickets(queryOptions).pipe(
+          map((data) => {
+            console.log(data)
+            return getTicketsSuccess({
+              payload: {
+                data: {
+                  content: data.content,
+                  total: data.totalElements
+                },
+                error: '',
+                loading: false
+              }
+            });
+          }),
+          catchError((err) => {
+            return of(getTicketsError({
+              payload: {
+                data: [],
+                error: err,
+                loading: false
+              }
+            }));
+          })
+        );
+      })
     );
-});
+  });
 
   createTicket$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(createTicketRequest),
       mergeMap(({ ticket, queryOptions }) => {
         return this.ticketService.createTicket(ticket).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               createTicketSuccess({
                 payload: {
@@ -92,7 +93,7 @@ export class TicketEffects {
   editTicket$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editTicketRequest),
-      mergeMap(({ id, ticket, file, queryOptions }) => {
+      mergeMap(({ id, ticket, queryOptions }) => {
         return this.ticketService.editTicket(id, ticket).pipe(
           mergeMap(({ data }) => {
             let actions = [
