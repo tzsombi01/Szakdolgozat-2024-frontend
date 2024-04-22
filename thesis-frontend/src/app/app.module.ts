@@ -37,6 +37,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DocumentationEffects } from 'src/store/effects/documentation.effects';
 import { DiscussionEffects } from 'src/store/effects/discussion.effects';
 import { UserEffects } from 'src/store/effects/user.effects';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { UserEffects } from 'src/store/effects/user.effects';
     ApolloModule,
     GraphQLModule,
     HttpClientModule,
-    GridModule
+    GridModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

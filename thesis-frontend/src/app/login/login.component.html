@@ -3,7 +3,7 @@
     <div class="title-container"> <p class="title">Login</p> </div>
 </div>
 
-<form [formGroup]="formData" (ngSubmit)="onSubmit()">
+<form [formGroup]="this.formGroup" (ngSubmit)="onSubmit()">
     <label>Username</label>
     <input type="text" formControlName="userName">
   

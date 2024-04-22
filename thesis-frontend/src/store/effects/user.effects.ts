@@ -14,16 +14,23 @@ import {
     getUsersError,
     getUsersSuccess,
     getUsersRequest,
+    loginRequest,
+    loginSuccess,
+    registerRequest,
+    registerSuccess,
+    registerError,
 } from "../actions/user.actions"; 
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class UserEffects {
   
   constructor(
     private actions$: Actions,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
 
   getUsers$ = createEffect(() => {
@@ -148,6 +155,73 @@ export class UserEffects {
           catchError((err) => {
             return of(
               deleteUserError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  login$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loginRequest),
+      mergeMap(({ email, password }) => {
+        return this.userService.login(email, password).pipe(
+          mergeMap((data) => {
+            return of(
+              loginSuccess({
+                payload: {
+                  data: data.login,
+                  error: '',
+                  loading: false,
+                },
+              })
+            );
+          }),
+          catchError((err) => {
+            return of(
+              loginSuccess({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  register$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(registerRequest),
+      mergeMap(({ user }) => {
+        return this.userService.register(user).pipe(
+          mergeMap((data) => {
+
+            this.router.navigate(["/home"]);
+            
+            return of(
+              registerSuccess({
+                payload: {
+                  data: data.token,
+                  error: '',
+                  loading: false,
+                }
+              })
+            );
+          }),
+          catchError((err) => {
+            return of(
+              registerError({
                 payload: {
                   data: [],
                   error: err,

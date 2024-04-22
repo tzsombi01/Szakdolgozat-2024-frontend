@@ -1,2 +1,45 @@
+<div class="login-header">
+    <div class="back-button-container"> <button class="back-button" (click)="back()">Back</button> </div>
+    <div class="title-container"> <p class="title">Register</p> </div>
+</div>
+
+<form [formGroup]="this.formGroup" (ngSubmit)="onSubmit()">
+    <label [for]="userName">
+        Username
+        <input type="text" formControlName="userName" #userName>
+    </label>
+
+    <label [for]="email">
+        Email
+        <input type="text" formControlName="email" #email>
+    </label>
+
+    <label [for]="firstName">
+        First Name
+        <input type="text" formControlName="firstName" #firstName>
+    </label>
+
+    <label [for]="lastName">
+        Last Name
+        <input type="text" formControlName="lastName" #lastName>
+    </label>
+
+    <label [for]="password">
+        Password
+        <input type="password" formControlName="password" #password>
+    </label>
+
+    <label [for]="passwordAgain">
+        Password again:
+        <input type="password" formControlName="passwordAgain" #passwordAgain>
+    </label>
+
+    <label [for]="gitUserNames">
+        Put your GitHub username(s) here (comma separated, if there are multiple!):
+        <input type="text" formControlName="gitUserNames" #gitUserNames>
+    </label>
+
+    <button type="submit">Submit</button>
+</form>
 
 <app-footer></app-footer>

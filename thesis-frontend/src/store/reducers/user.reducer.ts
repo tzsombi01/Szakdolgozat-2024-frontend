@@ -7,6 +7,7 @@ export const initialUserState: UserState = {
     users: [],
     user: ({} as unknown) as User,
     loggedInUser: ({} as unknown) as User,
+    token: '',
     error: '',
     loading: false,
     total: 0
@@ -114,6 +115,56 @@ const _userReducer = createReducer(
     }),
 
     on(userActions.deleteUserError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.loginRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+
+    on(userActions.loginSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            token: payload.data.token,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.loginError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.registerRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+
+    on(userActions.registerSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            token: payload.data,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.registerError, (state, { payload }) => {
         return {
             ...state,
             error: payload.error,

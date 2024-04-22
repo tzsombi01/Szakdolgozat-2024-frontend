@@ -22,15 +22,19 @@ export class UserService {
     return this.http.post<User>(`${this.BASE_URL}/api/users`, queryOptions);
   }
 
-  register(user: UserInput): Observable<any> {
-    return this.http.post<User>(`${this.BASE_URL}/api/auth/register`, user);
-  }
-
   editUser(id: string, user: UserInput): Observable<any> {
     return this.http.put<any>(`${this.BASE_URL}/api/users`, { id, user });
   }
 
-  deleteUser(id: string) {
+  deleteUser(id: string): Observable<any> {
     return this.http.delete<any>(`${this.BASE_URL}/api/users?id=${id}`);
+  }
+
+  register(user: UserInput): Observable<any> {
+    return this.http.post<User>(`${this.BASE_URL}/api/auth/register`, user);
+  }
+
+  login(email: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.BASE_URL}/api/auth/login`, { email, password });
   }
 }

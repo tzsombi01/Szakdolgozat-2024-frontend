@@ -22,3 +22,11 @@ export const editUserError = createAction('[ User ] EditUserError', props<{ payl
 export const deleteUserRequest = createAction('[ User ] DeleteUserRequest', props<{ id: string, queryOptions: QueryOptions }>());
 export const deleteUserSuccess = createAction('[ User ] DeleteUserSuccess', props<{ payload: Payload }>());
 export const deleteUserError = createAction('[ User ] DeleteUserError', props<{ payload: Payload }>());
+
+export const registerRequest = createAction('[ User ] RegisterRequest', props<{ user: UserInput }>());
+export const registerSuccess = createAction('[ User ] RegisterSuccess', props<{ payload: Payload }>());
+export const registerError = createAction('[ User ] RegisterError', props<{ payload: Payload }>());
+
+export const loginRequest = createAction('[ User ] LoginRequest', props<{ email: string, password: string }>());
+export const loginSuccess = createAction('[ User ] LoginSuccess', props<{ payload: Payload }>());
+export const loginError = createAction('[ User ] LoginError', props<{ payload: Payload }>());

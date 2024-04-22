@@ -23,6 +23,11 @@ export const getLoggedInUser = createSelector(
     (state: UserState) => state.loggedInUser
 );
 
+export const getToken = createSelector(
+    getUserState,
+    (state: UserState) => state.token
+);
+
 export const getUserLoading = createSelector(
     getUserState,
     (state: UserState) => state.loading
