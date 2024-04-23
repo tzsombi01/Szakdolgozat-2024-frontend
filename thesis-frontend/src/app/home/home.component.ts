@@ -24,7 +24,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.token$.pipe(untilDestroyed(this)).subscribe((token) => {
-      console.log(token)
       this.token = token;
     });
   }

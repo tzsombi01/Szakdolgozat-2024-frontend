@@ -95,7 +95,7 @@ export class TicketEffects {
       ofType(editTicketRequest),
       mergeMap(({ id, ticket, queryOptions }) => {
         return this.ticketService.editTicket(id, ticket).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             let actions = [
               editTicketSuccess({
                 payload: {
@@ -133,7 +133,7 @@ export class TicketEffects {
       ofType(deleteTicketRequest),
       mergeMap(({ id, queryOptions }) => {
         return this.ticketService.deleteTicket(id).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               deleteTicketSuccess({
                 payload: {

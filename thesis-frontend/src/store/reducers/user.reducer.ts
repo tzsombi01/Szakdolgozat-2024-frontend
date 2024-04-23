@@ -133,7 +133,7 @@ const _userReducer = createReducer(
     on(userActions.loginSuccess, (state, { payload }) => {
         return {
             ...state,
-            token: payload.data.token,
+            token: payload.data,
             error: payload.error,
             loading: payload.loading
         };

@@ -19,6 +19,9 @@ import {
     registerRequest,
     registerSuccess,
     registerError,
+    getLoggedInUserRequest,
+    getLoggedInUserSuccess,
+    getLoggedInUserError,
 } from "../actions/user.actions"; 
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -36,13 +39,13 @@ export class UserEffects {
   getUsers$ = createEffect(() => {
     return this.actions$.pipe(
         ofType(getUsersRequest),
-        concatMap(({ queryOptions }) => {
-            return this.userService.getUsers(queryOptions).pipe(
-                map(({ data }) => {
+        concatMap(({ queryOptions, token }) => {
+            return this.userService.getUsers(queryOptions, token).pipe(
+                map((data) => {
                     return getUsersSuccess({
                         payload: {
                             data: {
-                                content: data.getUsers.content,
+                                content: data.getUsers,
                                 total: data.getUsers.total
                             },
                             error: '',
@@ -62,47 +65,14 @@ export class UserEffects {
             );
         })
     );
-});
-
-  createUser$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(createUserRequest),
-      mergeMap(({ user, queryOptions }) => {
-        return this.userService.register(user).pipe(
-          mergeMap(({ data }) => {
-            return of(
-              createUserSuccess({
-                payload: {
-                  data: data.createUser,
-                  error: '',
-                  loading: false,
-                },
-              }),
-              getUsersRequest({ queryOptions })
-            );
-          }),
-          catchError((err) => {
-            return of(
-              createUserError({
-                payload: {
-                  data: [],
-                  error: err,
-                  loading: false,
-                },
-              })
-            );
-          })
-        );
-      })
-    );
   });
 
   editUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editUserRequest),
-      mergeMap(({ id, user, queryOptions }) => {
-        return this.userService.editUser(id, user).pipe(
-          mergeMap(({ data }) => {
+      mergeMap(({ id, user, queryOptions, token }) => {
+        return this.userService.editUser(id, user, token).pipe(
+          mergeMap((data) => {
             let actions = [
               editUserSuccess({
                 payload: {
@@ -114,7 +84,7 @@ export class UserEffects {
             ];
 
             if (queryOptions) {
-              actions.push(getUsersRequest({ queryOptions }) as any);
+              actions.push(getUsersRequest({ queryOptions, token }) as any);
             }
 
             return of(...actions);
@@ -138,9 +108,9 @@ export class UserEffects {
   deleteUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(deleteUserRequest),
-      mergeMap(({ id, queryOptions }) => {
-        return this.userService.deleteUser(id).pipe(
-          mergeMap(({ data }) => {
+      mergeMap(({ id, queryOptions, token }) => {
+        return this.userService.deleteUser(id, token).pipe(
+          mergeMap((data) => {
             return of(
               deleteUserSuccess({
                 payload: {
@@ -149,7 +119,7 @@ export class UserEffects {
                   loading: false,
                 },
               }),
-              getUsersRequest({ queryOptions })
+              getUsersRequest({ queryOptions, token })
             );
           }),
           catchError((err) => {
@@ -174,10 +144,13 @@ export class UserEffects {
       mergeMap(({ email, password }) => {
         return this.userService.login(email, password).pipe(
           mergeMap((data) => {
+
+            this.router.navigate(["/home"]);
+
             return of(
               loginSuccess({
                 payload: {
-                  data: data.login,
+                  data: data.token,
                   error: '',
                   loading: false,
                 },
@@ -222,6 +195,40 @@ export class UserEffects {
           catchError((err) => {
             return of(
               registerError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  getLoggedInUser$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(getLoggedInUserRequest),
+      mergeMap(({ token }) => {
+        return this.userService.getLoggedInUser(token).pipe(
+          mergeMap((data) => {
+            console.log(data);
+            
+            return of(
+              getLoggedInUserSuccess({
+                payload: {
+                  data: data,
+                  error: '',
+                  loading: false,
+                }
+              })
+            );
+          }),
+          catchError((err) => {
+            return of(
+              getLoggedInUserError({
                 payload: {
                   data: [],
                   error: err,

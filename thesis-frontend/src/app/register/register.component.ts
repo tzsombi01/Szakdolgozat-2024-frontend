@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
-      this.snackBar.open('Email format is incorrect!', 'Close', {
+      this.snackBar.open('One or more fields are invalid!', 'Close', {
         duration: 3000
       });
       return;
@@ -59,7 +59,6 @@ export class RegisterComponent implements OnInit {
       email: this.formGroup.controls['email'].value,
       gitUserNames: this.getGitUserNames()
     };
-    console.log(user)
 
     this.userStore.dispatch(registerRequest({ user }));
   }
