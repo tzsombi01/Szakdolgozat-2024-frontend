@@ -12,6 +12,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DocumentationComponent } from './documentation/documentation.component';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,10 @@ const routes: Routes = [
   {
     path: 'tickets',
     component: TicketComponent,
+  },
+  {
+    path: 'tickets/:id',
+    component: TicketDetailsComponent,
   },
   {
     path: 'projects',

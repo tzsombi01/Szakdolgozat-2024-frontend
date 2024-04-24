@@ -38,6 +38,7 @@ import { DocumentationEffects } from 'src/store/effects/documentation.effects';
 import { DiscussionEffects } from 'src/store/effects/discussion.effects';
 import { UserEffects } from 'src/store/effects/user.effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     LoginComponent,
     RegisterComponent,
     DocumentationComponent,
-    CommentComponent
+    CommentComponent,
+    TicketDetailsComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
