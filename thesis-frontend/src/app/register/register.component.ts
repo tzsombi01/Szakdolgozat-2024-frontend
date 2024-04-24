@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
     firstName: new UntypedFormControl(),
     lastName: new UntypedFormControl(),
     gitUserNames: new UntypedFormControl(),
+    someName: new UntypedFormControl(),
   });
 
   constructor(
@@ -37,6 +38,10 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.formGroup.controls['someName'].value) {
+      return;
+    }
+
     if (this.formGroup.invalid) {
       this.formGroup.markAllAsTouched();
       this.snackBar.open('One or more fields are invalid!', 'Close', {

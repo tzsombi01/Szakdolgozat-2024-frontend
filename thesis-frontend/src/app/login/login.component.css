@@ -79,3 +79,7 @@ button[type="submit"] {
 button:hover {
     background-color: darkblue;
 }
+
+.hid-pot {
+    display: none;
+}

@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit {
 
   formGroup: UntypedFormGroup = new UntypedFormGroup({
     email: new UntypedFormControl('', Validators.email),
-    password: new UntypedFormControl()
+    password: new UntypedFormControl(),
+    someName: new UntypedFormControl(),
   });
 
   constructor(
@@ -40,6 +41,10 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.formGroup.controls['someName'].value) {
+      return;
+    }
+
     if (this.formGroup.invalid || !this.formGroup.controls['email'].value || !this.formGroup.controls['password'].value) {
       this.formGroup.markAllAsTouched();
       this.snackBar.open('One or more fields are invalid!', 'Close', {
