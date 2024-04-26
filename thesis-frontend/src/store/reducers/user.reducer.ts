@@ -1,13 +1,12 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { User } from 'src/models/user'; // Assuming User model is used
-import * as userActions from 'src/store/actions/user.actions'; // Importing user actions
-import { UserState } from 'src/store/app.states'; // Assuming UserState is defined
+import { User } from 'src/models/user';
+import * as userActions from 'src/store/actions/user.actions';
+import { UserState } from 'src/store/app.states';
 
 export const initialUserState: UserState = {
     users: [],
     user: ({} as unknown) as User,
     loggedInUser: ({} as unknown) as User,
-    token: '',
     error: '',
     loading: false,
     total: 0
@@ -133,7 +132,6 @@ const _userReducer = createReducer(
     on(userActions.loginSuccess, (state, { payload }) => {
         return {
             ...state,
-            token: payload.data,
             error: payload.error,
             loading: payload.loading
         };
@@ -158,7 +156,6 @@ const _userReducer = createReducer(
     on(userActions.registerSuccess, (state, { payload }) => {
         return {
             ...state,
-            token: payload.data,
             error: payload.error,
             loading: payload.loading
         };

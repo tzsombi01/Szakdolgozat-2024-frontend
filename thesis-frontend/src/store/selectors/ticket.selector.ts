@@ -8,6 +8,11 @@ export const getTickets = createSelector(
     (state: TicketState) => state.tickets
 );
 
+export const getTicket = createSelector(
+    getTicketState,
+    (state: TicketState) => state.ticket
+);
+
 export const getTicketsWithTotal = createSelector(
     getTicketState,
     (state: TicketState) => {

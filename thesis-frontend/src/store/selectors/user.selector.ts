@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { UserState } from "src/store/app.states"; // Assuming UserState is defined
+import { UserState } from "src/store/app.states";
 
-export const getUserState = createFeatureSelector<UserState>('userState'); // Assuming userState is defined in the app state
+export const getUserState = createFeatureSelector<UserState>('userState');
 
 export const getUsers = createSelector(
     getUserState,
@@ -21,11 +21,6 @@ export const getUsersWithTotal = createSelector(
 export const getLoggedInUser = createSelector(
     getUserState,
     (state: UserState) => state.loggedInUser
-);
-
-export const getToken = createSelector(
-    getUserState,
-    (state: UserState) => state.token
 );
 
 export const getUserLoading = createSelector(

@@ -14,6 +14,9 @@ import {
   getTicketsError,
   getTicketsSuccess,
   getTicketsRequest,
+  getTicketRequest,
+  getTicketSuccess,
+  getTicketError,
 } from "../actions/ticket.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -51,6 +54,40 @@ export class TicketEffects {
                 loading: false
               }
             }));
+          })
+        );
+      })
+    );
+  });
+
+  getTicket$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(getTicketRequest),
+      mergeMap(({ id }) => {
+        return this.ticketService.getTicket(id).pipe(
+          mergeMap((data) => {
+            console.log(data)
+
+            return of(
+              getTicketSuccess({
+                payload: {
+                  data: data,
+                  error: '',
+                  loading: false,
+                },
+              })
+            );
+          }),
+          catchError((err) => {
+            return of(
+              getTicketError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
           })
         );
       })

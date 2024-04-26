@@ -35,30 +35,37 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'discussions',
     component: DiscussionComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'documentations',
     component: DocumentationComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'statistics',
     component: StatisticComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'tickets',
     component: TicketComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'tickets/:id',
     component: TicketDetailsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'projects',
     component: ProjectsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'access-denied',

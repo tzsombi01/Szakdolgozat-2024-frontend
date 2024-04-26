@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { User } from 'src/models/user';
+import { getLoggedInUserRequest } from 'src/store/actions/user.actions';
 import { UserState } from 'src/store/app.states';
-import { getToken } from 'src/store/selectors/user.selector';
+import { getLoggedInUser } from 'src/store/selectors/user.selector';
 
 @UntilDestroy()
 @Component({
@@ -13,18 +15,21 @@ import { getToken } from 'src/store/selectors/user.selector';
 })
 export class HomeComponent implements OnInit {
 
-  token$: Observable<string | any>;
-  token: string | undefined;
+  loggedInUser$: Observable<User | any>;
+  loggedInUser: User | undefined;
 
   constructor(
     private userStore: Store<UserState>
   ) {
-    this.token$ = this.userStore.select(getToken);
+    this.loggedInUser$ = this.userStore.select(getLoggedInUser);
   }
 
   ngOnInit(): void {
-    this.token$.pipe(untilDestroyed(this)).subscribe((token) => {
-      this.token = token;
+    this.userStore.dispatch(getLoggedInUserRequest());
+
+    this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+      console.log(user);
+      this.loggedInUser = user;
     });
   }
 }

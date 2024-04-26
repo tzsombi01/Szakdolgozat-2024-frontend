@@ -20,29 +20,32 @@ export class UserService {
   ngOnInit(): void {
   }
   
-  getLoggedInUser(token: string): Observable<any> {
+  getLoggedInUser(): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
-    console.log("Loggedingetting");
-    console.log(requestHeaders);
+
     return this.http.get<any>(`${this.BASE_URL}/api/users/me`, requestHeaders);
   }
   
-  getUsers(queryOptions: QueryOptions, token: string): Observable<any> {
+  getUsers(queryOptions: QueryOptions): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
     return this.http.post<any>(`${this.BASE_URL}/api/users`, { queryOptions }, requestHeaders);
   }
 
-  editUser(id: string, user: UserInput, token: string): Observable<any> {
+  editUser(id: string, user: UserInput): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
     return this.http.put<any>(`${this.BASE_URL}/api/users`, { id, user }, requestHeaders);
   }
 
-  deleteUser(id: string, token: string): Observable<any> {
+  deleteUser(id: string): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
@@ -54,7 +57,6 @@ export class UserService {
   }
 
   login(email: string, password: string): Observable<any> {
-    console.log(email, password)
     return this.http.post<any>(`${this.BASE_URL}/api/auth/login`, { email, password });
   }
 }

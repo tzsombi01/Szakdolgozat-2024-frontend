@@ -40,6 +40,32 @@ const _ticketReducer = createReducer(
         };
     }),
 
+    on(ticketActions.getTicketRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+    
+    on(ticketActions.getTicketSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            ticket: payload.data,
+            total: payload.data.total,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(ticketActions.getTicketError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
     on(ticketActions.createTicketRequest, (state) => {
         return {
             ...state,

@@ -1,1 +1,24 @@
-<p>ticket-details works!</p>
+<div>
+    <p>ID: {{ this.ticket?.id }}</p>
+    <p>Ticket Number: {{ this.ticket?.ticketNumber }}</p>
+    <p>Assignee: {{ this.ticket?.assignee || 'Not assigned' }}</p>
+    <p>Creator: {{ this.ticket?.creator }}</p>
+    <p>Description: {{ this.ticket?.description || 'No description available' }}</p>
+    <p>Ticket References:</p>
+    <ul>
+      <li *ngFor="let reference of this.ticket?.ticketReferences">{{ reference }}</li>
+    </ul>
+    <p>Statuses:</p>
+    <ul>
+      <li *ngFor="let status of this.ticket?.statuses">{{ status }}</li>
+    </ul>
+    <p>Comments:</p>
+    <ul>
+      <li *ngFor="let comment of this.ticket?.comments">{{ comment }}</li>
+    </ul>
+    <p>Mentioned in Commits:</p>
+    <ul>
+      <li *ngFor="let commit of this.ticket?.mentionedInCommits">{{ commit }}</li>
+    </ul>
+  </div>
+  

@@ -2,9 +2,6 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UserService } from "src/services/user.service";
 import {
-    createUserError,
-    createUserRequest,
-    createUserSuccess,
     editUserError,
     editUserRequest,
     editUserSuccess,
@@ -39,8 +36,8 @@ export class UserEffects {
   getUsers$ = createEffect(() => {
     return this.actions$.pipe(
         ofType(getUsersRequest),
-        concatMap(({ queryOptions, token }) => {
-            return this.userService.getUsers(queryOptions, token).pipe(
+        concatMap(({ queryOptions }) => {
+            return this.userService.getUsers(queryOptions).pipe(
                 map((data) => {
                     return getUsersSuccess({
                         payload: {
@@ -70,8 +67,8 @@ export class UserEffects {
   editUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editUserRequest),
-      mergeMap(({ id, user, queryOptions, token }) => {
-        return this.userService.editUser(id, user, token).pipe(
+      mergeMap(({ id, user, queryOptions }) => {
+        return this.userService.editUser(id, user).pipe(
           mergeMap((data) => {
             let actions = [
               editUserSuccess({
@@ -84,7 +81,7 @@ export class UserEffects {
             ];
 
             if (queryOptions) {
-              actions.push(getUsersRequest({ queryOptions, token }) as any);
+              actions.push(getUsersRequest({ queryOptions }) as any);
             }
 
             return of(...actions);
@@ -108,8 +105,8 @@ export class UserEffects {
   deleteUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(deleteUserRequest),
-      mergeMap(({ id, queryOptions, token }) => {
-        return this.userService.deleteUser(id, token).pipe(
+      mergeMap(({ id, queryOptions }) => {
+        return this.userService.deleteUser(id).pipe(
           mergeMap((data) => {
             return of(
               deleteUserSuccess({
@@ -119,7 +116,7 @@ export class UserEffects {
                   loading: false,
                 },
               }),
-              getUsersRequest({ queryOptions, token })
+              getUsersRequest({ queryOptions })
             );
           }),
           catchError((err) => {
@@ -144,6 +141,8 @@ export class UserEffects {
       mergeMap(({ email, password }) => {
         return this.userService.login(email, password).pipe(
           mergeMap((data) => {
+            console.log(data)
+            localStorage.setItem('token', data.token);
 
             this.router.navigate(["/home"]);
 
@@ -179,9 +178,11 @@ export class UserEffects {
       mergeMap(({ user }) => {
         return this.userService.register(user).pipe(
           mergeMap((data) => {
-
-            this.router.navigate(["/home"]);
             
+            localStorage.setItem('token', data.token);
+            
+            this.router.navigate(["/home"]);
+
             return of(
               registerSuccess({
                 payload: {
@@ -211,8 +212,8 @@ export class UserEffects {
   getLoggedInUser$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(getLoggedInUserRequest),
-      mergeMap(({ token }) => {
-        return this.userService.getLoggedInUser(token).pipe(
+      mergeMap(() => {
+        return this.userService.getLoggedInUser().pipe(
           mergeMap((data) => {
             console.log(data);
             

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -15,18 +15,44 @@ export class TicketService {
   constructor(private http: HttpClient) { }
 
   public getTickets(queryOptions: QueryOptions): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/api/tickets/get`, queryOptions);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post(`${this.BASE_URL}/api/tickets/get`, queryOptions, requestHeaders);
   }
 
   public createTicket(ticket: TicketInput): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/api/tickets`, ticket);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post<any>(`${this.BASE_URL}/api/tickets`, ticket, requestHeaders);
   }
 
   public editTicket(id: string, ticket: TicketInput): Observable<any> {
-    return this.http.put<any>(`${this.BASE_URL}/api/tickets?${id}`, ticket);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.put<any>(`${this.BASE_URL}/api/tickets?${id}`, ticket, requestHeaders);
   }
 
   public deleteTicket(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.BASE_URL}/api/tickets?${id}`);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.delete<any>(`${this.BASE_URL}/api/tickets?${id}`, requestHeaders);
+  }
+
+  public getTicket(id: string): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    console.log(id, token);
+
+    return this.http.get<any>(`${this.BASE_URL}/api/tickets/${id}`, requestHeaders);
   }
 }

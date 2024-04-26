@@ -41,6 +41,5 @@ export interface UserState extends State {
     users: User[];
     user: User;
     loggedInUser: User;
-    token: string;
     total: number;
 }
