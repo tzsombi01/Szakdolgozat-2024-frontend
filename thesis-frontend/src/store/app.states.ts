@@ -4,6 +4,7 @@ import { State } from "./models";
 import { Documentation } from "src/models/documentation";
 import { Discussion } from "src/models/discussion";
 import { User } from "src/models/user";
+import { Project } from "src/models/project";
 
 export interface AppState {
     ticketState: TicketState;
@@ -11,6 +12,7 @@ export interface AppState {
     discussionState: DiscussionState;
     documentationState: DocumentationState;
     userState: UserState;
+    projectState: ProjectState;
 }
 
 export interface TicketState extends State {
@@ -41,5 +43,11 @@ export interface UserState extends State {
     users: User[];
     user: User;
     loggedInUser: User;
+    total: number;
+}
+
+export interface ProjectState extends State {
+    projects: Project[];
+    project: Project;
     total: number;
 }
