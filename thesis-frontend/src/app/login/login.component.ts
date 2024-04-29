@@ -44,9 +44,11 @@ export class LoginComponent implements OnInit {
     }
 
     this.userStore.dispatch(loginRequest({ email: this.formGroup.controls['email'].value, password: this.formGroup.controls['password'].value }));
+
+    this.formGroup.reset();
   }
 
-  public async back() {
-    await this.router.navigate(["/.."]);
+  public async home() {
+    await this.router.navigate(["/home"]);
   }
 }

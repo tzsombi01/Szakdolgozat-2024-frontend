@@ -34,3 +34,5 @@ export const loginError = createAction('[ User ] LoginError', props<{ payload: P
 export const getLoggedInUserRequest = createAction('[ User ] GetLoggedInUserRequest');
 export const getLoggedInUserSuccess = createAction('[ User ] GetLoggedInUserSuccess', props<{ payload: Payload }>());
 export const getLoggedInUserError = createAction('[ User ] GetLoggedInUserError', props<{ payload: Payload }>());
+
+export const logOutRequest = createAction('[ User ] LogOutRequest');

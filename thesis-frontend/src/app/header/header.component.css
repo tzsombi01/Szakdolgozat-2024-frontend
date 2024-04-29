@@ -1,20 +1,41 @@
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
     flex-wrap: wrap;
     overflow: auto;
-    background-color: deepskyblue;
+    background-color: #007bff;
     padding: 20px 10px;
     gap: 8px;
 }
 
-.user-data p span,
-.header nav ul li span {
+.nav-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; 
+}
+
+.nav-buttons button,
+.user-data button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-nav ul {
-    list-style-type: none;
+.nav-buttons button:hover,
+.user-data button:hover {
+    background-color: #0056b3;
+}
+
+.user-data button {
+    background-color: #6c757d;
+}
+
+.user-data button:hover {
+    background-color: #5a6268;
 }
 
 .main-logo {
@@ -22,33 +43,4 @@ nav ul {
     border-radius: 25%;
     align-self: center;
     flex-shrink: 1;
-}
-
-.inner-search {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-
-    .mat-paginator {
-        align-self: flex-start;
-        background-color: cadetblue;
-    }
-
-    #search {
-        align-self: flex-end;
-        font-size: 20px;
-        height: 10px;
-    }
-}
-
-.search-button {
-    align-self: center;
-    font-size: 20px;
-    width: fit-content;
-}
-
-.user-profile-picture {
-    width: 160px;
-    align-self: center;
-    flex-grow: 1;
 }

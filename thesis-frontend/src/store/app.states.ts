@@ -42,7 +42,7 @@ export interface DiscussionState extends State {
 export interface UserState extends State {
     users: User[];
     user: User;
-    loggedInUser: User;
+    loggedInUser: User | undefined;
     total: number;
 }
 

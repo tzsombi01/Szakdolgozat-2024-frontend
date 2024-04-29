@@ -28,7 +28,6 @@ export class HomeComponent implements OnInit {
     this.userStore.dispatch(getLoggedInUserRequest());
 
     this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
-      console.log(user);
       this.loggedInUser = user;
     });
   }

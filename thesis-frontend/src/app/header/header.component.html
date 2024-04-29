@@ -1,52 +1,20 @@
 <div class="header">
-  <img class="main-logo" [src]="" alt="">
-  <!-- We need to look for projects, that this user might have! -->
-  <!-- We need to help the user set up a project for his github projects -->
-  <!-- Add tickets to it, and stuff -->
-  <!-- We will need a project page -->
-  <!-- Import export from there -->
-  <!-- Search bar, header same(?) again -->
-  
-  <!-- User can search for own profile -->
-  <!-- Own profile modal -> !!Log out!! Must have feature -->
-
-  <!-- If he starts a ticket system for a project -> Admin automatically -->
-  <!-- He can add new users to it -->
-  <!-- He can promote users to admin -->
-  
-  <!-- On the left side -> sidebar -> Discussions, Documentations, Statistics(!!), etc.  -->
-  <!-- Right side -> If we are in a ticket -> Assignee, Creator, due date, etc. -->
-  <!-- If we are searching between stuff, tickets, etc., then possibly nothing? TO BE DECIDED -->
-
-  <!-- Own tickets page -->
-  <!-- Statistics among projects, users, etc. -->
-  <!-- Create project -->
-  <!--  -->
-
-  <nav>
-    <ul>
-      <li><span routerLink="/home" routerLinkActive="active" ariaCurrentWhenActive="page">Home</span></li>
-      <li><span routerLink="/profile" routerLinkActive="active" ariaCurrentWhenActive="page">Profile</span></li>
-      <!-- *ngIf="this.userService.isUserLoggedIn()" -->
-    </ul>
-  </nav>
-  <!-- [length]="getProductLength()" -->
-  <div class="inner-search">
-    <mat-paginator 
-      class="mat-paginator" 
-      [pageSize]="5" 
-      [pageSizeOptions]="[3, 5, 10]">
-    </mat-paginator>
+  <div class="nav-buttons">
+    <button routerLink="/home" routerLinkActive="active">Home</button>
+    <button routerLink="/projects" routerLinkActive="active">Projects</button>
+    <button *ngIf="loggedInUser" routerLink="/profile" routerLinkActive="active">Profile</button>
   </div>
-  
-  <!-- <div class="user-data" *ngIf="this.userService.isUserLoggedIn()">
-    <p>{{ this.userService.getUserName() }}</p>
-    <p>{{ this.userService.getUserEmail() }}</p>
-    <img class="user-profile-picture" [src]="this.userService.getUserProfilePictureUrl()" alt="Profile picture">
-  </div> -->
-  <!-- *ngIf="!this.userService.isUserLoggedIn()" -->
+
+  <img class="main-logo" [src]="'../assets/images/logo.jpg'" alt="">
+
   <div class="user-data">
-    <p><span routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</span></p>
-    <p><span routerLink="/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</span></p>
+    <div *ngIf="!loggedInUser">
+      <button routerLink="/login" routerLinkActive="active">Login</button>
+      <button routerLink="/register" routerLinkActive="active">Register</button>
+    </div>
+
+    <div *ngIf="loggedInUser" class="logout">
+      <button (click)="logOut()">Log out</button>
+    </div>
   </div>
 </div>

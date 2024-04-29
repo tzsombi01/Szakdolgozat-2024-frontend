@@ -6,7 +6,7 @@ import { UserState } from 'src/store/app.states';
 export const initialUserState: UserState = {
     users: [],
     user: ({} as unknown) as User,
-    loggedInUser: ({} as unknown) as User,
+    loggedInUser: undefined,
     error: '',
     loading: false,
     total: 0
@@ -166,6 +166,41 @@ const _userReducer = createReducer(
             ...state,
             error: payload.error,
             loading: payload.loading
+        };
+    }),
+
+    on(userActions.getLoggedInUserRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+
+    on(userActions.getLoggedInUserSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            loggedInUser: payload.data,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.getLoggedInUserError, (state, { payload }) => {
+        return {
+            ...state,
+            loggedInUser: undefined,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.logOutRequest, (state) => {
+        localStorage.removeItem('token');
+
+        return {
+            ...state,
+            loggedInUser: undefined,
         };
     }),
 );

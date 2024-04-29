@@ -66,13 +66,15 @@ export class RegisterComponent implements OnInit {
     };
 
     this.userStore.dispatch(registerRequest({ user }));
+
+    this.formGroup.reset();
   }
 
   private getGitUserNames(): string[] {
     return this.formGroup.controls['gitUserNames'].value.split(',') || [];
   }
 
-  public async back() {
-    await this.router.navigate(["/.."]);
+  public async home() {
+    await this.router.navigate(["/home"]);
   }
 }

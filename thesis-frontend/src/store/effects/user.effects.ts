@@ -141,9 +141,8 @@ export class UserEffects {
       mergeMap(({ email, password }) => {
         return this.userService.login(email, password).pipe(
           mergeMap((data) => {
-            console.log(data)
             localStorage.setItem('token', data.token);
-
+            
             this.router.navigate(["/home"]);
 
             return of(
@@ -215,8 +214,6 @@ export class UserEffects {
       mergeMap(() => {
         return this.userService.getLoggedInUser().pipe(
           mergeMap((data) => {
-            console.log(data);
-            
             return of(
               getLoggedInUserSuccess({
                 payload: {
