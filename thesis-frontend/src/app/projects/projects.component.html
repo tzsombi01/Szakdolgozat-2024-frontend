@@ -10,12 +10,37 @@
                 <th>Assignee</th>
                 <th>Creator</th>
             </tr>
-            <th> {{ project.ticketNumber }} </th>
-            <th> {{ project.assignee }} </th>
-            <th> {{ project.creator }} </th>
+            <th> {{ project.name }} </th>
+            <th> {{ project.url }} </th>
+            <th> {{ project.users.length }} </th>
         </table>
     </div>
-    
+    <div>
+        <button (click)="open('create')">Create project</button>
+    </div>
+
+    <div *ngIf="isDialogOpen">
+        <div class="dialog-overlay"></div>
+        <form [formGroup]="this.formGroup" class="dialog-content">
+            <h3>Create Ticket</h3>
+            
+            <label>Name:</label>
+            <input type="text" id="name" formControlName="name">
+
+            <label>Url:</label>
+            <input type="text" id="url" formControlName="url">
+
+            <div class="comments-section">
+                <h2>Comments</h2>
+            </div>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </form>
+    </div>
+
     <div *ngIf="isProjectsEmpty()" class="no-projects-container">
         <p class="no-projects-text">No projects found!</p>
     </div>

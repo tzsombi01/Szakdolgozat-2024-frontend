@@ -26,9 +26,6 @@ export class TicketComponent implements OnInit {
   isDialogOpen: boolean = false;
   isEdit: boolean = false;
 
-  // user$: Observable<User | any>;
-  // user: User;
-
   tickets$: Observable<Ticket[] | any>;
   tickets: Ticket[] = [];
   ticket?: Ticket;

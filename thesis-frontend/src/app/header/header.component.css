@@ -9,9 +9,17 @@
     gap: 8px;
 }
 
+.user-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 8px; 
+}
+
 .nav-buttons {
     display: flex;
     flex-direction: column;
+    justify-content: space-evenly;
     gap: 8px; 
 }
 

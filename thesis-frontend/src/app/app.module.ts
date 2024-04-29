@@ -39,7 +39,6 @@ import { DiscussionEffects } from 'src/store/effects/discussion.effects';
 import { UserEffects } from 'src/store/effects/user.effects';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
-import { ProjectComponent } from './project/project.component';
 import { ProjectEffects } from 'src/store/effects/project.effects';
 
 @NgModule({
@@ -60,8 +59,7 @@ import { ProjectEffects } from 'src/store/effects/project.effects';
     RegisterComponent,
     DocumentationComponent,
     CommentComponent,
-    TicketDetailsComponent,
-    ProjectComponent
+    TicketDetailsComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
