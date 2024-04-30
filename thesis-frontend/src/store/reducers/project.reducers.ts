@@ -79,7 +79,7 @@ const _projectReducer = createReducer(
             ...state,
             projects: [
                 ...state.projects,
-                (payload.data as unknown) as Project
+                payload.data
             ],
             error: payload.error,
             loading: payload.loading

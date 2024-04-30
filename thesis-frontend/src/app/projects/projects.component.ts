@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
 import { Project, ProjectInput } from 'src/models/project';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
-import { createProjectRequest, editProjectRequest, getProjectsRequest } from 'src/store/actions/project.actions';
+import { createProjectRequest, deleteProjectRequest, editProjectRequest, getProjectsRequest } from 'src/store/actions/project.actions';
 import { ProjectState } from 'src/store/app.states';
-import { getProjectsWithTotal } from 'src/store/selectors/project.selector';
+import { getProjectLoading, getProjectsWithTotal } from 'src/store/selectors/project.selector';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +23,10 @@ import { getProjectsWithTotal } from 'src/store/selectors/project.selector';
 export class ProjectsComponent implements OnInit {
 
   isDialogOpen: boolean = false;
+  isDeleteDialogOpen: boolean = false;
   isEdit: boolean = false;
+
+  projectsLoading$: Observable<boolean | any>;
 
   projects$: Observable<Project[] | any>;
   projects: Project[] = [];
@@ -50,14 +53,14 @@ export class ProjectsComponent implements OnInit {
     private projectStore: Store<ProjectState>
   ) {
     this.projects$ = this.projectStore.select(getProjectsWithTotal);
+
+    this.projectsLoading$ = this.projectStore.select(getProjectLoading);
   }
 
   ngOnInit(): void {
     this.onSiteOpen();
 
     this.projects$.pipe(untilDestroyed(this)).subscribe(({ projects, total }) => {
-      console.log(projects)
-      console.log(total)
       this.projects = projects;
     });
   }
@@ -68,46 +71,67 @@ export class ProjectsComponent implements OnInit {
     this.projectStore.dispatch(getProjectsRequest({ queryOptions }));
   }
 
-  open(type: ('create' | 'edit'), id?: string): void {
+  open(type: ('create' | 'edit' | 'delete'), id?: string): void {
     if (type === 'create') {
       this.isEdit = false;
+
+      this.isDialogOpen = true;
     } else if (type === 'edit') {
       this.isEdit = true;
 
-      // Filter selected item!
+      this.project = this.projects.find((project: Project) => project.id === id);
+      
+      this.formGroup.controls['name'].setValue(this.project?.name);
+      this.formGroup.controls['url'].setValue(this.project?.url);
+      this.selectedUsers = this.project?.users!;
+      
+      this.isDialogOpen = true;
+    } else if (type === 'delete') {
+      this.project = this.projects.find((project: Project) => project.id === id);
+      
+      this.isDeleteDialogOpen = true;
     }
-
-    this.isDialogOpen = true;
   }
 
-  close(type: ('cancel' | 'submit')): void {
+  close(type: ('cancel' | 'submit' | 'delete')): void {
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+
     if (type === 'submit') {
       if (!this.isEdit) {
         const newProject: ProjectInput = {
           name: this.formGroup.controls['name'].value,
           url: this.formGroup.controls['url'].value,
-          users: this.selectedUsers,
+          users: this.selectedUsers || [],
           tickets: []
         };
 
+        console.log(newProject)
         this.projectStore.dispatch(createProjectRequest({ project: newProject, queryOptions: ({} as Object) as QueryOptions }));
+      } else {
+        const editedProject: ProjectInput = {
+          name: this.formGroup.controls['name'].value,
+          url: this.formGroup.controls['url'].value,
+          users: this.selectedUsers,
+          tickets: []
+        };
+  
+        this.projectStore.dispatch(editProjectRequest({ id: this.project?.id!, project: editedProject, queryOptions: ({} as Object) as QueryOptions }));
       }
-    } else {
-      const editedProject: ProjectInput = {
-        name: this.formGroup.controls['name'].value,
-        url: this.formGroup.controls['url'].value,
-        users: this.selectedUsers,
-        tickets: []
-      };
-
-      this.projectStore.dispatch(editProjectRequest({ id: this.project?.id!, project: editedProject, queryOptions: ({} as Object) as QueryOptions }));
+    } else if (type === 'delete') {
+      this.projectStore.dispatch(deleteProjectRequest({ id: this.project?.id!, queryOptions }));
     }
 
     this.formGroup.reset();
+    this.project = undefined;
     this.isDialogOpen = false;
+    this.isDeleteDialogOpen = false;
   }
 
   isProjectsEmpty(): boolean {
     return this.projects.length === 0;
   }
 }
+function anyTrue(identitiesLoading$: any, usersLoading$: any, companiesLoading$: any, filterCompaniesLoading$: any, customDataSchemaLoading$: any): any {
+  throw new Error('Function not implemented.');
+}
+

@@ -136,7 +136,7 @@ export class ProjectEffects {
             let actions = [
               editProjectSuccess({
                 payload: {
-                  data: data.editProject,
+                  data,
                   error: '',
                   loading: false,
                 },
@@ -174,7 +174,7 @@ export class ProjectEffects {
             return of(
               deleteProjectSuccess({
                 payload: {
-                  data: data.deleteProject,
+                  data,
                   error: '',
                   loading: false,
                 },

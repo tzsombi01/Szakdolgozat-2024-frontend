@@ -3,16 +3,27 @@
 <div class="container">
     <h1 class="project-caption">Projects</h1>
 
-    <div *ngIf="!isProjectsEmpty()" class="project-container">
-        <table class="project-table" *ngFor="let project of projects; let i = index;">
-            <tr>
-                <th>Project Number</th>
-                <th>Assignee</th>
-                <th>Creator</th>
-            </tr>
-            <th> {{ project.name }} </th>
-            <th> {{ project.url }} </th>
-            <th> {{ project.users.length }} </th>
+    <div *ngIf="!isProjectsEmpty() && !(projectsLoading$ | async)" class="project-container">
+        <table class="project-table">
+            <thead>
+                <tr>
+                    <th>Project name</th>
+                    <th>Project Url</th>
+                    <th>Number of users</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let project of projects; let i = index;">
+                    <td>{{ project.name }}</td>
+                    <td>{{ project.url }}</td>
+                    <td>{{ project.users.length }}</td>
+                    <td>
+                        <button (click)="open('edit', project.id)">Edit project</button>
+                        <button (click)="open('delete', project.id)">Delete project</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
     <div>
@@ -22,7 +33,7 @@
     <div *ngIf="isDialogOpen">
         <div class="dialog-overlay"></div>
         <form [formGroup]="this.formGroup" class="dialog-content">
-            <h3>Create Ticket</h3>
+            <h1>Create Ticket</h1>
             
             <label>Name:</label>
             <input type="text" id="name" formControlName="name">
@@ -30,8 +41,8 @@
             <label>Url:</label>
             <input type="text" id="url" formControlName="url">
 
-            <div class="comments-section">
-                <h2>Comments</h2>
+            <div class="users-section">
+                <h3>Users</h3>
             </div>
 
             <div class="buttonContainer">
@@ -39,6 +50,18 @@
                 <button type="submit" (click)="close('submit')">Submit</button>
             </div>
         </form>
+    </div>
+
+    <div *ngIf="isDeleteDialogOpen">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h1>Do you really want to delete this Project?</h1>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('delete')">Delete</button>
+            </div>
+        </div>
     </div>
 
     <div *ngIf="isProjectsEmpty()" class="no-projects-container">
