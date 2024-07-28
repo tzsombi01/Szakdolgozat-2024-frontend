@@ -34,7 +34,6 @@ export class ProjectEffects {
       concatMap(({ queryOptions }) => {
         return this.projectService.getProjects(queryOptions).pipe(
           map((data) => {
-            console.log(data)
             return getProjectsSuccess({
               payload: {
                 data: {
@@ -66,12 +65,10 @@ export class ProjectEffects {
       mergeMap(({ id }) => {
         return this.projectService.getProject(id).pipe(
           mergeMap((data) => {
-            console.log(data)
-
             return of(
               getProjectSuccess({
                 payload: {
-                  data: data,
+                  data,
                   error: '',
                   loading: false,
                 },
@@ -103,7 +100,7 @@ export class ProjectEffects {
             return of(
               createProjectSuccess({
                 payload: {
-                  data: data.createProject,
+                  data,
                   error: '',
                   loading: false,
                 },

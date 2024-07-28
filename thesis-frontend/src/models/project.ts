@@ -10,6 +10,6 @@ export interface Project extends Entity {
 export interface ProjectInput {
     url: string;
     name: string;
-    tickets: string[];
+    tickets: string[]; 
     users: string[];
 }

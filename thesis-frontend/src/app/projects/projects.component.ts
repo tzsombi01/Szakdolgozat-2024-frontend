@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
@@ -49,7 +49,7 @@ export class ProjectsComponent implements OnInit {
 
   constructor(
     public route: ActivatedRoute,
-    private http: HttpClient,
+    public router: Router,
     private projectStore: Store<ProjectState>
   ) {
     this.projects$ = this.projectStore.select(getProjectsWithTotal);
@@ -71,7 +71,7 @@ export class ProjectsComponent implements OnInit {
     this.projectStore.dispatch(getProjectsRequest({ queryOptions }));
   }
 
-  open(type: ('create' | 'edit' | 'delete'), id?: string): void {
+  open(type: ('create' | 'edit' | 'delete' | 'details'), id?: string): void {
     if (type === 'create') {
       this.isEdit = false;
 
@@ -90,6 +90,8 @@ export class ProjectsComponent implements OnInit {
       this.project = this.projects.find((project: Project) => project.id === id);
       
       this.isDeleteDialogOpen = true;
+    } else if(type === 'details') {
+      this.router.navigate([`/projects/${id}`]);
     }
   }
 
@@ -105,14 +107,13 @@ export class ProjectsComponent implements OnInit {
           tickets: []
         };
 
-        console.log(newProject)
         this.projectStore.dispatch(createProjectRequest({ project: newProject, queryOptions: ({} as Object) as QueryOptions }));
       } else {
         const editedProject: ProjectInput = {
           name: this.formGroup.controls['name'].value,
           url: this.formGroup.controls['url'].value,
           users: this.selectedUsers,
-          tickets: []
+          tickets: this.project?.tickets || []
         };
   
         this.projectStore.dispatch(editProjectRequest({ id: this.project?.id!, project: editedProject, queryOptions: ({} as Object) as QueryOptions }));
@@ -131,7 +132,3 @@ export class ProjectsComponent implements OnInit {
     return this.projects.length === 0;
   }
 }
-function anyTrue(identitiesLoading$: any, usersLoading$: any, companiesLoading$: any, filterCompaniesLoading$: any, customDataSchemaLoading$: any): any {
-  throw new Error('Function not implemented.');
-}
-

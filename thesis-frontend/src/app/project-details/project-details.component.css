@@ -1,0 +1,204 @@
+.container {
+    display: flex;
+    max-width: 100%;
+    margin-top: 40px;
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 20%;
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-right: 1px solid #dee2e6;
+    position: fixed;
+    /* Fixing the sidebar to the left */
+    height: 100vh;
+    /* Full height of the viewport */
+    overflow-y: auto;
+    /* Add scrollbar if content overflows */
+}
+
+/* Sidebar list and links styling */
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 1rem 0;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.sidebar ul li a.active {
+    font-weight: bold;
+}
+
+/* Main content styling */
+.main-content {
+    margin-left: 20%;
+    /* Adjust for the width of the fixed sidebar */
+    padding: 1rem;
+    width: 80%;
+    /* Ensure main content takes the remaining width */
+}
+
+/* Dashboard styling */
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.dashboard h1 {
+    font-size: 24px;
+    margin-bottom: 1rem;
+}
+
+/* Search bar styling */
+.search-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.search-bar input {
+    flex: 1;
+    /* Take up the remaining space */
+    padding: 0.5rem;
+    font-size: 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-right: 1rem;
+}
+
+.search-bar .create-issue-btn {
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-bar .create-issue-btn:hover {
+    background-color: #218838;
+}
+
+/* Additional styling for filter options and tickets display */
+.filter-options {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.tickets {
+    width: 100%;
+}
+
+/* Existing CSS adjustments */
+.project-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.project-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.project-container th,
+.project-container td {
+    border: 1px solid #007bff;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.project-caption {
+    text-align: center;
+    font-size: 24px;
+}
+
+.projects-table {
+    max-width: 100% !important;
+    border: 8px solid;
+    border-style: groove;
+}
+
+.no-projects-container {
+    display: flex;
+    justify-content: center;
+}
+
+.no-projects-container .no-projects-text {
+    font-size: 25px;
+    font-style: italic;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    padding-bottom: 2rem;
+    max-width: 100% !important;
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 1000px;
+}
+
+.dialog-content h1 {
+    align-self: center;
+}
+
+.dialog-content button {
+    margin-top: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.buttonContainer button {
+    width: calc(50% - 5px);
+}
+
+.project-container button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.project-container button:hover {
+    background-color: #0056b3;
+}

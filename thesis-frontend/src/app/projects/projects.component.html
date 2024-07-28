@@ -19,6 +19,7 @@
                     <td>{{ project.url }}</td>
                     <td>{{ project.users.length }}</td>
                     <td>
+                        <button (click)="open('details', project.id)">Details</button>
                         <button (click)="open('edit', project.id)">Edit project</button>
                         <button (click)="open('delete', project.id)">Delete project</button>
                     </td>

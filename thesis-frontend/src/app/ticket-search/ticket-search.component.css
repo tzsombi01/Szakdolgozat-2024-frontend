@@ -8,63 +8,35 @@
     margin-top: 40px;
 }
 
-.project-container {
+.ticket-container {
     display: flex;
     flex-direction: column;
     width: 60%;
+
+    #ticket-caption {
+        font-size: 36px;
+        font-style: italic;
+        margin-bottom: 30px;
+    }
 }
 
-.project-container table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.project-container th,
-.project-container td {
-    border: 1px solid #007bff;
-    padding: 8px;
-    text-align: center;
-    vertical-align: middle;
-}
-
-.project-caption {
-    text-align: center;
-    font-size: 24px;
-}
-
-
-.projects-table {
+.ticket-table {
     max-width: 100% !important;
     border: 8px solid;
     border-style: groove;
 }
 
-.no-projects-container {
+.no-tickets-container {
     display: flex;
     justify-content: center;
 
-    .no-projects-text {
+    .no-tickets-text {
         font-size: 25px;
         font-style: italic;
     }
 }
 
-.project-caption {
-    text-align: center;
-    font-size: 24px;
-}  
-
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 2rem;
-    max-width: 100% !important;
-    margin-top: 40px;
-}
-
-.project-caption {
+.ticket-caption {
     text-align: center;
     font-size: 24px;
 }
@@ -97,10 +69,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     width: 1000px;
-
-    h1 {
-        align-self: center;
-    }
 }
 
 .dialog-content button {
@@ -117,16 +85,74 @@
     width: calc(50% - 5px);
 }
 
-.project-container button {
-    padding: 8px 12px;
-    background-color: #007bff;
+.ticket-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.ticket-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-container th,
+.ticket-container td {
+    border: 1px solid #007bff;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ticket-caption {
+    text-align: center;
+    font-size: 24px;
+}
+
+
+.ticket-table {
+    max-width: 100% !important;
+    border: 8px solid;
+    border-style: groove;
+}
+
+/* Search bar styling */
+.search-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.search-bar input {
+    flex: 1;
+    /* Take up the remaining space */
+    padding: 0.5rem;
+    font-size: 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-right: 1rem;
+}
+
+.search-bar .create-issue-btn {
+    padding: 0.5rem 1rem;
+    background-color: #28a745;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-right: 5px;
 }
 
-.project-container button:hover {
-    background-color: #0056b3;
+.search-bar .create-issue-btn:hover {
+    background-color: #218838;
+}
+
+/* Additional styling for filter options and tickets display */
+.filter-options {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.tickets {
+    width: 100%;
 }

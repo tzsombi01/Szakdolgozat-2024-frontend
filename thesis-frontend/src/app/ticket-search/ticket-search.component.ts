@@ -1,28 +1,28 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Ticket, TicketInput } from 'src/models/ticket';
-import { TicketState } from 'src/store/app.states';
-import { State } from '@progress/kendo-data-query';
-import { getTicketLoading, getTicketsWithTotal } from 'src/store/selectors/ticket.selector';
-import { createTicketRequest, deleteTicketRequest, editTicketRequest, getTicketsRequest } from 'src/store/actions/ticket.actions';
-import { QueryOptions } from 'src/models/query-options';
-import { getQueryOptions } from 'src/shared/common-functions';
-import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
-import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Store } from '@ngrx/store';
+import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
+import { State } from '@progress/kendo-data-query';
+import { Observable } from 'rxjs';
 import { CommentInput } from 'src/models/comment';
+import { QueryOptions } from 'src/models/query-options';
+import { Ticket, TicketInput } from 'src/models/ticket';
+import { getQueryOptions } from 'src/shared/common-functions';
+import { getTicketsRequest, createTicketRequest, editTicketRequest, deleteTicketRequest } from 'src/store/actions/ticket.actions';
+import { TicketState } from 'src/store/app.states';
+import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticket.selector';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-ticket',
-  templateUrl: './ticket.component.html',
-  styleUrls: ['./ticket.component.css']
+  selector: 'app-ticket-search',
+  templateUrl: './ticket-search.component.html',
+  styleUrls: ['./ticket-search.component.css']
 })
-export class TicketComponent implements OnInit {
-
+export class TicketSearchComponent implements OnInit {
+  
   isDialogOpen: boolean = false;
   isDeleteDialogOpen: boolean = false;
   isEdit: boolean = false;

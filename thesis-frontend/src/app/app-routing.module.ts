@@ -13,6 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
+import { ProjectDetailsComponent } from './project-details/project-details.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,11 @@ const routes: Routes = [
   {
     path: 'projects',
     component: ProjectsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'projects/:id',
+    component: ProjectDetailsComponent,
     canActivate: [AuthGuard]
   },
   {

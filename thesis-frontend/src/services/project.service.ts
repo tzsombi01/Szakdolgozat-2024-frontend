@@ -51,8 +51,6 @@ export class ProjectService {
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    console.log(id, token);
-
     return this.http.get<any>(`${this.BASE_URL}/api/projects/${id}`, requestHeaders);
   }
 }

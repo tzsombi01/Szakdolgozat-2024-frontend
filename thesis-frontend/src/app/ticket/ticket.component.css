@@ -84,3 +84,34 @@
 .buttonContainer button {
     width: calc(50% - 5px);
 }
+
+.ticket-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+
+.ticket-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ticket-container th,
+.ticket-container td {
+    border: 1px solid #007bff;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.ticket-caption {
+    text-align: center;
+    font-size: 24px;
+}
+
+
+.ticket-table {
+    max-width: 100% !important;
+    border: 8px solid;
+    border-style: groove;
+}
