@@ -34,7 +34,6 @@ export class TicketEffects {
       concatMap(({ queryOptions }) => {
         return this.ticketService.getTickets(queryOptions).pipe(
           map((data) => {
-            console.log(data)
             return getTicketsSuccess({
               payload: {
                 data: {

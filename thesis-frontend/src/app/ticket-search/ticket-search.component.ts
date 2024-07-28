@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -23,6 +23,9 @@ import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticke
 })
 export class TicketSearchComponent implements OnInit {
   
+  @Input()
+  projectId?: string;
+
   isDialogOpen: boolean = false;
   isDeleteDialogOpen: boolean = false;
   isEdit: boolean = false;
@@ -66,13 +69,18 @@ export class TicketSearchComponent implements OnInit {
 
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
       this.tickets = tickets;
-      console.log(tickets)
-      console.log(total)
     });
   }
 
   onSiteOpen(): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.projectId
+    });
 
     this.ticketStore.dispatch(getTicketsRequest({ queryOptions }));
   }

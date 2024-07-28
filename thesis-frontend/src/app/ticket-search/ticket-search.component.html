@@ -21,7 +21,7 @@
                     <td>{{ ticket.ticketNumber }}</td>
                     <td>{{ ticket.assignee }}</td>
                     <td>{{ ticket.creator }}</td>
-                    <td>
+                    <td class="buttonContainer">
                         <button (click)="open('details', ticket.id)">Details</button>
                         <button (click)="open('edit', ticket.id)">Edit ticket</button>
                         <button (click)="open('delete', ticket.id)">Delete ticket</button>
@@ -29,10 +29,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
-
-    <div>
-        <button (click)="open('create')">Create ticket</button>
     </div>
 
     <div *ngIf="isTicketsEmpty()" class="no-tickets-container">

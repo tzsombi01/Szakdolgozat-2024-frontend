@@ -81,14 +81,11 @@
     justify-content: space-evenly;
 }
 
-.buttonContainer button {
-    width: calc(50% - 5px);
-}
-
 .ticket-container {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    justify-content: space-between;
+    width: 100% !important;
 }
 
 .ticket-container table {
