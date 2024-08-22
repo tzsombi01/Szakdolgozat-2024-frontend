@@ -33,7 +33,7 @@ export class UserService {
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    return this.http.post<any>(`${this.BASE_URL}/api/users`, { queryOptions }, requestHeaders);
+    return this.http.post<any>(`${this.BASE_URL}/api/users`, queryOptions, requestHeaders);
   }
 
   editUser(id: string, user: UserInput): Observable<any> {

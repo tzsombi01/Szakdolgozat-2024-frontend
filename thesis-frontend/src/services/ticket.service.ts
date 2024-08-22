@@ -50,9 +50,7 @@ export class TicketService {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
-
-    console.log(id, token);
-
+    
     return this.http.get<any>(`${this.BASE_URL}/api/tickets/${id}`, requestHeaders);
   }
 }

@@ -47,6 +47,7 @@ export class TicketComponent implements OnInit {
   selectedTicketReferences: string[] = [];
 
   formGroup: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(),
     description: new UntypedFormControl(),
   });
 
@@ -105,7 +106,9 @@ export class TicketComponent implements OnInit {
     if (type === 'submit') {
       if (!this.isEdit) {
         const newTicket: TicketInput = {
+          name: this.formGroup.controls['name'].value,
           description: this.formGroup.controls['description'].value,
+          project: '1',
           assignee: this.selectedAssignee,
           creator: '1', // this.user.id,
           mentionedInCommits: [],
@@ -117,7 +120,9 @@ export class TicketComponent implements OnInit {
         this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
       } else {
         const editedTicket: TicketInput = {
+          name: this.formGroup.controls['name'].value,
           description: this.formGroup.controls['description'].value,
+          project: '1',
           assignee: this.selectedAssignee,
           creator: '1', // this.user.id,
           mentionedInCommits: [],

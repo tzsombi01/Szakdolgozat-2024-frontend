@@ -50,6 +50,7 @@ export class TicketSearchComponent implements OnInit {
   selectedTicketReferences: string[] = [];
 
   formGroup: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl(),
     description: new UntypedFormControl(),
   });
 
@@ -114,6 +115,8 @@ export class TicketSearchComponent implements OnInit {
       if (!this.isEdit) {
         const newTicket: TicketInput = {
           description: this.formGroup.controls['description'].value,
+          name: this.formGroup.controls['name'].value,
+          project: this.projectId!,
           assignee: this.selectedAssignee,
           creator: '1', // this.user.id,
           mentionedInCommits: [],
@@ -126,6 +129,8 @@ export class TicketSearchComponent implements OnInit {
       } else {
         const editedTicket: TicketInput = {
           description: this.formGroup.controls['description'].value,
+          name: this.formGroup.controls['name'].value,
+          project: this.projectId!,
           assignee: this.selectedAssignee,
           creator: '1', // this.user.id,
           mentionedInCommits: [],

@@ -65,8 +65,6 @@ export class TicketEffects {
       mergeMap(({ id }) => {
         return this.ticketService.getTicket(id).pipe(
           mergeMap((data) => {
-            console.log(data)
-
             return of(
               getTicketSuccess({
                 payload: {

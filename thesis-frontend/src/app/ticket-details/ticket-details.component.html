@@ -1,24 +1,36 @@
-<div>
-    <p>ID: {{ this.ticket?.id }}</p>
-    <p>Ticket Number: {{ this.ticket?.ticketNumber }}</p>
-    <p>Assignee: {{ this.ticket?.assignee || 'Not assigned' }}</p>
-    <p>Creator: {{ this.ticket?.creator }}</p>
-    <p>Description: {{ this.ticket?.description || 'No description available' }}</p>
-    <p>Ticket References:</p>
-    <ul>
-      <li *ngFor="let reference of this.ticket?.ticketReferences">{{ reference }}</li>
+<app-header></app-header>
+
+<div *ngIf="this.ticket" class="main-container">
+  <div class="content-container">
+    <h3 class="ticket-title">{{ this.ticket.name }}</h3>
+    <span class="ticket-number">Ticket Number: {{ this.ticket.ticketNumber }}</span>
+    <p class="ticket-info">Description: <span class="ticket-description">{{ this.ticket.description || 'No description available' }}</span></p>
+    
+    <p class="ticket-info">Ticket References:</p>
+    <ul class="ticket-list">
+      <li class="ticket-list-item" *ngFor="let reference of this.ticket?.ticketReferences">{{ reference }}</li>
     </ul>
-    <p>Statuses:</p>
+    
+    <p class="ticket-info">Mentioned in Commits:</p>
+    <ul class="ticket-list">
+      <li class="ticket-list-item" *ngFor="let commit of this.ticket?.mentionedInCommits">{{ commit }}</li>
+    </ul>
+    
+    <p class="ticket-info">Comments:</p>
+    <ul class="ticket-list">
+      <li class="ticket-list-item" *ngFor="let comment of this.ticket?.comments">{{ comment }}</li>
+    </ul>
+</div>
+
+
+  <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">
+    <p><strong>Assignee:</strong> {{ this.getUser(this.ticket.assignee)?.firstName + ' ' + this.getUser(this.ticket.assignee)?.lastName || '' }}</p>
+    <p><strong>Creator:</strong> {{ this.getUser(this.ticket.creator)?.firstName + ' ' + this.getUser(this.ticket.creator)?.lastName || '' }}</p>
+    <p><strong>Statuses:</strong></p>
     <ul>
       <li *ngFor="let status of this.ticket?.statuses">{{ status }}</li>
     </ul>
-    <p>Comments:</p>
-    <ul>
-      <li *ngFor="let comment of this.ticket?.comments">{{ comment }}</li>
-    </ul>
-    <p>Mentioned in Commits:</p>
-    <ul>
-      <li *ngFor="let commit of this.ticket?.mentionedInCommits">{{ commit }}</li>
-    </ul>
   </div>
-  
+</div>
+
+<app-footer></app-footer>

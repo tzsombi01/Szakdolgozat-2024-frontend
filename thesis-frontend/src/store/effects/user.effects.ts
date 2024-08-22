@@ -42,8 +42,8 @@ export class UserEffects {
                     return getUsersSuccess({
                         payload: {
                             data: {
-                                content: data.getUsers,
-                                total: data.getUsers.total
+                                content: data,
+                                total: data.length
                             },
                             error: '',
                             loading: false
