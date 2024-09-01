@@ -4,8 +4,27 @@
   <div class="content-container">
     <h3 class="ticket-title">{{ this.ticket.name }}</h3>
     <span class="ticket-number">Ticket Number: {{ this.ticket.ticketNumber }}</span>
-    <p class="ticket-info">Description: <span class="ticket-description">{{ this.ticket.description || 'No description available' }}</span></p>
+
+    <div style="margin: 2rem;">
+      <div *ngIf="this.isEditingDescription" class="buttonContainer">
+        <button (click)="toggleEditDescription()">Cancel</button>
+        <button (click)="close('description')">Save</button>
+      </div>
+
+      <div *ngIf="!this.isEditingDescription" class="buttonContainer">
+        <button (click)="toggleEditDescription()">Edit Description</button>
+      </div>
+    </div>
     
+    
+    <div *ngIf="!isEditingDescription">
+      <p class="ticket-info">Description: <span class="ticket-description" [innerHTML]="this.parsedDescription"></span></p>
+    </div>
+    
+    <div *ngIf="isEditingDescription">
+      <textarea [(ngModel)]="this.markdownDescription" rows="5" cols="50"></textarea>
+    </div>
+
     <p class="ticket-info">Ticket References:</p>
     <ul class="ticket-list">
       <li class="ticket-list-item" *ngFor="let reference of this.ticket?.ticketReferences">{{ reference }}</li>
@@ -20,8 +39,7 @@
     <ul class="ticket-list">
       <li class="ticket-list-item" *ngFor="let comment of this.ticket?.comments">{{ comment }}</li>
     </ul>
-</div>
-
+  </div>
 
   <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">
     <p><strong>Assignee:</strong> {{ this.getUser(this.ticket.assignee)?.firstName + ' ' + this.getUser(this.ticket.assignee)?.lastName || '' }}</p>

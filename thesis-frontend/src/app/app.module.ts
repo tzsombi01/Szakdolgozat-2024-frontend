@@ -23,7 +23,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -83,6 +83,7 @@ import { TicketSearchComponent } from './ticket-search/ticket-search.component';
     MatGridListModule,
     MatDialogModule,
     HighchartsChartModule,
+    FormsModule,
     ReactiveFormsModule,
     ApolloModule,
     GraphQLModule,

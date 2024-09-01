@@ -5,12 +5,13 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid/data/change-event-args.interface';
 import { State } from '@progress/kendo-data-query/dist/npm/state';
+import { marked } from 'marked';
 import { Observable } from 'rxjs';
 import { QueryOptions } from 'src/models/query-options';
-import { Ticket } from 'src/models/ticket';
+import { Ticket, TicketInput } from 'src/models/ticket';
 import { User } from 'src/models/user';
 import { getQueryOptions } from 'src/shared/common-functions';
-import { getTicketRequest } from 'src/store/actions/ticket.actions';
+import { editTicketRequest, getTicketRequest } from 'src/store/actions/ticket.actions';
 import { getUsersRequest } from 'src/store/actions/user.actions';
 import { TicketState, UserState } from 'src/store/app.states';
 import { getTicket } from 'src/store/selectors/ticket.selector';
@@ -24,6 +25,10 @@ import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
 })
 export class TicketDetailsComponent implements OnInit {
   
+  isEditingDescription = false;
+  markdownDescription: string = '';
+  parsedDescription: string = '';
+
   users$: Observable<User[] | any>;
   users: User[] = [];
   usersLoading$: Observable<boolean | any>;
@@ -75,7 +80,11 @@ export class TicketDetailsComponent implements OnInit {
 
       if (this.ticket?.id) {
         // Get Statuses
+
         const usersNeeded: string[] = [this.ticket.creator];
+
+        this.markdownDescription = this.ticket?.description || '';
+        this.parseMarkdown(this.markdownDescription);
 
         if (this.ticket?.assignee) {
           usersNeeded.push(this.ticket.assignee);
@@ -99,7 +108,39 @@ export class TicketDetailsComponent implements OnInit {
     });
   }
 
+  close(type: ('description')) {
+    if (type === 'description') {
+        const editedTicket: TicketInput = {
+          ...this.ticket,
+          description: this.markdownDescription,
+        } as TicketInput;
+  
+        this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
+        // window.location.reload();
+    }
+  }
+
   getUser(id?: string): User | undefined {
     return this.users.find(user => user.id === id);
+  }
+
+  toggleEditDescription() {
+    if (this.isEditingDescription) {
+      this.ticket!.description = this.markdownDescription;
+      this.parseMarkdown(this.markdownDescription);
+    }
+    this.isEditingDescription = !this.isEditingDescription;
+  }
+
+  parseMarkdown(markdown: string): void {
+    const result = marked.parse(markdown || '');
+
+    if (typeof result === 'string') {
+        this.parsedDescription = result;
+    } else if (result instanceof Promise) {
+        result.then(res => {
+            this.parsedDescription = res;
+        });
+    }
   }
 }
