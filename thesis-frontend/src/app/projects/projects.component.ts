@@ -131,4 +131,8 @@ export class ProjectsComponent implements OnInit {
   isProjectsEmpty(): boolean {
     return this.projects.length === 0;
   }
+
+  getTitle(): string {
+    return this.isEdit ? 'Edit Project' : 'Create Project'; 
+  }
 }

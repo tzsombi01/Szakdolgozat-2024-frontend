@@ -154,4 +154,8 @@ export class TicketSearchComponent implements OnInit {
   isTicketsEmpty(): boolean {
     return this.tickets.length === 0;
   }
+
+  getTitle(): string {
+    return this.isEdit ? 'Edit Ticket' : 'Create Ticket';
+  }
 }
