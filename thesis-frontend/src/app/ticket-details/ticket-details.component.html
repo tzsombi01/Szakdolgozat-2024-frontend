@@ -41,9 +41,19 @@
   </div>
 
   <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">
-    <p><strong>Assignee:</strong> {{ this.getUser(this.ticket.assignee)?.firstName + ' ' + this.getUser(this.ticket.assignee)?.lastName || '' }}</p>
-    <p><strong>Creator:</strong> {{ this.getUser(this.ticket.creator)?.firstName + ' ' + this.getUser(this.ticket.creator)?.lastName || '' }}</p>
-    <p><strong>Statuses:</strong></p>
+    <p><strong>Assignee:</strong></p>
+    <select [(ngModel)]="selectedAssignee" (change)="onUserChange('assignee')">
+      <option *ngFor="let user of users" [value]="user.id">
+        {{ user.firstName + ' ' + user.lastName }}
+      </option>
+    </select>
+    <p style="margin-top: 1rem;"><strong>Creator:</strong></p>
+    <select [(ngModel)]="selectedCreator" disabled>
+      <option *ngFor="let user of users" [value]="user.id">
+        {{ user.firstName + ' ' + user.lastName }}
+      </option>
+    </select>
+    <p style="margin-top: 1rem;"><strong>Statuses:</strong></p>
     <ul>
       <li *ngFor="let status of this.ticket?.statuses">{{ status }}</li>
     </ul>

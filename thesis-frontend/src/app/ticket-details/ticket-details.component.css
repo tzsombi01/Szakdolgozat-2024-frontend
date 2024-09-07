@@ -10,9 +10,9 @@
 
 .content-container {
     flex: 1;
-    margin-right: 20px;
+    margin-right: 2rem;
     background-color: #f9f9f9;
-    padding: 20px;
+    padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     position: relative;

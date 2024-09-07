@@ -7,13 +7,16 @@ import { DataStateChangeEvent } from '@progress/kendo-angular-grid/data/change-e
 import { State } from '@progress/kendo-data-query/dist/npm/state';
 import { marked } from 'marked';
 import { Observable } from 'rxjs';
+import { Project } from 'src/models/project';
 import { QueryOptions } from 'src/models/query-options';
 import { Ticket, TicketInput } from 'src/models/ticket';
 import { User } from 'src/models/user';
 import { getQueryOptions } from 'src/shared/common-functions';
+import { getProjectRequest } from 'src/store/actions/project.actions';
 import { editTicketRequest, getTicketRequest } from 'src/store/actions/ticket.actions';
 import { getUsersRequest } from 'src/store/actions/user.actions';
-import { TicketState, UserState } from 'src/store/app.states';
+import { ProjectState, TicketState, UserState } from 'src/store/app.states';
+import { getProject } from 'src/store/selectors/project.selector';
 import { getTicket } from 'src/store/selectors/ticket.selector';
 import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
 
@@ -24,6 +27,8 @@ import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
   styleUrls: ['./ticket-details.component.css']
 })
 export class TicketDetailsComponent implements OnInit {
+  
+  ticketId: string | undefined;
 
   isEditingDescription = false;
   markdownDescription: string = '';
@@ -33,11 +38,11 @@ export class TicketDetailsComponent implements OnInit {
   users: User[] = [];
   usersLoading$: Observable<boolean | any>;
 
+  selectedAssignee?: string;
+  selectedCreator?: string;
+
   ticket$: Observable<Ticket | any>;
   ticket: Ticket | undefined;
-
-  ticketId: string | undefined;
-
   gridState: State = {
     skip: 0,
     take: 10,
@@ -47,15 +52,20 @@ export class TicketDetailsComponent implements OnInit {
     }
   };
 
+  project$: Observable<Project | any>;
+  project: Project | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
     private ticketStore: Store<TicketState>,
     private userStore: Store<UserState>,
+    private projectStore: Store<ProjectState>,
   ) {
     this.ticket$ = this.ticketStore.select(getTicket);
     this.users$ = this.userStore.select(getUsers);
+    this.project$ = this.projectStore.select(getProject);
 
     this.usersLoading$ = this.userStore.select(getUserLoading);
   }
@@ -81,22 +91,27 @@ export class TicketDetailsComponent implements OnInit {
       if (this.ticket?.id) {
         // Get Statuses
 
-        const usersNeeded: string[] = [this.ticket.creator];
+        this.selectedAssignee = this.ticket.assignee;
+        this.selectedCreator = this.ticket.creator;
 
         this.markdownDescription = this.ticket?.description || '';
         this.parseMarkdown(this.markdownDescription);
 
-        if (this.ticket?.assignee) {
-          usersNeeded.push(this.ticket.assignee);
-        }
+        this.projectStore.dispatch(getProjectRequest({ id: this.ticket.project }));
+      }
+    });
 
+    this.project$.pipe(untilDestroyed(this)).subscribe((project) => {
+      this.project = project;
+
+      if (this.project?.id) {
         const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
 
         queryOptions.filters?.push({
           field: 'id',
           operator: 'contains',
           type: 'array',
-          value: usersNeeded
+          value: project.users
         });
 
         this.userStore.dispatch(getUsersRequest({ queryOptions }));
@@ -123,9 +138,19 @@ export class TicketDetailsComponent implements OnInit {
       };
 
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
+      this.toggleEditDescription();
     }
+  }
 
-    this.toggleEditDescription();
+  onUserChange(type: ('assignee')) {
+    if (type === 'assignee') {
+      const editedTicket: TicketInput = {
+        ...this.ticket,
+        assignee: this.selectedAssignee
+      } as TicketInput;
+
+      this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
+    }
   }
 
   getUser(id?: string): User | undefined {
