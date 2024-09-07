@@ -94,11 +94,7 @@
 .buttonContainer {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-}
-
-.buttonContainer button {
-    width: calc(50% - 5px);
+    gap: 1rem;
 }
 
 .ticket-container table {

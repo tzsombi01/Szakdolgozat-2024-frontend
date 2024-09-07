@@ -5,7 +5,7 @@
     <h3 class="ticket-title">{{ this.ticket.name }}</h3>
     <span class="ticket-number">Ticket Number: {{ this.ticket.ticketNumber }}</span>
 
-    <div style="margin: 2rem;">
+    <div style="margin-top: 1rem; margin-bottom: 1rem;">
       <div *ngIf="this.isEditingDescription" class="buttonContainer">
         <button (click)="toggleEditDescription()">Cancel</button>
         <button (click)="close('description')">Save</button>
@@ -21,7 +21,11 @@
     </div>
     
     <div *ngIf="isEditingDescription">
-      <textarea [(ngModel)]="this.markdownDescription" rows="5" cols="50"></textarea>
+      <textarea
+        style="width: 100%; height: auto;"
+        [(ngModel)]="markdownDescription"
+        autoResize>
+      </textarea>
     </div>
 
     <p class="ticket-info">Ticket References:</p>
@@ -42,13 +46,13 @@
 
   <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">
     <p><strong>Assignee:</strong></p>
-    <select [(ngModel)]="selectedAssignee" (change)="onUserChange('assignee')">
+    <select [(ngModel)]="this.selectedAssignee" (change)="onUserChange('assignee')">
       <option *ngFor="let user of users" [value]="user.id">
         {{ user.firstName + ' ' + user.lastName }}
       </option>
     </select>
     <p style="margin-top: 1rem;"><strong>Creator:</strong></p>
-    <select [(ngModel)]="selectedCreator" disabled>
+    <select [(ngModel)]="this.selectedCreator" disabled>
       <option *ngFor="let user of users" [value]="user.id">
         {{ user.firstName + ' ' + user.lastName }}
       </option>

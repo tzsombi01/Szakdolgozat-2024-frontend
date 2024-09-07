@@ -90,7 +90,7 @@ export class TicketDetailsComponent implements OnInit {
 
       if (this.ticket?.id) {
         // Get Statuses
-
+        
         this.selectedAssignee = this.ticket.assignee;
         this.selectedCreator = this.ticket.creator;
 
@@ -145,10 +145,17 @@ export class TicketDetailsComponent implements OnInit {
   onUserChange(type: ('assignee')) {
     if (type === 'assignee') {
       const editedTicket: TicketInput = {
-        ...this.ticket,
-        assignee: this.selectedAssignee
-      } as TicketInput;
-
+        description: this.ticket?.description,
+        name: this.ticket?.name!,
+        project: this.ticket?.project!,
+        assignee: this.selectedAssignee,
+        creator: this.ticket?.creator!,
+        mentionedInCommits: this.ticket?.mentionedInCommits!,
+        statuses: this.ticket?.statuses!,
+        ticketReferences: this.ticket?.ticketReferences!,
+        comments: []
+      };
+      
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
     }
   }
