@@ -96,6 +96,7 @@ export class TicketSearchComponent implements OnInit {
 
       this.ticket = this.tickets.find((ticket: Ticket) => ticket.id === id);
       
+      this.formGroup.controls['name'].setValue(this.ticket?.name);
       this.formGroup.controls['description'].setValue(this.ticket?.description);
       
       this.isDialogOpen = true;
