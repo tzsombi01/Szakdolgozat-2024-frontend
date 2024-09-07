@@ -65,7 +65,7 @@ export class DocumentationEffects {
             return of(
               createDocumentationSuccess({
                 payload: {
-                  data: data.createDocumentation,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -98,7 +98,7 @@ export class DocumentationEffects {
             let actions = [
               editDocumentationSuccess({
                 payload: {
-                  data: data.editDocumentation,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -136,7 +136,7 @@ export class DocumentationEffects {
             return of(
               deleteDocumentationSuccess({
                 payload: {
-                  data: data.deleteDocumentation,
+                  data: data,
                   error: '',
                   loading: false,
                 },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -13,7 +13,7 @@ import { Ticket, TicketInput } from 'src/models/ticket';
 import { User } from 'src/models/user';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { getProjectRequest } from 'src/store/actions/project.actions';
-import { editTicketRequest, getTicketRequest } from 'src/store/actions/ticket.actions';
+import { clearTicketState, editTicketRequest, getTicketRequest } from 'src/store/actions/ticket.actions';
 import { getUsersRequest } from 'src/store/actions/user.actions';
 import { ProjectState, TicketState, UserState } from 'src/store/app.states';
 import { getProject } from 'src/store/selectors/project.selector';
@@ -26,7 +26,7 @@ import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
   templateUrl: './ticket-details.component.html',
   styleUrls: ['./ticket-details.component.css']
 })
-export class TicketDetailsComponent implements OnInit {
+export class TicketDetailsComponent implements OnInit, OnDestroy {
   
   ticketId: string | undefined;
 
@@ -90,7 +90,6 @@ export class TicketDetailsComponent implements OnInit {
 
       if (this.ticket?.id) {
         // Get Statuses
-        
         this.selectedAssignee = this.ticket.assignee;
         this.selectedCreator = this.ticket.creator;
 
@@ -121,6 +120,10 @@ export class TicketDetailsComponent implements OnInit {
     this.users$.pipe(untilDestroyed(this)).subscribe((users) => {
       this.users = users;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.ticketStore.dispatch(clearTicketState());
   }
 
   close(type: ('description')) {

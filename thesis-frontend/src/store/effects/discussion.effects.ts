@@ -65,7 +65,7 @@ export class DiscussionEffects {
             return of(
               createDiscussionSuccess({
                 payload: {
-                  data: data.createDiscussion,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -98,7 +98,7 @@ export class DiscussionEffects {
             let actions = [
               editDiscussionSuccess({
                 payload: {
-                  data: data.editDiscussion,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -136,7 +136,7 @@ export class DiscussionEffects {
             return of(
               deleteDiscussionSuccess({
                 payload: {
-                  data: data.deleteDiscussion,
+                  data: data,
                   error: '',
                   loading: false,
                 },

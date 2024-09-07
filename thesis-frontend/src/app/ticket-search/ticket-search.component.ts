@@ -118,7 +118,7 @@ export class TicketSearchComponent implements OnInit {
           name: this.formGroup.controls['name'].value,
           project: this.projectId!,
           assignee: this.selectedAssignee ?? '',
-          creator: '1', // this.user.id,
+          creator: '1',
           mentionedInCommits: [],
           statuses: this.selectedStatuses,
           ticketReferences: this.selectedTicketReferences,

@@ -67,8 +67,6 @@ export class TicketComponent implements OnInit {
 
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
       this.tickets = tickets;
-      console.log(tickets)
-      console.log(total)
     });
   }
 

@@ -100,7 +100,7 @@ export class TicketEffects {
             return of(
               createTicketSuccess({
                 payload: {
-                  data: data.createTicket,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -171,7 +171,7 @@ export class TicketEffects {
             return of(
               deleteTicketSuccess({
                 payload: {
-                  data: data.deleteTicket,
+                  data: data,
                   error: '',
                   loading: false,
                 },

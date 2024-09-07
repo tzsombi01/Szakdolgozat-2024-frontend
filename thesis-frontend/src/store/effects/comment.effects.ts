@@ -66,7 +66,7 @@ export class CommentEffects {
             return of(
               createCommentSuccess({
                 payload: {
-                  data: data.createComment,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -99,7 +99,7 @@ export class CommentEffects {
             let actions = [
               editCommentSuccess({
                 payload: {
-                  data: data.editComment,
+                  data: data,
                   error: '',
                   loading: false,
                 },
@@ -137,7 +137,7 @@ export class CommentEffects {
             return of(
               deleteCommentSuccess({
                 payload: {
-                  data: data.deleteComment,
+                  data: data,
                   error: '',
                   loading: false,
                 },

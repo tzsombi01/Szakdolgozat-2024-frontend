@@ -22,6 +22,14 @@ export class TicketService {
     return this.http.post(`${this.BASE_URL}/api/tickets/get`, queryOptions, requestHeaders);
   }
 
+  public getTicket(id: string): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+    
+    return this.http.get<any>(`${this.BASE_URL}/api/tickets/${id}`, requestHeaders);
+  }
+
   public createTicket(ticket: TicketInput): Observable<any> {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
@@ -43,14 +51,6 @@ export class TicketService {
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    return this.http.delete<any>(`${this.BASE_URL}/api/ticket/?${id}`, requestHeaders);
-  }
-
-  public getTicket(id: string): Observable<any> {
-    const token: string | null = localStorage.getItem('token');
-    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
-    const requestHeaders = { headers: authHeader };
-    
-    return this.http.get<any>(`${this.BASE_URL}/api/tickets/${id}`, requestHeaders);
+    return this.http.delete<any>(`${this.BASE_URL}/api/tickets/${id}`, requestHeaders);
   }
 }

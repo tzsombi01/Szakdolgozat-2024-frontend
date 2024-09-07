@@ -22,3 +22,5 @@ export const editTicketError = createAction('[ Ticket ] EditTicketError', props<
 export const deleteTicketRequest = createAction('[ Ticket ] DeleteTicketRequest', props<{ id: string, queryOptions: QueryOptions }>());
 export const deleteTicketSuccess = createAction('[ Ticket ] DeleteTicketSuccess', props<{ payload: Payload }>());
 export const deleteTicketError = createAction('[ Ticket ] DeleteTicketError', props<{ payload: Payload }>());
+
+export const clearTicketState = createAction('[ Ticket ] ClearTicketState');

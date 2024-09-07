@@ -146,6 +146,16 @@ const _ticketReducer = createReducer(
             loading: payload.loading
         };
     }),
+
+    on(ticketActions.clearTicketState, (state) => {
+        return {
+            tickets: [],
+            ticket: ({} as unknown) as Ticket,
+            error: '',
+            loading: false,
+            total: 0
+        };
+    }),
 );
 
 export function ticketReducer(state: any, action: Action): TicketState {
