@@ -108,6 +108,7 @@ const _ticketReducer = createReducer(
         return {
             ...state,
             tickets: _tickets,
+            ticket: payload.data,
             error: payload.error,
             loading: payload.loading
         };

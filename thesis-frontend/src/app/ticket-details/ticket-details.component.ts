@@ -24,7 +24,7 @@ import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
   styleUrls: ['./ticket-details.component.css']
 })
 export class TicketDetailsComponent implements OnInit {
-  
+
   isEditingDescription = false;
   markdownDescription: string = '';
   parsedDescription: string = '';
@@ -53,11 +53,11 @@ export class TicketDetailsComponent implements OnInit {
     private snackBar: MatSnackBar,
     private ticketStore: Store<TicketState>,
     private userStore: Store<UserState>,
-  ) { 
+  ) {
     this.ticket$ = this.ticketStore.select(getTicket);
     this.users$ = this.userStore.select(getUsers);
-    
-    this.usersLoading$ = this.userStore.select(getUserLoading);  
+
+    this.usersLoading$ = this.userStore.select(getUserLoading);
   }
 
   ngOnInit(): void {
@@ -110,14 +110,22 @@ export class TicketDetailsComponent implements OnInit {
 
   close(type: ('description')) {
     if (type === 'description') {
-        const editedTicket: TicketInput = {
-          ...this.ticket,
-          description: this.markdownDescription,
-        } as TicketInput;
-  
-        this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
-        // window.location.reload();
+      const editedTicket: TicketInput = {
+        description: this.markdownDescription,
+        name: this.ticket?.name!,
+        project: this.ticket?.project!,
+        assignee: this.ticket?.assignee,
+        creator: this.ticket?.creator!,
+        mentionedInCommits: this.ticket?.mentionedInCommits!,
+        statuses: this.ticket?.statuses!,
+        ticketReferences: this.ticket?.ticketReferences!,
+        comments: []
+      };
+
+      this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
     }
+
+    this.toggleEditDescription();
   }
 
   getUser(id?: string): User | undefined {
@@ -126,9 +134,10 @@ export class TicketDetailsComponent implements OnInit {
 
   toggleEditDescription() {
     if (this.isEditingDescription) {
-      this.ticket!.description = this.markdownDescription;
+      this.markdownDescription = this.ticket?.description!;
       this.parseMarkdown(this.markdownDescription);
     }
+
     this.isEditingDescription = !this.isEditingDescription;
   }
 
@@ -136,11 +145,11 @@ export class TicketDetailsComponent implements OnInit {
     const result = marked.parse(markdown || '');
 
     if (typeof result === 'string') {
-        this.parsedDescription = result;
+      this.parsedDescription = result;
     } else if (result instanceof Promise) {
-        result.then(res => {
-            this.parsedDescription = res;
-        });
+      result.then(res => {
+        this.parsedDescription = res;
+      });
     }
   }
 }

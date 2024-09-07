@@ -133,7 +133,7 @@ export class TicketEffects {
             let actions = [
               editTicketSuccess({
                 payload: {
-                  data: data.editTicket,
+                  data: data,
                   error: '',
                   loading: false,
                 },

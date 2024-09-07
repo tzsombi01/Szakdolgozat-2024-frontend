@@ -35,7 +35,7 @@ export class TicketService {
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    return this.http.post<any>(`${this.BASE_URL}/api/tickets?${id}`, ticket, requestHeaders);
+    return this.http.put<any>(`${this.BASE_URL}/api/tickets/${id}`, ticket, requestHeaders);
   }
 
   public deleteTicket(id: string): Observable<any> {
@@ -43,7 +43,7 @@ export class TicketService {
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    return this.http.delete<any>(`${this.BASE_URL}/api/tickets?${id}`, requestHeaders);
+    return this.http.delete<any>(`${this.BASE_URL}/api/ticket/?${id}`, requestHeaders);
   }
 
   public getTicket(id: string): Observable<any> {
