@@ -83,6 +83,7 @@ const _userReducer = createReducer(
         return {
             ...state,
             users: _users,
+            user: payload.data,
             error: payload.error,
             loading: payload.loading
         };

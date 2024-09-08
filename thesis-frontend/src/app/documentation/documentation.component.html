@@ -1,24 +1,65 @@
-<app-header></app-header>
-
 <div class="container">
     <h1 class="documentation-caption">Documentations</h1>
 
-    <div *ngIf="!isDocumentationsEmpty()" class="documentation-container">
-        <table class="documentation-table" *ngFor="let documentation of documentations; let i = index;">
-            <tr>
-                <th>Documentation Name</th>
-                <th>Description</th>
-                <th>Creator</th>
-            </tr>
-            <th> {{ documentation.name }} </th>
-            <th> {{ documentation.description }} </th>
-            <th> {{ documentation.creator }} </th>
+    <div class="search-bar">
+        <input type="text" placeholder="Search documentation...">
+        <button class="create-documentation-btn" (click)="open('create')">Create new Documentation</button>
+    </div>
+
+    <div *ngIf="!isDocumentationsEmpty() && !(documentationsLoading$ | async) && !(usersLoading$ | async)" class="documentation-container">
+        <table class="documentation-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Creator</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let documentation of documentations; let i = index;">
+                    <td>{{ documentation.name }}</td>
+                    <td>{{ this.getCreatorName(documentation) }}</td>
+                    <td class="buttonContainer">
+                        <button (click)="open('details', documentation.id)">Details</button>
+                        <button (click)="open('edit', documentation.id)">Edit documentation</button>
+                        <button (click)="open('delete', documentation.id)">Delete documentation</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    
+
     <div *ngIf="isDocumentationsEmpty()" class="no-documentations-container">
         <p class="no-documentations-text">No documentations found!</p>
     </div>
-</div>
 
-<app-footer></app-footer>
+    <div *ngIf="this.isDialogOpen">
+        <div class="dialog-overlay"></div>
+        <form [formGroup]="this.formGroup" class="dialog-content">
+            <h1>{{ this.getTitle() }}</h1>
+
+            <label>Name:</label>
+            <input type="text" formControlName="name">
+
+            <label for="description">Description:</label>
+            <textarea id="description" formControlName="description"></textarea>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="this.isDeleteDialogOpen">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h1>Do you really want to delete this Document?</h1>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('delete')">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,65 +2,65 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { UserService } from "src/services/user.service";
 import {
-    editUserError,
-    editUserRequest,
-    editUserSuccess,
-    deleteUserError,
-    deleteUserRequest,
-    deleteUserSuccess,
-    getUsersError,
-    getUsersSuccess,
-    getUsersRequest,
-    loginRequest,
-    loginSuccess,
-    registerRequest,
-    registerSuccess,
-    registerError,
-    getLoggedInUserRequest,
-    getLoggedInUserSuccess,
-    getLoggedInUserError,
-} from "../actions/user.actions"; 
+  editUserError,
+  editUserRequest,
+  editUserSuccess,
+  deleteUserError,
+  deleteUserRequest,
+  deleteUserSuccess,
+  getUsersError,
+  getUsersSuccess,
+  getUsersRequest,
+  loginRequest,
+  loginSuccess,
+  registerRequest,
+  registerSuccess,
+  registerError,
+  getLoggedInUserRequest,
+  getLoggedInUserSuccess,
+  getLoggedInUserError,
+} from "../actions/user.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 import { Router } from "@angular/router";
 
 @Injectable()
 export class UserEffects {
-  
+
   constructor(
     private actions$: Actions,
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
   getUsers$ = createEffect(() => {
     return this.actions$.pipe(
-        ofType(getUsersRequest),
-        concatMap(({ queryOptions }) => {
-            return this.userService.getUsers(queryOptions).pipe(
-                map((data) => {
-                    return getUsersSuccess({
-                        payload: {
-                            data: {
-                                content: data,
-                                total: data.length
-                            },
-                            error: '',
-                            loading: false
-                        }
-                    });
-                }),
-                catchError((err) => {
-                    return of(getUsersError({
-                        payload: {
-                            data: [],
-                            error: err,
-                            loading: false
-                        }
-                    }));
-                })
-            );
-        })
+      ofType(getUsersRequest),
+      concatMap(({ queryOptions }) => {
+        return this.userService.getUsers(queryOptions).pipe(
+          map((data) => {
+            return getUsersSuccess({
+              payload: {
+                data: {
+                  content: data,
+                  total: data.length
+                },
+                error: '',
+                loading: false
+              }
+            });
+          }),
+          catchError((err) => {
+            return of(getUsersError({
+              payload: {
+                data: [],
+                error: err,
+                loading: false
+              }
+            }));
+          })
+        );
+      })
     );
   });
 
@@ -73,7 +73,7 @@ export class UserEffects {
             let actions = [
               editUserSuccess({
                 payload: {
-                  data: data.editUser,
+                  data,
                   error: '',
                   loading: false,
                 },
@@ -111,7 +111,7 @@ export class UserEffects {
             return of(
               deleteUserSuccess({
                 payload: {
-                  data: data.deleteUser,
+                  data,
                   error: '',
                   loading: false,
                 },
@@ -142,7 +142,7 @@ export class UserEffects {
         return this.userService.login(email, password).pipe(
           mergeMap((data) => {
             localStorage.setItem('token', data.token);
-            
+
             this.router.navigate(["/home"]);
 
             return of(
@@ -177,9 +177,9 @@ export class UserEffects {
       mergeMap(({ user }) => {
         return this.userService.register(user).pipe(
           mergeMap((data) => {
-            
+
             localStorage.setItem('token', data.token);
-            
+
             this.router.navigate(["/home"]);
 
             return of(

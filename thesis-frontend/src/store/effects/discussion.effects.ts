@@ -30,12 +30,12 @@ export class DiscussionEffects {
         ofType(getDiscussionsRequest),
         concatMap(({ queryOptions }) => {
             return this.discussionService.getDiscussions(queryOptions).pipe(
-                map(({ data }) => {
+                map((data) => {
                     return getDiscussionsSuccess({
                         payload: {
                             data: {
-                                content: data.getDiscussions.content,
-                                total: data.getDiscussions.total
+                                content: data.content,
+                                total: data.totalElements
                             },
                             error: '',
                             loading: false
@@ -61,7 +61,7 @@ export class DiscussionEffects {
       ofType(createDiscussionRequest),
       mergeMap(({ discussion, queryOptions }) => {
         return this.discussionService.createDiscussion(discussion).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               createDiscussionSuccess({
                 payload: {
@@ -94,7 +94,7 @@ export class DiscussionEffects {
       ofType(editDiscussionRequest),
       mergeMap(({ id, discussion, queryOptions }) => {
         return this.discussionService.editDiscussion(id, discussion).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             let actions = [
               editDiscussionSuccess({
                 payload: {
@@ -132,7 +132,7 @@ export class DiscussionEffects {
       ofType(deleteDiscussionRequest),
       mergeMap(({ id, queryOptions }) => {
         return this.discussionService.deleteDiscussion(id).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               deleteDiscussionSuccess({
                 payload: {

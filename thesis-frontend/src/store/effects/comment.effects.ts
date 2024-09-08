@@ -31,12 +31,12 @@ export class CommentEffects {
         ofType(getCommentsRequest),
         concatMap(({ queryOptions }) => {
             return this.commentService.getComments(queryOptions).pipe(
-                map(({ data }) => {
+                map((data) => {
                     return getCommentsSuccess({
                         payload: {
                             data: {
-                                content: data.getComments.content,
-                                total: data.getComments.total
+                                content: data.content,
+                                total: data.totalElements
                             },
                             error: '',
                             loading: false
@@ -62,7 +62,7 @@ export class CommentEffects {
       ofType(createCommentRequest),
       mergeMap(({ comment, queryOptions }) => {
         return this.commentService.createComment(comment).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               createCommentSuccess({
                 payload: {
@@ -95,7 +95,7 @@ export class CommentEffects {
       ofType(editCommentRequest),
       mergeMap(({ id, comment, queryOptions }) => {
         return this.commentService.editComment(id, comment).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             let actions = [
               editCommentSuccess({
                 payload: {
@@ -133,7 +133,7 @@ export class CommentEffects {
       ofType(deleteCommentRequest),
       mergeMap(({ id, queryOptions }) => {
         return this.commentService.deleteComment(id).pipe(
-          mergeMap(({ data }) => {
+          mergeMap((data) => {
             return of(
               deleteCommentSuccess({
                 payload: {

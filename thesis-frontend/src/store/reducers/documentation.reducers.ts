@@ -82,6 +82,7 @@ const _documentationReducer = createReducer(
         return {
             ...state,
             documentations: _documentations,
+            documentation: payload.data,
             error: payload.error,
             loading: payload.loading
         };

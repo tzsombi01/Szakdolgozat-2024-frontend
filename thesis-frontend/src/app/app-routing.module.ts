@@ -70,7 +70,17 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
+        path: 'discussions/:discussionId',
+        component: DiscussionComponent,
+        canActivate: [AuthGuard]
+      },
+      {
         path: 'documentations',
+        component: DocumentationComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'documentations/:documentationId',
         component: DocumentationComponent,
         canActivate: [AuthGuard]
       },
