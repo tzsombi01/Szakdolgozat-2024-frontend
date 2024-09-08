@@ -1,26 +1,65 @@
-<app-header></app-header>
-
 <div class="container">
     <h1 class="discussion-caption">Discussions</h1>
 
-    <div *ngIf="!isDiscussionsEmpty()" class="discussion-container">
-        <table class="discussion-table" *ngFor="let discussion of discussions; let i = index;">
-            <tr>
-                <th>Name</th>
-                <th>Creator</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td> {{ discussion.name }} </td>
-                <td> {{ discussion.creator }} </td>
-                <td> {{ discussion.description }} </td>
-            </tr>
+    <div class="search-bar">
+        <input type="text" placeholder="Search discussion...">
+        <button class="create-discussion-btn" (click)="open('create')">Create new Discussion</button>
+    </div>
+
+    <div *ngIf="!isDiscussionsEmpty() && !(discussionsLoading$ | async) && !(usersLoading$ | async)" class="discussion-container">
+        <table class="discussion-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Creator</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let discussion of discussions; let i = index;">
+                    <td>{{ discussion.name }}</td>
+                    <td>{{ this.getCreatorName(discussion) }}</td>
+                    <td class="buttonContainer">
+                        <button (click)="open('details', discussion.id)">Details</button>
+                        <button (click)="open('edit', discussion.id)">Edit discussion</button>
+                        <button (click)="open('delete', discussion.id)">Delete discussion</button>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
-    
-    <div *ngIf="isDiscussionsEmpty()" class="no-discussions-container">
-        <p class="no-discussions-text">No discussions found!</p>
+
+    <div *ngIf="isDiscussionsEmpty()" class="no-discussion-container">
+        <p class="no-discussion-text">No discussions found!</p>
+    </div>
+
+    <div *ngIf="this.isDialogOpen">
+        <div class="dialog-overlay"></div>
+        <form [formGroup]="this.formGroup" class="dialog-content">
+            <h1>{{ this.getTitle() }}</h1>
+
+            <label>Name:</label>
+            <input type="text" formControlName="name">
+
+            <label for="description">Description:</label>
+            <textarea id="description" formControlName="description"></textarea>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="this.isDeleteDialogOpen">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h1>Do you really want to delete this Discussion?</h1>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('delete')">Delete</button>
+            </div>
+        </div>
     </div>
 </div>
-
-<app-footer></app-footer>
