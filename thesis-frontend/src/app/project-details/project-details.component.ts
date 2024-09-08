@@ -52,4 +52,22 @@ export class ProjectDetailsComponent implements OnInit {
       // Get tickets and users!
     });
   }
+
+  doesUrlContain(route: string): boolean {
+    if (route === 'tickets') {
+      return !(this.router.url.includes('discussions') || this.router.url.includes('documentations') 
+        || this.router.url.includes('users') || this.router.url.includes('settings'));
+    }
+
+    return this.router.url.includes(route);
+  }
+
+  navigateTo(route: string): void {
+    if (route === '') {
+      this.router.navigate([`/projects/${this.projectId}`]);
+      return;
+    }
+
+    this.router.navigate([route], { relativeTo: this.route });
+  }
 }

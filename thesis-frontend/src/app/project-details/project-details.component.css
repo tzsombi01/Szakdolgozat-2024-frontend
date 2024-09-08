@@ -4,21 +4,16 @@
     margin-top: 40px;
 }
 
-/* Sidebar styling */
 .sidebar {
     width: 20%;
     background-color: #f8f9fa;
     padding: 1rem;
     border-right: 1px solid #dee2e6;
     position: fixed;
-    /* Fixing the sidebar to the left */
     height: 100vh;
-    /* Full height of the viewport */
     overflow-y: auto;
-    /* Add scrollbar if content overflows */
 }
 
-/* Sidebar list and links styling */
 .sidebar ul {
     list-style-type: none;
     padding: 0;
@@ -28,30 +23,25 @@
     margin: 1rem 0;
 }
 
-.sidebar ul li a {
+.sidebar ul li button {
     text-decoration: none;
     color: #007bff;
     font-size: 18px;
 }
 
-.sidebar ul li a.active {
+.sidebar ul li button.active {
     font-weight: bold;
 }
 
-/* Main content styling */
 .main-content {
     margin-left: 20%;
-    /* Adjust for the width of the fixed sidebar */
     padding: 1rem;
     width: 80%;
-    /* Ensure main content takes the remaining width */
 }
 
-/* Dashboard styling */
 .dashboard {
     display: flex;
     flex-direction: column;
-    /* align-items: flex-start; */
 }
 
 .dashboard h1 {
@@ -59,7 +49,6 @@
     margin-bottom: 1rem;
 }
 
-/* Search bar styling */
 .search-bar {
     width: 100%;
     display: flex;
@@ -69,7 +58,6 @@
 
 .search-bar input {
     flex: 1;
-    /* Take up the remaining space */
     padding: 0.5rem;
     font-size: 16px;
     border: 1px solid #dee2e6;
@@ -90,7 +78,6 @@
     background-color: #218838;
 }
 
-/* Additional styling for filter options and tickets display */
 .filter-options {
     width: 100%;
     margin-bottom: 1rem;
@@ -100,7 +87,6 @@
     width: 100%;
 }
 
-/* Existing CSS adjustments */
 .project-container {
     display: flex;
     flex-direction: column;
