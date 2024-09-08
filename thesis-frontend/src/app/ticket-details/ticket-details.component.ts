@@ -72,14 +72,14 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.ticketId = params.get('id') ?? '';
+      this.ticketId = params.get('ticketId') ?? '';
 
       if (!this.ticketId) {
         this.snackBar.open('No ticket ID provided', 'Close', {
           duration: 3000
         });
 
-        this.router.navigate(["/home"]);
+        this.router.navigate(['/..']);
       }
 
       this.ticketStore.dispatch(getTicketRequest({ id: this.ticketId }));
@@ -133,7 +133,6 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         name: this.ticket?.name!,
         project: this.ticket?.project!,
         assignee: this.ticket?.assignee,
-        creator: this.ticket?.creator!,
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,
@@ -152,7 +151,6 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         name: this.ticket?.name!,
         project: this.ticket?.project!,
         assignee: this.selectedAssignee,
-        creator: this.ticket?.creator!,
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,

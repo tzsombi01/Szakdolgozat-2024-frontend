@@ -17,7 +17,6 @@ export interface TicketInput {
     assignee?: string;
     name: string;
     project: string;
-    creator: string;
     description?: string;
     ticketReferences: string[];
     statuses: string[];

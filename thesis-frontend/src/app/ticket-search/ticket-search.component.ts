@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
@@ -11,8 +12,9 @@ import { CommentInput } from 'src/models/comment';
 import { QueryOptions } from 'src/models/query-options';
 import { Ticket, TicketInput } from 'src/models/ticket';
 import { getQueryOptions } from 'src/shared/common-functions';
+import { getProjectRequest } from 'src/store/actions/project.actions';
 import { getTicketsRequest, createTicketRequest, editTicketRequest, deleteTicketRequest } from 'src/store/actions/ticket.actions';
-import { TicketState } from 'src/store/app.states';
+import { ProjectState, TicketState } from 'src/store/app.states';
 import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticket.selector';
 
 @UntilDestroy()
@@ -23,7 +25,6 @@ import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticke
 })
 export class TicketSearchComponent implements OnInit {
   
-  @Input()
   projectId?: string;
 
   isDialogOpen: boolean = false;
@@ -57,8 +58,9 @@ export class TicketSearchComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    private http: HttpClient,
-    private ticketStore: Store<TicketState>
+    private snackBar: MatSnackBar,
+    private ticketStore: Store<TicketState>,
+    private projectStore: Store<ProjectState>,
   ) {
     this.tickets$ = this.ticketStore.select(getTicketsWithTotal);
     
@@ -66,6 +68,20 @@ export class TicketSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.projectId = params.get('id') ?? '';
+
+      if (!this.projectId) {
+        this.snackBar.open('No project ID provided', 'Close', {
+          duration: 3000
+        });
+
+        this.router.navigate(["/home"]);
+      }
+
+      this.projectStore.dispatch(getProjectRequest({ id: this.projectId }));
+    });
+    
     this.onSiteOpen();
 
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
@@ -105,7 +121,7 @@ export class TicketSearchComponent implements OnInit {
       
       this.isDeleteDialogOpen = true;
     } else if(type === 'details') {
-      this.router.navigate([`/tickets/${id}`]);
+      this.router.navigate([`tickets/${id}`], { relativeTo: this.route });
     }
   }
 
@@ -119,7 +135,6 @@ export class TicketSearchComponent implements OnInit {
           name: this.formGroup.controls['name'].value,
           project: this.projectId!,
           assignee: this.selectedAssignee ?? '',
-          creator: '1',
           mentionedInCommits: [],
           statuses: this.selectedStatuses,
           ticketReferences: this.selectedTicketReferences,
@@ -133,7 +148,6 @@ export class TicketSearchComponent implements OnInit {
           name: this.formGroup.controls['name'].value,
           project: this.projectId!,
           assignee: this.selectedAssignee ?? '',
-          creator: '1', // this.user.id,
           mentionedInCommits: [],
           statuses: this.selectedStatuses,
           ticketReferences: this.selectedTicketReferences,

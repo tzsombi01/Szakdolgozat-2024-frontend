@@ -14,6 +14,7 @@ import { RegisterComponent } from './register/register.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
+import { TicketSearchComponent } from './ticket-search/ticket-search.component';
 
 const routes: Routes = [
   {
@@ -39,31 +40,6 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'discussions',
-    component: DiscussionComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'documentations',
-    component: DocumentationComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'statistics',
-    component: StatisticComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'tickets',
-    component: TicketComponent,
-    canActivate: [AuthGuard]
-  },
-  {
-    path: 'tickets/:id',
-    component: TicketDetailsComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'projects',
     component: ProjectsComponent,
     canActivate: [AuthGuard]
@@ -71,7 +47,34 @@ const routes: Routes = [
   {
     path: 'projects/:id',
     component: ProjectDetailsComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        component: TicketSearchComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'tickets/:ticketId',
+        component: TicketDetailsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'statistics',
+        component: StatisticComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'discussions',
+        component: DiscussionComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'documentations',
+        component: DocumentationComponent,
+        canActivate: [AuthGuard]
+      },
+    ]
   },
   {
     path: 'access-denied',
