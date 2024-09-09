@@ -56,7 +56,7 @@ export class ProjectDetailsComponent implements OnInit {
   doesUrlContain(route: string): boolean {
     if (route === 'tickets') {
       return !(this.router.url.includes('discussions') || this.router.url.includes('documentations') 
-        || this.router.url.includes('users') || this.router.url.includes('settings'));
+        || this.router.url.includes('users') || this.router.url.includes('settings') || this.router.url.includes('statistics'));
     }
 
     return this.router.url.includes(route);

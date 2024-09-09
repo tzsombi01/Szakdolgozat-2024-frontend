@@ -43,6 +43,7 @@ import { ProjectEffects } from 'src/store/effects/project.effects';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { TicketSearchComponent } from './ticket-search/ticket-search.component';
 import { AutoResizeDirective } from './ticket-details/auto-resize.directive';
+import { StatisticsEffects } from 'src/store/effects/statistics.effects';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { AutoResizeDirective } from './ticket-details/auto-resize.directive';
       DocumentationEffects,
       DiscussionEffects,
       UserEffects,
-      ProjectEffects
+      ProjectEffects,
+      StatisticsEffects
     ]),
     CommonModule,
     BrowserModule,

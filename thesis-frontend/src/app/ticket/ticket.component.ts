@@ -54,7 +54,6 @@ export class TicketComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    private http: HttpClient,
     private ticketStore: Store<TicketState>
   ) {
     this.tickets$ = this.ticketStore.select(getTicketsWithTotal);
