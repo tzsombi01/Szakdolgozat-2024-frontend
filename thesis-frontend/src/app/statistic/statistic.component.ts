@@ -184,7 +184,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         return response.statisticsInfos.map(info => {
           return {
             y: info.numberOfCommits,
-            color: '#FF5733'
+            color: '#00000'
           }
         });
         // return this.users.map(user => ({
