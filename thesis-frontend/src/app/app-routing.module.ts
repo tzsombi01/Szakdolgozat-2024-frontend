@@ -15,6 +15,7 @@ import { DocumentationComponent } from './documentation/documentation.component'
 import { TicketDetailsComponent } from './ticket-details/ticket-details.component';
 import { ProjectDetailsComponent } from './project-details/project-details.component';
 import { TicketSearchComponent } from './ticket-search/ticket-search.component';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
   {
@@ -84,6 +85,16 @@ const routes: Routes = [
         component: DocumentationComponent,
         canActivate: [AuthGuard]
       },
+      {
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [AuthGuard]
+      },
+      // {
+      //   path: 'settings',
+      //   component: SettingsComponent,
+      //   canActivate: [AuthGuard]
+      // },
     ]
   },
   {

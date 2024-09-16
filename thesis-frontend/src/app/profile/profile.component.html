@@ -7,15 +7,30 @@
     </div>
     <div class="sidebar">
         <ul>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a (click)="logout()">Logout</a></li>
+            <li><a (click)="this.open('accessToken')">Set access token</a></li>
+            <li><a (click)="this.logout()">Logout</a></li>
         </ul>
         <div class="statistics">
             <h2>Statistics</h2>
             <p>View your statistics here.</p>
             <a href="statistics">Go to Statistics</a>
         </div>
+    </div>
+
+    <div *ngIf="this.isAccessTokenDialogOpened">
+        <div class="dialog-overlay"></div>
+        <form [formGroup]="this.formGroup" class="dialog-content">
+            <h3>Set new Github Access Token</h3>
+            <p class="warning">Warning: This will rewrite the previous access token!</p>
+ 
+            <label>Access Token:</label>
+            <input type="text" formControlName="accessToken">
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </form>
     </div>
 </div>
 

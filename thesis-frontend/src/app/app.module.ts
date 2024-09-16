@@ -44,6 +44,7 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { TicketSearchComponent } from './ticket-search/ticket-search.component';
 import { AutoResizeDirective } from './ticket-details/auto-resize.directive';
 import { StatisticsEffects } from 'src/store/effects/statistics.effects';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import { StatisticsEffects } from 'src/store/effects/statistics.effects';
     TicketDetailsComponent,
     ProjectDetailsComponent,
     TicketSearchComponent,
-    AutoResizeDirective
+    AutoResizeDirective,
+    UsersComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),

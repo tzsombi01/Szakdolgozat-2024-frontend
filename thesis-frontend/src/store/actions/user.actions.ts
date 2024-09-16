@@ -35,4 +35,8 @@ export const getLoggedInUserRequest = createAction('[ User ] GetLoggedInUserRequ
 export const getLoggedInUserSuccess = createAction('[ User ] GetLoggedInUserSuccess', props<{ payload: Payload }>());
 export const getLoggedInUserError = createAction('[ User ] GetLoggedInUserError', props<{ payload: Payload }>());
 
+export const setAccessTokenRequest = createAction('[ User ] SetAccessTokenRequest', props<{ accessToken: string; }>());
+export const setAccessTokenSuccess = createAction('[ User ] SetAccessTokenSuccess', props<{ payload: Payload }>());
+export const setAccessTokenError = createAction('[ User ] SetAccessTokenError', props<{ payload: Payload }>());
+
 export const logOutRequest = createAction('[ User ] LogOutRequest');
