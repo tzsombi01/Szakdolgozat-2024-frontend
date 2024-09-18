@@ -204,6 +204,39 @@ const _userReducer = createReducer(
             loggedInUser: undefined,
         };
     }),
+
+    on(userActions.setAccessTokenRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+
+    on(userActions.setAccessTokenSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.setAccessTokenError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(userActions.logOutRequest, (state) => {
+        localStorage.removeItem('token');
+
+        return {
+            ...state,
+            loggedInUser: undefined,
+        };
+    }),
 );
 
 export function userReducer(state: UserState | undefined, action: Action): UserState {

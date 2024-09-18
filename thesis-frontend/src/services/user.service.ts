@@ -59,4 +59,12 @@ export class UserService {
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.BASE_URL}/api/auth/login`, { email, password });
   }
+
+  setAccessToken(accessToken: string) {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post<any>(`${this.BASE_URL}/api/users/access-token`, accessToken, requestHeaders);
+  }
 }

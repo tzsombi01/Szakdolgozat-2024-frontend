@@ -19,6 +19,9 @@ import {
   getLoggedInUserRequest,
   getLoggedInUserSuccess,
   getLoggedInUserError,
+  setAccessTokenRequest,
+  setAccessTokenSuccess,
+  setAccessTokenError,
 } from "../actions/user.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -227,6 +230,40 @@ export class UserEffects {
           catchError((err) => {
             return of(
               getLoggedInUserError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  setAccessToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(setAccessTokenRequest),
+      mergeMap(({ accessToken }) => {
+        return this.userService.setAccessToken(accessToken).pipe(
+          mergeMap((data) => {
+            let actions = [
+              setAccessTokenSuccess({
+                payload: {
+                  data,
+                  error: '',
+                  loading: false,
+                },
+              }),
+            ];
+
+            return of(...actions);
+          }),
+          catchError((err) => {
+            return of(
+              setAccessTokenError({
                 payload: {
                   data: [],
                   error: err,

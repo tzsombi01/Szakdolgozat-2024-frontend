@@ -55,7 +55,7 @@ export class ProfileComponent implements OnInit {
   }
 
   close(type: ('cancel' | 'close' | 'submit')): void {
-    if (type === 'close') {
+    if (type === 'submit') {
       this.userStore.dispatch(setAccessTokenRequest({ accessToken: this.formGroup.controls['accessToken'].value }));
     }
 
