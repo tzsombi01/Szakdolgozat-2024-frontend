@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -121,11 +121,23 @@ export class UsersComponent implements OnInit {
         return;
       }
 
+      if (!this.userEmails.every(email => this.isValidAddress(email))) {
+        this.snackBar.open('Please make sure that all email addresses are valid!', 'Close', {
+          duration: 3000
+        });
+        return;
+      }
+
       this.userStore.dispatch(sendInviteToEmailsRequest({ projectId: this.projectId!, emails: this.userEmails }));
     }
 
     this.usersDialogOpened = false;
     this.formGroup.reset();
+  }
+
+  isValidAddress(email: string): boolean {
+    const emailControl = new FormControl(email, Validators.email);
+    return emailControl.valid;
   }
 
   add(event: MatChipInputEvent): void {
