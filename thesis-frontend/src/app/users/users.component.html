@@ -1,1 +1,67 @@
-<p>users works!</p>
+<div class="container">
+    <div class="profile">
+        <h1>Manage users</h1>
+    </div>
+
+    <div *ngIf="!(this.usersLoading$ | async)" class="users-container">
+        <table class="ticket-table">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Name</th>
+                    <th>Github User Names</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of this.users">
+                    <td>{{ user.userName }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.firstName + ' ' + user.lastName }}</td>
+                    <td>{{ user.gitUserNames.join(', ') }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <button (click)="open('add')">Add user</button>
+    </div>
+
+    <div *ngIf="this.usersDialogOpened">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h2>Add users to the project by email!</h2>
+
+            <mat-form-field class="chip-list">
+                <mat-chip-grid #chipGrid aria-label="Enter email addresses">
+                  <mat-chip-row
+                    *ngFor="let userEmail of userEmails; let i = index;"
+                    (removed)="remove(userEmail)"
+                    [editable]="true"
+                    (edited)="edit(userEmail, $event)"
+                    [aria-description]="'press enter to edit ' + userEmail"
+                  >
+                    {{userEmail}}
+                    <button matChipRemove [attr.aria-label]="'remove ' + userEmail">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  </mat-chip-row>
+              
+                  <input
+                    placeholder="New user email..."
+                    [matChipInputFor]="chipGrid"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)"
+                  />
+                </mat-chip-grid>
+              </mat-form-field>
+              
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>

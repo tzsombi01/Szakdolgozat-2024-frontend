@@ -45,6 +45,9 @@ import { TicketSearchComponent } from './ticket-search/ticket-search.component';
 import { AutoResizeDirective } from './ticket-details/auto-resize.directive';
 import { StatisticsEffects } from 'src/store/effects/statistics.effects';
 import { UsersComponent } from './users/users.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -95,7 +98,10 @@ import { UsersComponent } from './users/users.component';
     GraphQLModule,
     HttpClientModule,
     GridModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatChipsModule,
+    MatIconModule,
+    MatFormFieldModule
   ],
   providers: [],
   bootstrap: [AppComponent]

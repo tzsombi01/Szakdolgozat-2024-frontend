@@ -22,10 +22,14 @@ import {
   setAccessTokenRequest,
   setAccessTokenSuccess,
   setAccessTokenError,
+  sendInviteToEmailsRequest,
+  sendInviteToEmailsSuccess,
+  sendInviteToEmailsError,
 } from "../actions/user.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Injectable()
 export class UserEffects {
@@ -33,7 +37,8 @@ export class UserEffects {
   constructor(
     private actions$: Actions,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar,
   ) { }
 
   getUsers$ = createEffect(() => {
@@ -264,6 +269,34 @@ export class UserEffects {
           catchError((err) => {
             return of(
               setAccessTokenError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  sendInviteToEmails$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(sendInviteToEmailsRequest),
+      mergeMap(({ projectId, emails }) => {
+        return this.userService.sendInviteToEmails(projectId, emails).pipe(
+          mergeMap(() => {
+            this.snackBar.open('Invites sent successfully', 'Close', {
+              duration: 3000
+            });
+
+            return of(sendInviteToEmailsSuccess());
+          }),
+          catchError((err) => {
+            return of(
+              sendInviteToEmailsError({
                 payload: {
                   data: [],
                   error: err,

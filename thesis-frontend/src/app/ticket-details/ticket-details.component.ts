@@ -90,6 +90,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
 
       if (this.ticket?.id) {
         // Get Statuses
+        
         this.selectedAssignee = this.ticket.assignee;
         this.selectedCreator = this.ticket.creator;
 

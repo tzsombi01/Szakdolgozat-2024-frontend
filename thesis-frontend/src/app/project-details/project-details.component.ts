@@ -48,8 +48,6 @@ export class ProjectDetailsComponent implements OnInit {
 
     this.project$.pipe(untilDestroyed(this)).subscribe((project) => {
       this.project = project;
-
-      // Get tickets and users!
     });
   }
 

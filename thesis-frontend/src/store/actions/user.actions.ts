@@ -39,4 +39,8 @@ export const setAccessTokenRequest = createAction('[ User ] SetAccessTokenReques
 export const setAccessTokenSuccess = createAction('[ User ] SetAccessTokenSuccess', props<{ payload: Payload }>());
 export const setAccessTokenError = createAction('[ User ] SetAccessTokenError', props<{ payload: Payload }>());
 
+export const sendInviteToEmailsRequest = createAction('[ User ] SendInviteToEmailsRequest', props<{ projectId: string; emails: string[]; }>());
+export const sendInviteToEmailsSuccess = createAction('[ User ] SendInviteToEmailsSuccess');
+export const sendInviteToEmailsError = createAction('[ User ] SendInviteToEmailsError', props<{ payload: Payload }>());
+
 export const logOutRequest = createAction('[ User ] LogOutRequest');

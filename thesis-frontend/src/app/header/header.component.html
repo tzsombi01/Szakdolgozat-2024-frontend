@@ -1,7 +1,7 @@
 <div class="header">
   <div class="nav-buttons">
     <button routerLink="/home" routerLinkActive="active">Home</button>
-    <button routerLink="/projects" routerLinkActive="active">Projects</button>
+    <button *ngIf="loggedInUser" routerLink="/projects" routerLinkActive="active">Projects</button>
     <button *ngIf="loggedInUser" routerLink="/profile" routerLinkActive="active">Profile</button>
   </div>
 

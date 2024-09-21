@@ -67,4 +67,14 @@ export class UserService {
 
     return this.http.post<any>(`${this.BASE_URL}/api/users/access-token`, accessToken, requestHeaders);
   }
+
+  sendInviteToEmails(projectId: string, emails: string[]) {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+    console.log({ projectId, emails })
+    return this.http.post<any>(`${this.BASE_URL}/api/users/invite`, { projectId, emails }, requestHeaders);
+  }
+
+
 }
