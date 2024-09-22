@@ -3,7 +3,7 @@
     <div class="title-container"> <p class="title">Register</p> </div>
 </div>
 
-<form [formGroup]="this.formGroup" (ngSubmit)="onSubmit()">
+<form [formGroup]="this.formGroup">
     <label [for]="userName">
         Username
         <input type="text" formControlName="userName" #userName>
@@ -34,17 +34,37 @@
         <input type="password" formControlName="passwordAgain" #passwordAgain>
     </label>
 
-    <label [for]="gitUserNames">
-        Put your GitHub username(s) here (comma separated, if there are multiple!):
-        <input type="text" formControlName="gitUserNames" #gitUserNames>
-    </label>
+    <mat-form-field class="chip-list">
+        <mat-chip-grid #chipGrid aria-label="Put your GitHub username(s) here">
+          <mat-chip-row
+            *ngFor="let userName of gitHubUserNames;"
+            (removed)="remove(userName)"
+            [editable]="true"
+            (edited)="edit(userName, $event)"
+            [aria-description]="'press enter to edit ' + userName"
+          >
+            {{userName}}
+            <button matChipRemove [attr.aria-label]="'remove ' + userName">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+      
+          <input
+            placeholder="New github user name..."
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-grid>
+    </mat-form-field>
 
     <label class="hid-pot" [for]="someName">
         Fill SomeName
         <input type="text" formControlName="someName" #someName>
     </label>
 
-    <button type="submit">Submit</button>
+    <button (click)="close()" type="submit">Submit</button>
 </form>
 
 <app-footer></app-footer>

@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { getUsersRequest, sendInviteToEmailsRequest } from 'src/store/actions/us
 import { ProjectState, UserState } from 'src/store/app.states';
 import { getProject } from 'src/store/selectors/project.selector';
 import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 
 @UntilDestroy()
@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
   usersDialogOpened: boolean = false;
 
   readonly addOnBlur = true;
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  readonly separatorKeysCodes = [COMMA, ENTER] as const;
   userEmails: string[] = [];
   readonly announcer = inject(LiveAnnouncer);
 

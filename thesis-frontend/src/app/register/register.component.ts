@@ -2,17 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { State, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UserInput } from 'src/models/user';
 import { registerRequest } from 'src/store/actions/user.actions';
 import { UserState } from 'src/store/app.states';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipEditedEvent, MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
+
+  readonly addOnBlur = true;
+  readonly separatorKeysCodes = [COMMA, ENTER] as const;
+  gitHubUserNames: string[] = [];
 
   formGroup: UntypedFormGroup = new UntypedFormGroup({
     userName: new UntypedFormControl(),
@@ -21,7 +27,6 @@ export class RegisterComponent implements OnInit {
     email: new UntypedFormControl('', Validators.email),
     firstName: new UntypedFormControl(),
     lastName: new UntypedFormControl(),
-    gitUserNames: new UntypedFormControl(),
     someName: new UntypedFormControl(),
   });
 
@@ -33,11 +38,7 @@ export class RegisterComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
-
-  }
-
-  onSubmit(): void {
+  close(): void {
     if (this.formGroup.controls['someName'].value) {
       return;
     }
@@ -62,7 +63,7 @@ export class RegisterComponent implements OnInit {
       firstName: this.formGroup.controls['firstName'].value,
       lastName: this.formGroup.controls['lastName'].value,
       email: this.formGroup.controls['email'].value,
-      gitUserNames: this.getGitUserNames()
+      gitUserNames: this.gitHubUserNames
     };
 
     this.userStore.dispatch(registerRequest({ user }));
@@ -70,11 +71,38 @@ export class RegisterComponent implements OnInit {
     this.formGroup.reset();
   }
 
-  private getGitUserNames(): string[] {
-    return this.formGroup.controls['gitUserNames'].value.split(',') || [];
-  }
-
   public async home() {
     await this.router.navigate(["/home"]);
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.gitHubUserNames = [...this.gitHubUserNames, value];
+    }
+
+    event.chipInput!.clear();
+  }
+
+  remove(userEmailToRemove: string): void {
+    const index = this.gitHubUserNames.indexOf(userEmailToRemove);
+
+    this.gitHubUserNames.splice(index, 1);
+  }
+
+  edit(userEmail: string, event: MatChipEditedEvent) {
+    const value = event.value.trim();
+
+    if (!value) {
+      this.remove(userEmail);
+      return;
+    }
+
+    const index = this.gitHubUserNames.indexOf(userEmail);
+
+    if (index >= 0) {
+      this.gitHubUserNames[index] = value;
+    }
   }
 }
