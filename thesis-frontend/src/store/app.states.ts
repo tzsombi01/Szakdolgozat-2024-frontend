@@ -6,6 +6,7 @@ import { Discussion } from "src/models/discussion";
 import { User } from "src/models/user";
 import { Project } from "src/models/project";
 import { ProgrammerStatisticsResponse } from "src/models/programmer-statistics";
+import { Status } from "src/models/status";
 
 export interface AppState {
     ticketState: TicketState;
@@ -15,6 +16,7 @@ export interface AppState {
     userState: UserState;
     projectState: ProjectState;
     statisticsState: StatisticsState;
+    statusState: StatusState;
 }
 
 export interface TicketState extends State {
@@ -56,5 +58,11 @@ export interface ProjectState extends State {
 
 export interface StatisticsState extends State {
     programmerStatistics: ProgrammerStatisticsResponse[];
+    total: number;
+}
+
+export interface StatusState extends State {
+    statuses: Status[];
+    status: Status;
     total: number;
 }
