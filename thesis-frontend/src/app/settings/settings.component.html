@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="profile">
+        <h1>Manage statuses</h1>
+    </div>
+
+    <div *ngIf="!(this.statusesLoading$ | async)" class="users-container">
+        <table class="ticket-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let status of this.statuses">
+                    <td>{{ status.name }}</td>
+                    <td>{{ status.type }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- <mat-form-field class="chip-list">
+            <mat-chip-grid #chipGrid aria-label="Enter email addresses">
+              <mat-chip-row
+                *ngFor="let userEmail of userEmails; let i = index;"
+                (removed)="remove(userEmail)"
+                [editable]="true"
+                (edited)="edit(userEmail, $event)"
+                [aria-description]="'press enter to edit ' + userEmail"
+              >
+                {{userEmail}}
+                <button matChipRemove [attr.aria-label]="'remove ' + userEmail">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+          
+              <input
+                placeholder="New user email..."
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [matChipInputAddOnBlur]="addOnBlur"
+                (matChipInputTokenEnd)="add($event)"
+              />
+            </mat-chip-grid>
+          </mat-form-field> -->
+    </div>
+
+    <div style="margin-top: 2rem;">
+        <button (click)="open('add')">Add status</button>
+    </div>
+
+    <div *ngIf="this.dialogOpened">
+        <div class="dialog-overlay"></div>
+        <form [formGroup]="this.formGroup" class="dialog-content">
+            <h2>Add status</h2>
+
+            <label>Name:</label>
+            <input type="text" formControlName="name">
+
+            <label>Type:</label>
+            <select formControlName="type">
+                <option *ngFor="let type of this.types" [value]="type">
+                    {{ this.getReadableType(type) }}
+                </option>
+            </select>
+
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('submit')">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>

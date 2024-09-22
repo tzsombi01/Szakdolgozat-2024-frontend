@@ -48,6 +48,8 @@ import { UsersComponent } from './users/users.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { StatusEffects } from 'src/store/effects/status.effects';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ProjectDetailsComponent,
     TicketSearchComponent,
     AutoResizeDirective,
-    UsersComponent
+    UsersComponent,
+    SettingsComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -82,7 +85,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
       DiscussionEffects,
       UserEffects,
       ProjectEffects,
-      StatisticsEffects
+      StatisticsEffects,
+      StatusEffects
     ]),
     CommonModule,
     BrowserModule,

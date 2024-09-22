@@ -33,7 +33,6 @@ export class UsersComponent implements OnInit {
   readonly addOnBlur = true;
   readonly separatorKeysCodes = [COMMA, ENTER] as const;
   userEmails: string[] = [];
-  readonly announcer = inject(LiveAnnouncer);
 
   users$: Observable<User[] | any>;
   users: User[] = [];
@@ -154,7 +153,6 @@ export class UsersComponent implements OnInit {
     const index = this.userEmails.indexOf(userEmailToRemove);
 
     this.userEmails.splice(index, 1);
-    this.announcer.announce(`Removed ${userEmailToRemove}`);
   }
 
   edit(userEmail: string, event: MatChipEditedEvent) {

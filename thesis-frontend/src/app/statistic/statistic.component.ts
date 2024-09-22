@@ -28,7 +28,7 @@ import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
-  
+
   projectId?: string;
 
   programmerStatisticsResponses$: Observable<ProgrammerStatisticsResponse[] | any>;
@@ -42,11 +42,6 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
 
   Highcharts: typeof Highcharts = Highcharts;
 
-  // users = [
-  //   { name: 'User 1', commits: 10, color: '#FF5733' }, // Orange
-  //   { name: 'User 2', commits: 20, color: '#33FF57' }  // Green
-  // ];
-
   project$: Observable<Project | any>;
   project: Project | undefined;
   gridState: State = {
@@ -58,7 +53,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
-  types: (StatisticsType[]) = Object.values(StatisticsType);  
+  types: (StatisticsType[]) = Object.values(StatisticsType);
 
   constructor(
     public route: ActivatedRoute,
@@ -95,40 +90,40 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.programmerStatisticsResponses$
-  .pipe(
-    untilDestroyed(this),
-    distinctUntilChanged()
-  )
-  .subscribe((programmerStatisticsResponses) => {
-    this.programmerStatisticsResponses = programmerStatisticsResponses;
-    console.log(programmerStatisticsResponses);
-    this.cdr.markForCheck();
-  });
+      .pipe(
+        untilDestroyed(this),
+        distinctUntilChanged()
+      )
+      .subscribe((programmerStatisticsResponses) => {
+        this.programmerStatisticsResponses = programmerStatisticsResponses;
+        console.log(programmerStatisticsResponses);
+        this.cdr.markForCheck();
+      });
 
     this.project$.pipe(untilDestroyed(this)).subscribe((project) => {
       this.project = project;
-  
+
       if (this.project?.id) {
         const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
-  
+
         queryOptions.filters?.push({
           field: 'id',
           operator: 'contains',
           type: 'array',
           value: project.users
         });
-  
+
         this.userStore.dispatch(getUsersRequest({ queryOptions }));
 
         // for (const value of this.types) {
-          const programmerStatisticsRequest: ProgrammerStatisticsRequest = {
-            ids: this.project?.users!,
-            type: StatisticsType.COMMITS_PER_PROJECT,
-            from: undefined,
-            until: undefined
-          };
-          
-          this.statisticsStore.dispatch(getProgrammerStatisticsRequest({ projectId: this.projectId!, programmerStatisticsRequest }));
+        const programmerStatisticsRequest: ProgrammerStatisticsRequest = {
+          ids: this.project?.users!,
+          type: StatisticsType.COMMITS_PER_PROJECT,
+          from: undefined,
+          until: undefined
+        };
+
+        this.statisticsStore.dispatch(getProgrammerStatisticsRequest({ projectId: this.projectId!, programmerStatisticsRequest }));
         // }
       }
     });
@@ -143,7 +138,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSiteOpen(): void {
-    
+
   }
 
   getChartData(type: StatisticsType | string): Highcharts.Options {
@@ -176,11 +171,11 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  private populateChart(type:  StatisticsType | string): any {
-    switch(type) {
+  private populateChart(type: StatisticsType | string): any {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
-        
+
         return response.statisticsInfos.map(info => {
           return {
             y: info.numberOfCommits,
@@ -198,11 +193,11 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getXAxisDataTypes(type:  StatisticsType | string): any {
-    switch(type) {
+  private getXAxisDataTypes(type: StatisticsType | string): any {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
-        
+
         return response.statisticsInfos.map(info => info.name);
         // return this.users.map(user => user.userName);
       }
@@ -212,8 +207,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getChartType(type:  StatisticsType | string): any {
-    switch(type) {
+  private getChartType(type: StatisticsType | string): any {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'column';
       }
@@ -223,8 +218,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getChartTitle(type:  StatisticsType | string): string {
-    switch(type) {
+  private getChartTitle(type: StatisticsType | string): string {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Commits per project';
       }
@@ -234,8 +229,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getBarTitle(type:  StatisticsType | string): string {
-    switch(type) {
+  private getBarTitle(type: StatisticsType | string): string {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Commits from user';
       }
@@ -245,8 +240,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getXAxisTitle(type:  StatisticsType | string): string {
-    switch(type) {
+  private getXAxisTitle(type: StatisticsType | string): string {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Users';
       }
@@ -256,8 +251,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private getYAxisTitle(type:  StatisticsType | string): string {
-    switch(type) {
+  private getYAxisTitle(type: StatisticsType | string): string {
+    switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Number of commits';
       }
