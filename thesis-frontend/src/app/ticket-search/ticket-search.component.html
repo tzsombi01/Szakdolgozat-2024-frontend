@@ -52,11 +52,30 @@
             <label for="description">Description:</label>
             <textarea id="description" formControlName="description"></textarea>
 
-            <label>Statuses:</label>
-            <select id="statuses" multiple>
-                <option value="status1">Status 1</option>
-                <option value="status2">Status 2</option>
-            </select>
+            <mat-form-field>
+                <mat-label>Statuses</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Select statuses">
+                    <mat-chip-row *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
+                      {{ status.name }}
+                      <button matChipRemove [attr.aria-label]="'remove ' + status.name">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                </mat-chip-grid>
+                <input
+                  #statusInput
+                  name="currentStatus"
+                  placeholder="New Status..."
+                  [formControl]="statusControls" 
+                  [matChipInputFor]="chipGrid"
+                  [matAutocomplete]="auto!"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="add($event)"
+                />
+                <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let status of this.filteredStatuses | async;" [value]="status">{{ status?.name }}</mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
 
             <div class="buttonContainer">
                 <button (click)="close('cancel')">Cancel</button>

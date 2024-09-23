@@ -1,35 +1,51 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormGroup, UntypedFormControl, FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
 import { State } from '@progress/kendo-data-query';
-import { Observable } from 'rxjs';
+import { map, Observable, startWith } from 'rxjs';
 import { CommentInput } from 'src/models/comment';
 import { QueryOptions } from 'src/models/query-options';
+import { Status } from 'src/models/status';
 import { Ticket, TicketInput } from 'src/models/ticket';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { getProjectRequest } from 'src/store/actions/project.actions';
 import { getTicketsRequest, createTicketRequest, editTicketRequest, deleteTicketRequest } from 'src/store/actions/ticket.actions';
-import { ProjectState, TicketState } from 'src/store/app.states';
+import { ProjectState, StatusState, TicketState } from 'src/store/app.states';
 import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticket.selector';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import { getStatusesWithTotal, getStatusLoading } from 'src/store/selectors/status.selector';
+import { Project } from 'src/models/project';
+import { getStatusesRequest } from 'src/store/actions/status.actions';
+import { getProject } from 'src/store/selectors/project.selector';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @UntilDestroy()
 @Component({
   selector: 'app-ticket-search',
   templateUrl: './ticket-search.component.html',
-  styleUrls: ['./ticket-search.component.css']
+  styleUrls: ['./ticket-search.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TicketSearchComponent implements OnInit {
-  
+
+  @ViewChild('auto', {static: false}) auto?: MatAutocomplete;
+  @ViewChild('statusInput', {static: false}) statusInput?: ElementRef<HTMLInputElement>;
+
   projectId?: string;
 
   isDialogOpen: boolean = false;
   isDeleteDialogOpen: boolean = false;
   isEdit: boolean = false;
+
+  currentStatus?: Status;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  statusControls = new FormControl();
+  filteredStatuses?: Observable<any[]>;
 
   ticketsLoading$: Observable<boolean | any>;
 
@@ -45,7 +61,22 @@ export class TicketSearchComponent implements OnInit {
     }
   };
 
-  selectedStatuses: string[] = [];
+  statuses$: Observable<Status[] | any>;
+  statuses: Status[] = [];
+  statusesLoading$: Observable<boolean | any>;
+  statusGridState: State = {
+    skip: 0,
+    take: 10,
+    filter: {
+      filters: [],
+      logic: 'and'
+    }
+  };
+  selectedStatuses: any[] = [];
+  
+  project$: Observable<Project | any>;
+  project: Project | undefined;
+
   addedComments: CommentInput[] = [];
   selectedAssignee: string | undefined;
   selectedTicketReferences: string[] = [];
@@ -61,9 +92,14 @@ export class TicketSearchComponent implements OnInit {
     private snackBar: MatSnackBar,
     private ticketStore: Store<TicketState>,
     private projectStore: Store<ProjectState>,
+    private statusStore: Store<StatusState>,
+    private cdr: ChangeDetectorRef
   ) {
+    this.project$ = this.projectStore.select(getProject);
     this.tickets$ = this.ticketStore.select(getTicketsWithTotal);
-    
+    this.statuses$ = this.statusStore.select(getStatusesWithTotal);
+
+    this.statusesLoading$ = this.statusStore.select(getStatusLoading);
     this.ticketsLoading$ = this.ticketStore.select(getTicketLoading);
   }
 
@@ -84,8 +120,40 @@ export class TicketSearchComponent implements OnInit {
     
     this.onSiteOpen();
 
+
+    this.project$.pipe(untilDestroyed(this)).subscribe((project) => {
+      this.project = project;
+
+      if (this.project?.id) {
+        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
+        queryOptions.filters?.push({
+          field: 'project',
+          operator: 'eq',
+          type: 'string',
+          value: this.project?.id
+        });
+
+        this.statusStore.dispatch(getStatusesRequest({ queryOptions }));
+      }
+    });
+
+    this.statuses$.pipe(untilDestroyed(this)).subscribe(({ statuses, total }) => {
+      this.statuses = statuses;
+      console.log(statuses)
+      if (total > 0) {
+        this.filteredStatuses = this.statusControls.valueChanges.pipe(
+          startWith(null),
+          map((status: Status | null) => status ? this._filter(status) : this.statuses.slice()));
+      }
+
+      this.cdr.detectChanges();
+    });
+
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
       this.tickets = tickets;
+
+      this.cdr.detectChanges();
     });
   }
 
@@ -136,7 +204,7 @@ export class TicketSearchComponent implements OnInit {
           project: this.projectId!,
           assignee: this.selectedAssignee ?? '',
           mentionedInCommits: [],
-          statuses: this.selectedStatuses,
+          statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
           comments: [],
         };
@@ -149,7 +217,7 @@ export class TicketSearchComponent implements OnInit {
           project: this.projectId!,
           assignee: this.selectedAssignee ?? '',
           mentionedInCommits: [],
-          statuses: this.selectedStatuses,
+          statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
           comments: [],
         };
@@ -166,11 +234,56 @@ export class TicketSearchComponent implements OnInit {
     this.isDeleteDialogOpen = false;
   }
 
+  getStatuses(): any[] {
+    return this.selectedStatuses.map(status => status.id);
+  }
+
   isTicketsEmpty(): boolean {
     return this.tickets.length === 0;
   }
 
   getTitle(): string {
     return this.isEdit ? 'Edit Ticket' : 'Create Ticket';
+  }
+
+  add(event: MatChipInputEvent): void {
+    console.log(event)
+    if (!this.auto?.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      if ((value || '').trim()) {
+        this.selectedStatuses.push(value.trim());
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.statusControls.setValue(null);
+    }
+  }
+
+  remove(status: Status | any): void {
+    console.log(status)
+      const index = this.selectedStatuses.indexOf(status);
+      
+      if (index >= 0) {
+        this.selectedStatuses.splice(index, 1);
+      }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    console.log(event)
+    this.selectedStatuses.push(event.option.viewValue);
+    this.statusInput!.nativeElement.value = '';
+    this.statusControls.setValue(null);
+  }
+
+  private _filter(value: any): any[] {
+    const filterValue = value.toLowerCase();
+
+    return this.statuses.filter(status => status.name.toLowerCase().indexOf(filterValue) === 0);
   }
 }

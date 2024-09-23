@@ -50,6 +50,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { StatusEffects } from 'src/store/effects/status.effects';
 import { SettingsComponent } from './settings/settings.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,8 @@ import { SettingsComponent } from './settings/settings.component';
     MatSnackBarModule,
     MatChipsModule,
     MatIconModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
