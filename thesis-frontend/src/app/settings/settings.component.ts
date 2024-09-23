@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Observable } from 'rxjs';
-import { Status, StatusType } from 'src/models/status';
+import { Status, StatusInput, StatusType } from 'src/models/status';
 import { State } from '@progress/kendo-data-query/dist/npm/state';
 import { Project } from 'src/models/project';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { ProjectState, StatusState } from 'src/store/app.states';
 import { Store } from '@ngrx/store';
 import { getStatusesWithTotal, getStatusLoading } from 'src/store/selectors/status.selector';
 import { getProject } from 'src/store/selectors/project.selector';
-import { getStatusesRequest } from 'src/store/actions/status.actions';
+import { createStatusRequest, deleteStatusRequest, editStatusRequest, getStatusesRequest } from 'src/store/actions/status.actions';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
@@ -28,7 +28,9 @@ export class SettingsComponent implements OnInit {
 
   projectId?: string;
 
+  isEdit: boolean = false;
   dialogOpened: boolean = false;
+  deleteDialogOpened: boolean = false;
 
   readonly addOnBlur = true;
   readonly separatorKeysCodes = [COMMA, ENTER] as const;
@@ -36,6 +38,7 @@ export class SettingsComponent implements OnInit {
 
   statuses$: Observable<Status[] | any>;
   statuses: Status[] = [];
+  status?: Status;
   statusesLoading$: Observable<boolean | any>;
   gridState: State = {
     skip: 0,
@@ -50,7 +53,6 @@ export class SettingsComponent implements OnInit {
     name: new UntypedFormControl(),
     type: new UntypedFormControl(),
   });
-
 
   project$: Observable<Project | any>;
   project: Project | undefined;
@@ -89,7 +91,7 @@ export class SettingsComponent implements OnInit {
       this.project = project;
 
       if (this.project?.id) {
-        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
         queryOptions.filters?.push({
           field: 'project',
@@ -108,17 +110,62 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  open(type: ('add')): void {
-    if (type === 'add') {
+  open(type: ('create' | 'edit' | 'delete'), id?: string): void {
+    if (type === 'create') {
       this.dialogOpened = true;
+    } else if (type === 'edit') {
+      this.isEdit = true;
+
+      this.status = this.statuses.find((status: Status) => status.id === id);
+      
+      this.formGroup.controls['name'].setValue(this.status?.name);
+      this.formGroup.controls['type'].setValue(this.status?.type);
+      
+      this.dialogOpened = true;
+    } else if (type === 'delete') {
+      this.status = this.statuses.find((status: Status) => status.id === id);
+      
+      this.deleteDialogOpened = true;
     }
   }
 
-  close(type: ('cancel' | 'submit')): void {
+  close(type: ('cancel' | 'submit' | 'delete')): void {
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
     if(type === 'submit') {
-      console.log(this.formGroup.controls['type'].value)
+      if (this.formGroup.invalid) {
+        this.formGroup.markAllAsTouched();
+        this.snackBar.open('Please fill out all fields before proceeding!', 'Close', {
+          duration: 3000
+        });
+        return;
+      }
+    
+      if (!this.isEdit) {
+        const newStatus: StatusInput = {
+          name: this.formGroup.controls['name'].value,
+          type: this.formGroup.controls['type'].value,
+          project: this.projectId!
+        };
+  
+        this.statusStore.dispatch(createStatusRequest({ status: newStatus, queryOptions }));
+      } else {
+        const editedStatus: StatusInput = {
+          name: this.formGroup.controls['name'].value,
+          type: this.formGroup.controls['type'].value,
+          project: this.projectId!
+        };
+  
+        this.statusStore.dispatch(editStatusRequest({ id: this.status?.id!, status: editedStatus, queryOptions }));
+      }
+    } else if (type === 'delete') {
+      this.statusStore.dispatch(deleteStatusRequest({ id: this.status?.id!, queryOptions }));
     }
 
+    this.status = undefined;
+    
+    this.isEdit = false;
+    this.deleteDialogOpened = false;
     this.dialogOpened = false;
   }
 

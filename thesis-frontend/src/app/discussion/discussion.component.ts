@@ -97,7 +97,7 @@ export class DiscussionComponent implements OnInit {
       this.project = project;
 
       if (this.project?.id) {
-        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
         queryOptions.filters?.push({
           field: 'id',
@@ -120,7 +120,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   onSiteOpen(): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     queryOptions.filters?.push({
       field: 'project',
@@ -156,7 +156,7 @@ export class DiscussionComponent implements OnInit {
   }
 
   close(type: ('cancel' | 'submit' | 'delete')): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
     
     if (type === 'submit') {
       if (!this.isEdit) {

@@ -105,7 +105,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       this.project = project;
 
       if (this.project?.id) {
-        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+        const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
         queryOptions.filters?.push({
           field: 'id',

@@ -70,7 +70,7 @@ export class TicketComponent implements OnInit {
   }
 
   onSiteOpen(): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     this.ticketStore.dispatch(getTicketsRequest({ queryOptions }));
   }
@@ -99,7 +99,7 @@ export class TicketComponent implements OnInit {
   }
 
   close(type: ('cancel' | 'submit' | 'delete')): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
     
     if (type === 'submit') {
       if (!this.isEdit) {

@@ -3,7 +3,6 @@ export interface QueryOptions {
     take?: number;
     filters?: Filter[];
     sort?: Sort;
-    siteOptions: SiteOptions;
 }
 
 export interface Filter {
@@ -16,9 +15,4 @@ export interface Filter {
 export interface Sort {
     dir: string;
     field: string;
-}
-
-export interface SiteOptions {
-    siteRef: string;
-    withSubSites: boolean;
 }

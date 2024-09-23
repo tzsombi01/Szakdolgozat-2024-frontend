@@ -50,7 +50,7 @@ export class CommentComponent implements OnInit {
   }
 
   onSiteOpen(): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent, this.route);
+    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     this.commentStore.dispatch(getCommentsRequest({ queryOptions }));
   }

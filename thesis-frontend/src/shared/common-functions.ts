@@ -1,16 +1,11 @@
-import { ActivatedRoute } from "@angular/router";
 import { DataStateChangeEvent } from "@progress/kendo-angular-grid";
 import { Filter, QueryOptions } from "src/models/query-options";
 
-export function getQueryOptions(state: DataStateChangeEvent, route: ActivatedRoute): QueryOptions {
+export function getQueryOptions(state: DataStateChangeEvent): QueryOptions {
     let queryOptions: QueryOptions = {
         skip: state.skip,
         take: state.take,
         filters: [],
-        siteOptions: {
-          siteRef: 'default',
-          withSubSites: false
-        }
       };
   
       if (state.filter && state.filter.filters.length > 0) {

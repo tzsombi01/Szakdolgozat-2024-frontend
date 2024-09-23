@@ -16,5 +16,6 @@ export enum StatusType {
     CRITICAL = 'CRITICAL', // RED
     WORKING_ON_IT = 'WORKING_ON_IT', // GREEN
     TBD = 'TBD', // BLUE
+    DONE = 'DONE', // LIGHT BLUE
     NORMAL = 'NORMAL' // WHITE
 }
