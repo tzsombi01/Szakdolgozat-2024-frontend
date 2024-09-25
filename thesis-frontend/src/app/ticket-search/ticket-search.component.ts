@@ -14,7 +14,7 @@ import { Ticket, TicketInput } from 'src/models/ticket';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { getProjectRequest } from 'src/store/actions/project.actions';
 import { getTicketsRequest, createTicketRequest, editTicketRequest, deleteTicketRequest } from 'src/store/actions/ticket.actions';
-import { ProjectState, StatusState, TicketState } from 'src/store/app.states';
+import { ProjectState, StatusState, TicketState, UserState } from 'src/store/app.states';
 import { getTicketsWithTotal, getTicketLoading } from 'src/store/selectors/ticket.selector';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { getStatusesWithTotal, getStatusLoading } from 'src/store/selectors/status.selector';
@@ -23,6 +23,9 @@ import { getStatusesRequest } from 'src/store/actions/status.actions';
 import { getProject } from 'src/store/selectors/project.selector';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { User } from 'src/models/user';
+import { getUsers } from 'src/store/selectors/user.selector';
+import { getUsersRequest } from 'src/store/actions/user.actions';
 
 @UntilDestroy()
 @Component({
@@ -78,13 +81,17 @@ export class TicketSearchComponent implements OnInit {
   project: Project | undefined;
 
   addedComments: CommentInput[] = [];
-  selectedAssignee: string | undefined;
   selectedTicketReferences: string[] = [];
 
   formGroup: UntypedFormGroup = new UntypedFormGroup({
     name: new UntypedFormControl(),
     description: new UntypedFormControl(),
+    selectedAssignee: new UntypedFormControl(),
+    creator: new UntypedFormControl(),
   });
+
+  users$: Observable<User[] | any>;
+  users: User[] = [];
 
   constructor(
     public route: ActivatedRoute,
@@ -93,11 +100,13 @@ export class TicketSearchComponent implements OnInit {
     private ticketStore: Store<TicketState>,
     private projectStore: Store<ProjectState>,
     private statusStore: Store<StatusState>,
+    private userStore: Store<UserState>,
     private cdr: ChangeDetectorRef
   ) {
     this.project$ = this.projectStore.select(getProject);
     this.tickets$ = this.ticketStore.select(getTicketsWithTotal);
     this.statuses$ = this.statusStore.select(getStatusesWithTotal);
+    this.users$ = this.userStore.select(getUsers);
 
     this.statusesLoading$ = this.statusStore.select(getStatusLoading);
     this.ticketsLoading$ = this.ticketStore.select(getTicketLoading);
@@ -135,12 +144,22 @@ export class TicketSearchComponent implements OnInit {
         });
 
         this.statusStore.dispatch(getStatusesRequest({ queryOptions }));
+
+        queryOptions.filters = [];
+        queryOptions.filters?.push({
+          field: 'id',
+          operator: 'contains',
+          type: 'array',
+          value: project.users
+        });
+
+        this.userStore.dispatch(getUsersRequest({ queryOptions }));
       }
     });
 
     this.statuses$.pipe(untilDestroyed(this)).subscribe(({ statuses, total }) => {
       this.statuses = statuses;
-      console.log(statuses)
+
       if (total > 0) {
         this.filteredStatuses = this.statusControls.valueChanges.pipe(
           startWith(null),
@@ -148,6 +167,10 @@ export class TicketSearchComponent implements OnInit {
       }
 
       this.cdr.detectChanges();
+    });
+
+    this.users$.pipe(untilDestroyed(this)).subscribe((users) => {
+      this.users = users;
     });
 
     this.tickets$.pipe(untilDestroyed(this)).subscribe(({ tickets, total }) => {
@@ -182,6 +205,7 @@ export class TicketSearchComponent implements OnInit {
       
       this.formGroup.controls['name'].setValue(this.ticket?.name);
       this.formGroup.controls['description'].setValue(this.ticket?.description);
+      this.formGroup.controls['assignee'].setValue(this.ticket?.assignee);
       
       this.isDialogOpen = true;
     } else if (type === 'delete') {
@@ -202,7 +226,7 @@ export class TicketSearchComponent implements OnInit {
           description: this.formGroup.controls['description'].value,
           name: this.formGroup.controls['name'].value,
           project: this.projectId!,
-          assignee: this.selectedAssignee ?? '',
+          assignee: this.formGroup.controls['selectedAssignee'].value ?? '',
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
@@ -215,7 +239,7 @@ export class TicketSearchComponent implements OnInit {
           description: this.formGroup.controls['description'].value,
           name: this.formGroup.controls['name'].value,
           project: this.projectId!,
-          assignee: this.selectedAssignee ?? '',
+          assignee: this.formGroup.controls['selectedAssignee'].value ?? '',
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
@@ -229,6 +253,7 @@ export class TicketSearchComponent implements OnInit {
     }
 
     this.formGroup.reset();
+    this.selectedStatuses = [];
     this.ticket = undefined;
     this.isDialogOpen = false;
     this.isDeleteDialogOpen = false;
@@ -247,16 +272,14 @@ export class TicketSearchComponent implements OnInit {
   }
 
   add(event: MatChipInputEvent): void {
-    console.log(event)
     if (!this.auto?.isOpen) {
       const input = event.input;
       const value = event.value;
 
-      if ((value || '').trim()) {
-        this.selectedStatuses.push(value.trim());
+      if (value) {
+        this.selectedStatuses.push(value);
       }
 
-      // Reset the input value
       if (input) {
         input.value = '';
       }
@@ -266,23 +289,27 @@ export class TicketSearchComponent implements OnInit {
   }
 
   remove(status: Status | any): void {
-    console.log(status)
-      const index = this.selectedStatuses.indexOf(status);
+    const index = this.selectedStatuses.indexOf(status);
       
-      if (index >= 0) {
-        this.selectedStatuses.splice(index, 1);
-      }
+    if (index >= 0) {
+      this.selectedStatuses.splice(index, 1);
+    }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    console.log(event)
-    this.selectedStatuses.push(event.option.viewValue);
+    this.selectedStatuses.push(event.option.value);
     this.statusInput!.nativeElement.value = '';
     this.statusControls.setValue(null);
   }
 
   private _filter(value: any): any[] {
-    const filterValue = value.toLowerCase();
+    if (!value?.name) {
+      const filterValue = value.toLowerCase();
+
+      return this.statuses.filter(status => status.name.toLowerCase().indexOf(filterValue) === 0);
+    }
+
+    const filterValue = value.name.toLowerCase();
 
     return this.statuses.filter(status => status.name.toLowerCase().indexOf(filterValue) === 0);
   }

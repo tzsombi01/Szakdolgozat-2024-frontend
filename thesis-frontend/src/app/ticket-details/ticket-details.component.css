@@ -85,6 +85,10 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     width: 1000px;
+
+    .label {
+        margin-bottom: 0.5rem;
+    }
 }
 
 .dialog-content button {

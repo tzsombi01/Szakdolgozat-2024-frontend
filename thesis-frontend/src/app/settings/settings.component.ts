@@ -162,8 +162,9 @@ export class SettingsComponent implements OnInit {
       this.statusStore.dispatch(deleteStatusRequest({ id: this.status?.id!, queryOptions }));
     }
 
-    this.status = undefined;
     
+    this.formGroup.reset();
+    this.status = undefined;
     this.isEdit = false;
     this.deleteDialogOpened = false;
     this.dialogOpened = false;

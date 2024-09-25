@@ -35,24 +35,25 @@
         <p class="no-tickets-text">No tickets found!</p>
     </div>
 
-    <div *ngIf="isDialogOpen">
+    <div class="dialog-container" *ngIf="isDialogOpen">
         <div class="dialog-overlay"></div>
         <form [formGroup]="this.formGroup" class="dialog-content">
             <h1>{{ this.getTitle() }}</h1>
             
-            <label>Name:</label>
-            <input type="text" formControlName="name">
-
-            <label>Assignee:</label>
-            <input type="text" id="assignee">
-
-            <label>Creator:</label>
-            <input type="text" id="creator">
+            <label for="name">Name:</label>
+            <input id="name" type="text" formControlName="name">
 
             <label for="description">Description:</label>
             <textarea id="description" formControlName="description"></textarea>
 
-            <mat-form-field>
+            <label for="description">Assignee:</label>
+            <select formControlName="selectedAssignee">
+              <option *ngFor="let user of this.users" [value]="user.id">
+                {{ user.firstName + ' ' + user.lastName }}
+              </option>
+            </select>
+
+            <mat-form-field style="margin-top: 0.5rem;">
                 <mat-label>Statuses</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Select statuses">
                     <mat-chip-row *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
@@ -72,7 +73,7 @@
                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   (matChipInputTokenEnd)="add($event)"
                 />
-                <mat-autocomplete #auto="matAutocomplete"  (optionSelected)="selected($event)">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                     <mat-option *ngFor="let status of this.filteredStatuses | async;" [value]="status">{{ status?.name }}</mat-option>
                 </mat-autocomplete>
             </mat-form-field>
