@@ -56,8 +56,29 @@
       </option>
     </select>
     <p style="margin-top: 1rem;"><strong>Statuses:</strong></p>
-    <ul>
-      <li *ngFor="let status of this.ticket?.statuses">{{ status }}</li>
-    </ul>
+    <mat-form-field style="margin-top: 0.5rem;">
+      <mat-label>Statuses</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Select statuses">
+          <mat-chip-row [ngStyle]="{'background-color': this.getBackgroundColor(status)}" *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
+            {{ status.name }}
+            <button matChipRemove [attr.aria-label]="'remove ' + status.name">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        #statusInput
+        name="currentStatus"
+        placeholder="New Status..."
+        [formControl]="statusControls" 
+        [matChipInputFor]="chipGrid"
+        [matAutocomplete]="auto!"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)"
+      />
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let status of this.filteredStatuses | async;" [value]="status">{{ status?.name }}</mat-option>
+      </mat-autocomplete>
+  </mat-form-field>
   </div>
 </div>

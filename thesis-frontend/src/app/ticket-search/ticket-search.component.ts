@@ -207,6 +207,8 @@ export class TicketSearchComponent implements OnInit {
       this.formGroup.controls['description'].setValue(this.ticket?.description);
       this.formGroup.controls['assignee'].setValue(this.ticket?.assignee);
       
+      this.selectedStatuses = this.statuses.map((status: Status) => this.ticket?.statuses.includes(status.id!));
+
       this.isDialogOpen = true;
     } else if (type === 'delete') {
       this.ticket = this.tickets.find((ticket: Ticket) => ticket.id === id);
@@ -253,7 +255,6 @@ export class TicketSearchComponent implements OnInit {
     }
 
     this.formGroup.reset();
-    this.selectedStatuses = [];
     this.ticket = undefined;
     this.isDialogOpen = false;
     this.isDeleteDialogOpen = false;
