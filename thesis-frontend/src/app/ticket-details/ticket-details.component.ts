@@ -17,8 +17,8 @@ import { clearTicketState, editTicketRequest, getTicketRequest } from 'src/store
 import { getUsersRequest } from 'src/store/actions/user.actions';
 import { ProjectState, StatusState, TicketState, UserState } from 'src/store/app.states';
 import { getProject } from 'src/store/selectors/project.selector';
-import { getTicket } from 'src/store/selectors/ticket.selector';
-import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
+import { getTicket, getTicketLoading } from 'src/store/selectors/ticket.selector';
+import { getLoggedInUser, getUserLoading, getUsers } from 'src/store/selectors/user.selector';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Status, StatusType } from 'src/models/status';
 import { FormControl } from '@angular/forms';
@@ -26,6 +26,7 @@ import { getStatusesWithTotal, getStatusLoading } from 'src/store/selectors/stat
 import { getStatusesRequest } from 'src/store/actions/status.actions';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { CommentType } from 'src/models/comment';
 
 @UntilDestroy()
 @Component({
@@ -53,11 +54,15 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
   users: User[] = [];
   usersLoading$: Observable<boolean | any>;
 
+  loggedInUser$: Observable<User | any>;
+  loggedInUser: User | undefined;
+
   selectedAssignee?: string;
   selectedCreator?: string;
 
   ticket$: Observable<Ticket | any>;
   ticket: Ticket | undefined;
+  ticketLoading$: Observable<boolean | any>;
   gridState: State = {
     skip: 0,
     take: 10,
@@ -96,9 +101,11 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
     this.users$ = this.userStore.select(getUsers);
     this.project$ = this.projectStore.select(getProject);
     this.statuses$ = this.statusStore.select(getStatusesWithTotal);
+    this.loggedInUser$ = this.userStore.select(getLoggedInUser);
 
     this.usersLoading$ = this.userStore.select(getUserLoading);
     this.statusesLoading$ = this.statusStore.select(getStatusLoading);
+    this.ticketLoading$ = this.ticketStore.select(getTicketLoading);
   }
 
   ngOnInit(): void {
@@ -173,6 +180,10 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         this.selectedStatuses = this.statuses.filter((status: Status) => this.ticket?.statuses?.includes(status.id!));
       }
     });
+
+    this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {  
+      this.loggedInUser = user;
+    });
   }
 
   ngOnDestroy(): void {
@@ -189,7 +200,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,
-        comments: []
+        comments: this.ticket?.comments!
       };
 
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -207,7 +218,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,
-        comments: []
+        comments: this.ticket?.comments!
       };
 
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -275,7 +286,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       mentionedInCommits: this.ticket?.mentionedInCommits!,
       statuses: this.getStatuses(),
       ticketReferences: this.ticket?.ticketReferences!,
-      comments: []
+      comments: this.ticket?.comments!
     };
 
     this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -294,7 +305,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       mentionedInCommits: this.ticket?.mentionedInCommits!,
       statuses: this.getStatuses(),
       ticketReferences: this.ticket?.ticketReferences!,
-      comments: []
+      comments: this.ticket?.comments!
     };
 
     this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -327,5 +338,9 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       default:
         return 'white';
     }
+  }
+
+  getCommentType(): CommentType | string {
+    return CommentType.Ticket;
   }
 }

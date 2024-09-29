@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CommentInput } from 'src/models/comment';
@@ -14,18 +14,34 @@ export class CommentService {
   constructor(private http: HttpClient) {}
 
   public getComments(queryOptions: QueryOptions): Observable<any> {
-    return this.http.post(`${this.BASE_URL}/comments`, queryOptions);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post(`${this.BASE_URL}/api/comments/get`, queryOptions, requestHeaders);
   }
 
   public createComment(comment: CommentInput): Observable<any> {
-    return this.http.post<any>(`${this.BASE_URL}/comments`, comment);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post<any>(`${this.BASE_URL}/api/comments`, comment, requestHeaders);
   }
 
   public editComment(id: string, comment: CommentInput): Observable<any> {
-    return this.http.put<any>(`${this.BASE_URL}/comments/${id}`, comment);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.put<any>(`${this.BASE_URL}/api/comments/${id}`, comment, requestHeaders);
   }
 
   public deleteComment(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.BASE_URL}/comments/${id}`);
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+    
+    return this.http.delete<any>(`${this.BASE_URL}/api/comments/${id}`, requestHeaders);
   }
 }

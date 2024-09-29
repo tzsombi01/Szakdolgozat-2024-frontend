@@ -1,24 +1,38 @@
-<app-header></app-header>
+<div>
+    <h3>Comments</h3>
+    <div *ngIf="this.comments.length > 0">
+        <div *ngFor="let comment of comments">
+            <div *ngIf="editingComments.includes(comment.id!)" class="buttonContainer">
+                <button (click)="cancelEdit(comment.id!)">Cancel</button>
+                <button (click)="saveComment('edit', comment.id!)">Save</button>
+            </div>
+            <div *ngIf="!editingComments.includes(comment.id!)" class="buttonContainer">
+                <button (click)="editComment(comment.id!)">Edit</button>
+            </div>
 
-<div class="container">
-    <h1 class="comment-caption">Comments</h1>
+            <div *ngIf="!editingComments.includes(comment.id!)">
+                <p [innerHTML]="parseMarkdown(comment.description!)"></p>
+            </div>
 
-    <div *ngIf="!isCommentsEmpty()" class="comment-container">
-        <table class="comment-table" *ngFor="let comment of comments; let i = index;">
-            <tr>
-                <th>Creator</th>
-                <th>Description</th>
-            </tr>
-            <tr>
-                <td> {{ comment.creator }} </td>
-                <td> {{ comment.description }} </td>
-            </tr>
-        </table>
-    </div>
-    
-    <div *ngIf="isCommentsEmpty()" class="no-comments-container">
-        <p class="no-comments-text">No comments found!</p>
+            <div *ngIf="editingComments.includes(comment.id!)">
+                <textarea [(ngModel)]="editingCommentDescription"></textarea>
+            </div>
+        </div>
     </div>
 </div>
 
-<app-footer></app-footer>
+<div class="new-comment">
+    <h3>New Comment</h3>
+    <textarea *ngIf="!showPreview" [(ngModel)]="newCommentDescription" (input)="previewComment()"></textarea>
+
+    <div *ngIf="showPreview">
+        <h4>Preview:</h4>
+        <div [innerHTML]="parsedNewComment"></div>
+    </div>
+
+    <div class="buttonContainer">
+        <button *ngIf="!showPreview" (click)="togglePreview()">Preview</button>
+        <button *ngIf="showPreview" (click)="togglePreview()">Back to edit</button>
+        <button [disabled]="newCommentDescription.length === 0" (click)="saveComment('new')">Save</button>
+    </div>
+</div>

@@ -145,15 +145,16 @@ export class TicketSearchComponent implements OnInit {
 
         this.statusStore.dispatch(getStatusesRequest({ queryOptions }));
 
-        queryOptions.filters = [];
-        queryOptions.filters?.push({
+        const usersQueryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
+        usersQueryOptions.filters?.push({
           field: 'id',
           operator: 'contains',
           type: 'array',
           value: project.users
         });
 
-        this.userStore.dispatch(getUsersRequest({ queryOptions }));
+        this.userStore.dispatch(getUsersRequest({ queryOptions: usersQueryOptions }));
       }
     });
 
@@ -232,7 +233,7 @@ export class TicketSearchComponent implements OnInit {
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
-          comments: [],
+          comments: this.ticket?.comments!
         };
 
         this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -245,7 +246,7 @@ export class TicketSearchComponent implements OnInit {
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
-          comments: [],
+          comments: this.ticket?.comments!
         };
   
         this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
