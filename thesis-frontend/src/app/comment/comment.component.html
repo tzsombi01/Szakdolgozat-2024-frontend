@@ -1,13 +1,27 @@
 <div>
-    <h3>Comments</h3>
-    <div *ngIf="this.comments.length > 0">
-        <div *ngFor="let comment of comments">
-            <div *ngIf="editingComments.includes(comment.id!)" class="buttonContainer">
-                <button (click)="cancelEdit(comment.id!)">Cancel</button>
-                <button (click)="saveComment('edit', comment.id!)">Save</button>
+    <h3>Comments:</h3>
+    <div *ngIf="comments.length > 0">
+        <div *ngFor="let comment of comments" class="comment-container">
+            <div class="comment-header">
+                <div class="comment-creator">
+                    {{ this.getName(comment.creator) }}
+                </div>
+                <div *ngIf="comment.edited" class="comment-edited">
+                    *edited
+                </div>
             </div>
-            <div *ngIf="!editingComments.includes(comment.id!)" class="buttonContainer">
-                <button (click)="editComment(comment.id!)">Edit</button>
+
+            <div *ngIf="this.canEdit(comment.creator)" class="buttonWrapper">
+                <div *ngIf="editingComments.includes(comment.id!)" class="buttonContainer">
+                    <button (click)="cancelEdit(comment.id!)">Cancel</button>
+                    <button (click)="close('edit', comment.id!)">Save</button>
+                </div>
+                <div *ngIf="!editingComments.includes(comment.id!)" class="buttonContainer">
+                    <button (click)="editComment(comment.id!)">Edit</button>
+                </div>
+                <div *ngIf="!editingComments.includes(comment.id!)" class="buttonContainer">
+                    <button (click)="open('delete', comment.id!)">Delete</button>
+                </div>
             </div>
 
             <div *ngIf="!editingComments.includes(comment.id!)">
@@ -15,7 +29,7 @@
             </div>
 
             <div *ngIf="editingComments.includes(comment.id!)">
-                <textarea [(ngModel)]="editingCommentDescription"></textarea>
+                <textarea [(ngModel)]="editingCommentDescription" autoResize></textarea>
             </div>
         </div>
     </div>
@@ -23,7 +37,7 @@
 
 <div class="new-comment">
     <h3>New Comment</h3>
-    <textarea *ngIf="!showPreview" [(ngModel)]="newCommentDescription" (input)="previewComment()"></textarea>
+    <textarea *ngIf="!showPreview" [(ngModel)]="newCommentDescription" (input)="previewComment()" autoResize></textarea>
 
     <div *ngIf="showPreview">
         <h4>Preview:</h4>
@@ -33,6 +47,18 @@
     <div class="buttonContainer">
         <button *ngIf="!showPreview" (click)="togglePreview()">Preview</button>
         <button *ngIf="showPreview" (click)="togglePreview()">Back to edit</button>
-        <button [disabled]="newCommentDescription.length === 0" (click)="saveComment('new')">Save</button>
+        <button [disabled]="newCommentDescription.length === 0" (click)="close('new')">Save</button>
+    </div>
+
+    <div *ngIf="isDeleteDialogOpened">
+        <div class="dialog-overlay"></div>
+        <div class="dialog-content">
+            <h1>Do you really want to delete this Comment?</h1>
+    
+            <div class="buttonContainer">
+                <button (click)="close('cancel')">Cancel</button>
+                <button style="background-color: red;" type="submit" (click)="close('delete')">Delete</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -30,7 +30,7 @@
     </ul>
 
     <app-comment *ngIf="!(this.ticketLoading$ | async) && !(this.usersLoading$ | async)" [parentEntity]="this.ticket"
-      [type]="this.getCommentType()" [loggedInUser]="this.loggedInUser"></app-comment>
+      [type]="this.getCommentType()" [loggedInUser]="this.loggedInUser" [users]="this.users"></app-comment>
   </div>
 
   <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">

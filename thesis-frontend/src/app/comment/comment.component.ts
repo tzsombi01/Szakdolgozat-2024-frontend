@@ -6,7 +6,7 @@ import { Comment, CommentInput, CommentType } from 'src/models/comment';
 import { CommentState } from 'src/store/app.states';
 import { State } from '@progress/kendo-data-query';
 import { getCommentLoading, getCommentsWithTotal } from 'src/store/selectors/comment.selector';
-import { createCommentRequest, editCommentRequest, getCommentsRequest } from 'src/store/actions/comment.actions';
+import { createCommentRequest, deleteCommentRequest, editCommentRequest, getCommentsRequest } from 'src/store/actions/comment.actions';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
@@ -34,8 +34,14 @@ export class CommentComponent implements OnInit {
   @Input()
   loggedInUser?: User;
 
+  @Input()
+  users: User[] = [];
+
+  isDeleteDialogOpened: boolean = false;
+
   comments$: Observable<Comment[] | any>;
   comments: Comment[] = [];
+  comment?: Comment;
   commentsLoading$: Observable<boolean | any>;
   gridState: State = {
     skip: 0,
@@ -66,7 +72,6 @@ export class CommentComponent implements OnInit {
 
     this.comments$.pipe(untilDestroyed(this)).subscribe(({ comments, total }) => {
       this.comments = comments;
-      console.log(comments)
     });
   }
 
@@ -74,16 +79,17 @@ export class CommentComponent implements OnInit {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     queryOptions.filters?.push({
-      field: 'reference',
+      field: 'id',
       operator: 'eq',
-      type: 'string',
-      value: this.parentEntity?.id
+      type: 'array',
+      value: this.parentEntity?.comments
     });
 
     this.commentsStore.dispatch(getCommentsRequest({ queryOptions }));
   }
 
   editComment(id: string) {
+    this.editingComments = [];
     this.editingComments.push(id);
     const comment: Comment = this.comments.find(comment => comment.id === id)!;
     this.editingCommentDescription = comment.description!;
@@ -126,9 +132,15 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  saveComment(type: ('new' | 'edit'), id?: string) {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+  open(type: ('delete'), id?: string): void {
+    if (type === 'delete') {
+      this.comment = this.comments.find(comment => comment.id);
 
+      this.isDeleteDialogOpened = true;
+    }
+  }
+
+  close(type: ('new' | 'edit' | 'delete' | 'cancel'), id?: string) {
     if (type === 'new') {
       const newComment: CommentInput = {
         description: this.newCommentDescription,
@@ -138,7 +150,7 @@ export class CommentComponent implements OnInit {
         edited: false
       };
 
-      this.commentsStore.dispatch(createCommentRequest({ comment: newComment, queryOptions }));
+      this.commentsStore.dispatch(createCommentRequest({ comment: newComment }));
     } else if (type === 'edit') {
       const editedComment: CommentInput = {
         description: this.editingCommentDescription,
@@ -147,12 +159,27 @@ export class CommentComponent implements OnInit {
         commentType: this.type as CommentType,
         edited: true
       };
-      console.log(editedComment)
-      this.commentsStore.dispatch(editCommentRequest({ id: id!, comment: editedComment, queryOptions }));
+     
+      this.commentsStore.dispatch(editCommentRequest({ id: id!, comment: editedComment }));
+    } else if (type === 'delete') {
+      console.log(this.comment)
+      this.commentsStore.dispatch(deleteCommentRequest({ id: this.comment?.id! }));
     }
 
+    this.comment = undefined;
+    this.editingComments = [];
     this.newCommentDescription = '';
     this.parsedNewComment = '';
     this.showPreview = false;
+    this.isDeleteDialogOpened = false;
+  }
+
+  getName(id?: string): string {
+    const user: User | undefined = this.users.find(user => user.id === id); 
+    return user?.firstName + ' ' + user?.lastName;
+  }
+
+  canEdit(creator: string): boolean {
+    return this.loggedInUser?.id === creator;
   }
 }

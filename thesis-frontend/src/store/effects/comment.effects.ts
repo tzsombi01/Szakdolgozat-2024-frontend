@@ -32,7 +32,6 @@ export class CommentEffects {
       concatMap(({ queryOptions }) => {
         return this.commentService.getComments(queryOptions).pipe(
           map((data) => {
-            console.log(data)
             return getCommentsSuccess({
               payload: {
                 data: {
@@ -61,7 +60,7 @@ export class CommentEffects {
   createComment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(createCommentRequest),
-      mergeMap(({ comment, queryOptions }) => {
+      mergeMap(({ comment }) => {
         return this.commentService.createComment(comment).pipe(
           mergeMap((data) => {
             return of(
@@ -71,8 +70,7 @@ export class CommentEffects {
                   error: '',
                   loading: false,
                 },
-              }),
-              getCommentsRequest({ queryOptions })
+              })
             );
           }),
           catchError((err) => {
@@ -94,10 +92,9 @@ export class CommentEffects {
   editComment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editCommentRequest),
-      mergeMap(({ id, comment, queryOptions }) => {
+      mergeMap(({ id, comment }) => {
         return this.commentService.editComment(id, comment).pipe(
           mergeMap((data) => {
-            console.log(data)
             return of(editCommentSuccess({
               payload: {
                 data: data,
