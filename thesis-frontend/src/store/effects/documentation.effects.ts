@@ -14,6 +14,9 @@ import {
   getDocumentationsError,
   getDocumentationsSuccess,
   getDocumentationsRequest,
+  getDocumentationRequest,
+  getDocumentationSuccess,
+  getDocumentationError,
 } from "../actions/documentation.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -56,22 +59,51 @@ export class DocumentationEffects {
     );
   });
 
-  createDocumentation$ = createEffect(() => {
+  getDocumentation$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(createDocumentationRequest),
-      mergeMap(({ documentation, queryOptions }) => {
-        return this.documentationService.createDocumentation(documentation).pipe(
+      ofType(getDocumentationRequest),
+      mergeMap(({ id }) => {
+        return this.documentationService.getDocumentation(id).pipe(
           mergeMap((data) => {
             return of(
-              createDocumentationSuccess({
+              getDocumentationSuccess({
                 payload: {
-                  data: data,
+                  data,
                   error: '',
                   loading: false,
                 },
-              }),
-              getDocumentationsRequest({ queryOptions })
+              })
             );
+          }),
+          catchError((err) => {
+            return of(
+              getDocumentationError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+
+  createDocumentation$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(createDocumentationRequest),
+      mergeMap(({ documentation }) => {
+        return this.documentationService.createDocumentation(documentation).pipe(
+          map((data) => {
+            return createDocumentationSuccess({
+              payload: {
+                data,
+                error: '',
+                loading: false
+              }
+            });
           }),
           catchError((err) => {
             return of(
@@ -92,7 +124,7 @@ export class DocumentationEffects {
   editDocumentation$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(editDocumentationRequest),
-      mergeMap(({ id, documentation, queryOptions }) => {
+      mergeMap(({ id, documentation }) => {
         return this.documentationService.editDocumentation(id, documentation).pipe(
           mergeMap((data) => {
             let actions = [
@@ -104,10 +136,6 @@ export class DocumentationEffects {
                 },
               }),
             ];
-
-            if (queryOptions) {
-              actions.push(getDocumentationsRequest({ queryOptions }) as any);
-            }
 
             return of(...actions);
           }),
@@ -130,7 +158,7 @@ export class DocumentationEffects {
   deleteDocumentation$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(deleteDocumentationRequest),
-      mergeMap(({ id, queryOptions }) => {
+      mergeMap(({ id }) => {
         return this.documentationService.deleteDocumentation(id).pipe(
           mergeMap((data) => {
             return of(
@@ -140,8 +168,7 @@ export class DocumentationEffects {
                   error: '',
                   loading: false,
                 },
-              }),
-              getDocumentationsRequest({ queryOptions })
+              })
             );
           }),
           catchError((err) => {

@@ -40,6 +40,31 @@ const _documentationReducer = createReducer(
         };
     }),
 
+    on(documentationActions.getDocumentationRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+    
+    on(documentationActions.getDocumentationSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            documentation: payload.data,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(documentationActions.getDocumentationError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
     on(documentationActions.createDocumentationRequest, (state) => {
         return {
             ...state,

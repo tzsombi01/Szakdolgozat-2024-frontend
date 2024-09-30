@@ -156,8 +156,6 @@ export class DocumentationComponent implements OnInit {
   }
 
   close(type: ('cancel' | 'submit' | 'delete')): void {
-    const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
-    
     if (type === 'submit') {
       if (!this.isEdit) {
         const newDocumentation: DocumentationInput = {
@@ -167,7 +165,7 @@ export class DocumentationComponent implements OnInit {
           comments: [],
         };
 
-        this.documentationStore.dispatch(createDocumentationRequest({ documentation: newDocumentation, queryOptions: ({} as Object) as QueryOptions }));
+        this.documentationStore.dispatch(createDocumentationRequest({ documentation: newDocumentation }));
       } else {
         const editedDocumentation: DocumentationInput = {
           description: this.formGroup.controls['description'].value,
@@ -176,10 +174,10 @@ export class DocumentationComponent implements OnInit {
           comments: [],
         };
   
-        this.documentationStore.dispatch(editDocumentationRequest({ id: this.documentation?.id!, documentation: editedDocumentation, queryOptions: ({} as Object) as QueryOptions }));
+        this.documentationStore.dispatch(editDocumentationRequest({ id: this.documentation?.id!, documentation: editedDocumentation }));
       }
     } else if (type === 'delete') {
-      this.documentationStore.dispatch(deleteDocumentationRequest({ id: this.documentation?.id!, queryOptions }));
+      this.documentationStore.dispatch(deleteDocumentationRequest({ id: this.documentation?.id! }));
     }
 
     this.formGroup.reset();

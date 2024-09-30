@@ -51,6 +51,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { StatusEffects } from 'src/store/effects/status.effects';
 import { SettingsComponent } from './settings/settings.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { DiscussionDetailsComponent } from './discussion-details/discussion-details.component';
+import { DocumentationDetailsComponent } from './documentation-details/documentation-details.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     TicketSearchComponent,
     AutoResizeDirective,
     UsersComponent,
-    SettingsComponent
+    SettingsComponent,
+    DiscussionDetailsComponent,
+    DocumentationDetailsComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),

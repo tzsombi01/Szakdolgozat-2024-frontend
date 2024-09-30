@@ -1,0 +1,8 @@
+<div *ngIf="this.documentation" class="main-container">
+    <div class="content-container">
+        <h3 class="ticket-title">{{ this.documentation.name }}</h3>
+
+        <app-comment *ngIf="!(this.documentationLoading$ | async) && !(this.usersLoading$ | async)" [parentEntity]="this.documentation"
+      [type]="'Documentation'" [loggedInUser]="this.loggedInUser" [users]="this.users"></app-comment>
+    </div>
+</div>

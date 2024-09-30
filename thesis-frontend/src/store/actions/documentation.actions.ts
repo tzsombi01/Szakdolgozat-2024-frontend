@@ -11,14 +11,14 @@ export const getDocumentationRequest = createAction('[ Documentation ] GetDocume
 export const getDocumentationSuccess = createAction('[ Documentation ] GetDocumentationSuccess', props<{ payload: Payload }>());
 export const getDocumentationError = createAction('[ Documentation ] GetDocumentationError', props<{ payload: Payload }>());
 
-export const createDocumentationRequest = createAction('[ Documentation ] CreateDocumentationRequest', props<{ documentation: DocumentationInput, queryOptions: QueryOptions }>());
+export const createDocumentationRequest = createAction('[ Documentation ] CreateDocumentationRequest', props<{ documentation: DocumentationInput }>());
 export const createDocumentationSuccess = createAction('[ Documentation ] CreateDocumentationSuccess', props<{ payload: Payload }>());
 export const createDocumentationError = createAction('[ Documentation ] CreateDocumentationError', props<{ payload: Payload }>());
 
-export const editDocumentationRequest = createAction('[ Documentation ] EditDocumentationRequest', props<{ id: string, documentation: DocumentationInput, queryOptions?: QueryOptions }>());
+export const editDocumentationRequest = createAction('[ Documentation ] EditDocumentationRequest', props<{ id: string, documentation: DocumentationInput }>());
 export const editDocumentationSuccess = createAction(' [Documentation ] EditDocumentationSuccess', props<{ payload: Payload }>());
 export const editDocumentationError = createAction('[ Documentation ] EditDocumentationError', props<{ payload: Payload }>());
 
-export const deleteDocumentationRequest = createAction('[ Documentation ] DeleteDocumentationRequest', props<{ id: string, queryOptions: QueryOptions }>());
+export const deleteDocumentationRequest = createAction('[ Documentation ] DeleteDocumentationRequest', props<{ id: string }>());
 export const deleteDocumentationSuccess = createAction('[ Documentation ] DeleteDocumentationSuccess', props<{ payload: Payload }>());
 export const deleteDocumentationError = createAction('[ Documentation ] DeleteDocumentationError', props<{ payload: Payload }>());

@@ -17,6 +17,8 @@ import { ProjectDetailsComponent } from './project-details/project-details.compo
 import { TicketSearchComponent } from './ticket-search/ticket-search.component';
 import { UsersComponent } from './users/users.component';
 import { SettingsComponent } from './settings/settings.component';
+import { DiscussionDetailsComponent } from './discussion-details/discussion-details.component';
+import { DocumentationDetailsComponent } from './documentation-details/documentation-details.component';
 
 const routes: Routes = [
   {
@@ -73,7 +75,7 @@ const routes: Routes = [
       },
       {
         path: 'discussions/:discussionId',
-        component: DiscussionComponent,
+        component: DiscussionDetailsComponent,
         canActivate: [AuthGuard]
       },
       {
@@ -83,7 +85,7 @@ const routes: Routes = [
       },
       {
         path: 'documentations/:documentationId',
-        component: DocumentationComponent,
+        component: DocumentationDetailsComponent,
         canActivate: [AuthGuard]
       },
       {

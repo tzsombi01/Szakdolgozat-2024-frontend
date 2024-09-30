@@ -18,6 +18,11 @@ export const getDocumentationsWithTotal = createSelector(
     }
 );
 
+export const getDocumentation = createSelector(
+    getDocumentationState,
+    (state: DocumentationState) => state.documentation
+);
+
 export const getDocumentationLoading = createSelector(
     getDocumentationState,
     (state: DocumentationState) => state.loading
