@@ -34,6 +34,31 @@ const _discussionReducer = createReducer(
         loading: payload.loading
     })),
 
+    on(discussionActions.getDiscussionRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+    
+    on(discussionActions.getDiscussionSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            discussion: payload.data,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(discussionActions.getDiscussionError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
     on(discussionActions.createDiscussionRequest, (state) => ({
         ...state,
         error: '',

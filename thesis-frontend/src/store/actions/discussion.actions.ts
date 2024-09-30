@@ -11,14 +11,14 @@ export const getDiscussionRequest = createAction('[ Discussion ] GetDiscussionRe
 export const getDiscussionSuccess = createAction('[ Discussion ] GetDiscussionSuccess', props<{ payload: Payload }>());
 export const getDiscussionError = createAction('[ Discussion ] GetDiscussionError', props<{ payload: Payload }>());
 
-export const createDiscussionRequest = createAction('[ Discussion ] CreateDiscussionRequest', props<{ discussion: DiscussionInput, queryOptions: QueryOptions }>());
+export const createDiscussionRequest = createAction('[ Discussion ] CreateDiscussionRequest', props<{ discussion: DiscussionInput }>());
 export const createDiscussionSuccess = createAction('[ Discussion ] CreateDiscussionSuccess', props<{ payload: Payload }>());
 export const createDiscussionError = createAction('[ Discussion ] CreateDiscussionError', props<{ payload: Payload }>());
 
-export const editDiscussionRequest = createAction('[ Discussion ] EditDiscussionRequest', props<{ id: string, discussion: DiscussionInput, queryOptions?: QueryOptions }>());
+export const editDiscussionRequest = createAction('[ Discussion ] EditDiscussionRequest', props<{ id: string, discussion: DiscussionInput }>());
 export const editDiscussionSuccess = createAction(' [ Discussion ] EditDiscussionSuccess', props<{ payload: Payload }>());
 export const editDiscussionError = createAction('[ Discussion ] EditDiscussionError', props<{ payload: Payload }>());
 
-export const deleteDiscussionRequest = createAction('[ Discussion ] DeleteDiscussionRequest', props<{ id: string, queryOptions: QueryOptions }>());
+export const deleteDiscussionRequest = createAction('[ Discussion ] DeleteDiscussionRequest', props<{ id: string }>());
 export const deleteDiscussionSuccess = createAction('[ Discussion ] DeleteDiscussionSuccess', props<{ payload: Payload }>());
 export const deleteDiscussionError = createAction('[ Discussion ] DeleteDiscussionError', props<{ payload: Payload }>()); 

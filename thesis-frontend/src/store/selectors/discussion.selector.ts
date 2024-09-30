@@ -18,6 +18,11 @@ export const getDiscussionsWithTotal = createSelector(
     }
 );
 
+export const getDiscussion = createSelector(
+    getDiscussionState,
+    (state: DiscussionState) => state.discussion
+);
+
 export const getDiscussionLoading = createSelector(
     getDiscussionState,
     (state: DiscussionState) => state.loading

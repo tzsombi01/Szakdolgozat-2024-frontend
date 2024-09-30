@@ -1,1 +1,8 @@
-<p>discussion-details works!</p>
+<div *ngIf="this.discussion" class="main-container">
+    <div class="content-container">
+        <h3 class="ticket-title">{{ this.discussion.name }}</h3>
+
+        <app-comment *ngIf="!(this.discussionLoading$ | async) && !(this.usersLoading$ | async)" [parentEntity]="this.discussion"
+      [type]="'Discussion'" [loggedInUser]="this.loggedInUser" [users]="this.users"></app-comment>
+    </div>
+</div>

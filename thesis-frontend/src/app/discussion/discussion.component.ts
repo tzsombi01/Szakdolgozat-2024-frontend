@@ -167,7 +167,7 @@ export class DiscussionComponent implements OnInit {
           comments: [],
         };
 
-        this.discussionStore.dispatch(createDiscussionRequest({ discussion: newDiscussion, queryOptions: ({} as Object) as QueryOptions }));
+        this.discussionStore.dispatch(createDiscussionRequest({ discussion: newDiscussion }));
       } else {
         const editedDiscussion: DiscussionInput = {
           description: this.formGroup.controls['description'].value,
@@ -176,10 +176,10 @@ export class DiscussionComponent implements OnInit {
           comments: [],
         };
   
-        this.discussionStore.dispatch(editDiscussionRequest({ id: this.discussion?.id!, discussion: editedDiscussion, queryOptions: ({} as Object) as QueryOptions }));
+        this.discussionStore.dispatch(editDiscussionRequest({ id: this.discussion?.id!, discussion: editedDiscussion }));
       }
     } else if (type === 'delete') {
-      this.discussionStore.dispatch(deleteDiscussionRequest({ id: this.discussion?.id!, queryOptions }));
+      this.discussionStore.dispatch(deleteDiscussionRequest({ id: this.discussion?.id! }));
     }
 
     this.formGroup.reset();

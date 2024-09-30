@@ -91,7 +91,7 @@ export class DocumentationDetailsComponent implements OnInit {
 
     this.documentation$.pipe(untilDestroyed(this)).subscribe((documentation) => {
       this.documentation = documentation;
-      console.log(documentation)
+
       if (this.documentation?.id) {
         this.selectedCreator = this.documentation.creator;
 
