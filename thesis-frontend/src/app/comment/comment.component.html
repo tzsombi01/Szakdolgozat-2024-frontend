@@ -4,7 +4,7 @@
         <div *ngFor="let comment of comments" class="comment-container">
             <div class="comment-header">
                 <div class="comment-creator">
-                    {{ this.getName(comment.creator) }}
+                    Creator: {{ this.getName(comment.creator) }}
                 </div>
                 <div *ngIf="comment.edited" class="comment-edited">
                     *edited
