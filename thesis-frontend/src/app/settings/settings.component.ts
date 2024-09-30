@@ -106,7 +106,6 @@ export class SettingsComponent implements OnInit {
 
     this.statuses$.pipe(untilDestroyed(this)).subscribe(({ statuses, total }) => {
       this.statuses = statuses;
-      console.log(statuses)
     });
   }
 
