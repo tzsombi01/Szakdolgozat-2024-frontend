@@ -53,6 +53,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DiscussionDetailsComponent } from './discussion-details/discussion-details.component';
 import { DocumentationDetailsComponent } from './documentation-details/documentation-details.component';
+import { SearchComponent } from './search/search.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import { DocumentationDetailsComponent } from './documentation-details/documenta
     UsersComponent,
     SettingsComponent,
     DiscussionDetailsComponent,
-    DocumentationDetailsComponent
+    DocumentationDetailsComponent,
+    SearchComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),

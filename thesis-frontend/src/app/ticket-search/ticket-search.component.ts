@@ -336,5 +336,9 @@ export class TicketSearchComponent implements OnInit {
       default:
         return 'white';
     }
-  }  
+  }
+
+  getQueryOptions(): QueryOptions {
+    return getQueryOptions(this.gridState as DataStateChangeEvent);
+  }
 }

@@ -2,7 +2,7 @@
     <h1 class="documentation-caption">Documentations</h1>
 
     <div class="search-bar">
-        <input type="text" placeholder="Search documentation...">
+        <app-search [searchType]="'Documentation'" [queryOptions]="this.getQueryOptions()"></app-search>
         <button class="create-documentation-btn" (click)="open('create')">Create new Documentation</button>
     </div>
 

@@ -198,4 +198,8 @@ export class DocumentationComponent implements OnInit {
   getTitle(): string {
     return this.isEdit ? 'Edit Documentation' : 'Create Documentation';
   }
+
+  getQueryOptions(): QueryOptions {
+    return getQueryOptions(this.gridState as DataStateChangeEvent);
+  }
 }

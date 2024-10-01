@@ -200,4 +200,8 @@ export class DiscussionComponent implements OnInit {
   getTitle(): string {
     return this.isEdit ? 'Edit Discussion' : 'Create Discussion';
   }
+
+  getQueryOptions(): QueryOptions {
+    return getQueryOptions(this.gridState as DataStateChangeEvent);
+  }
 }

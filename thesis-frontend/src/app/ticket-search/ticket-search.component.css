@@ -137,15 +137,6 @@
     margin-bottom: 1rem;
 }
 
-.search-bar input {
-    flex: 1;
-    padding: 0.5rem;
-    font-size: 16px;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    margin-right: 1rem;
-}
-
 .search-bar .create-issue-btn {
     padding: 0.5rem 1rem;
     background-color: #28a745;
