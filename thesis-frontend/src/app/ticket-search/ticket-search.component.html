@@ -1,6 +1,6 @@
 <div class="container">
     <h1 class="ticket-caption">Tickets</h1>
-    
+
     <div class="search-bar">
         <input type="text" placeholder="Search tickets...">
         <button class="create-issue-btn" (click)="open('create')">Create new Issue</button>
@@ -10,7 +10,7 @@
         <table class="ticket-table">
             <thead>
                 <tr>
-                    <th>Ticket Number</th>
+                    <th>Ticket Title</th>
                     <th>Assignee</th>
                     <th>Creator</th>
                     <th>Actions</th>
@@ -18,9 +18,9 @@
             </thead>
             <tbody>
                 <tr *ngFor="let ticket of tickets; let i = index;">
-                    <td>{{ ticket.ticketNumber }}</td>
-                    <td>{{ ticket.assignee }}</td>
-                    <td>{{ ticket.creator }}</td>
+                    <td>{{ ticket.name }}</td>
+                    <td>{{ this.getName(ticket.assignee, 'assignee') }}</td>
+                    <td>{{ this.getName(ticket.creator, 'creator') }}</td>
                     <td class="buttonContainer">
                         <button (click)="open('details', ticket.id)">Details</button>
                         <button (click)="open('edit', ticket.id)">Edit ticket</button>
@@ -39,42 +39,37 @@
         <div class="dialog-overlay"></div>
         <form [formGroup]="this.formGroup" class="dialog-content">
             <h1>{{ this.getTitle() }}</h1>
-            
+
             <label for="name">Name:</label>
             <input id="name" type="text" formControlName="name">
 
             <label for="description">Description:</label>
-            <textarea id="description" formControlName="description"></textarea>
+            <textarea id="description" formControlName="description" autoResize></textarea>
 
             <label for="description">Assignee:</label>
             <select formControlName="selectedAssignee">
-              <option *ngFor="let user of this.users" [value]="user.id">
-                {{ user.firstName + ' ' + user.lastName }}
-              </option>
+                <option *ngFor="let user of this.users" [value]="user.id">
+                    {{ user.firstName + ' ' + user.lastName }}
+                </option>
             </select>
 
             <mat-form-field style="margin-top: 0.5rem;">
                 <mat-label>Statuses</mat-label>
                 <mat-chip-grid #chipGrid aria-label="Select statuses">
-                    <mat-chip-row *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
-                      {{ status.name }}
-                      <button matChipRemove [attr.aria-label]="'remove ' + status.name">
-                        <mat-icon>cancel</mat-icon>
-                      </button>
+                    <mat-chip-row [ngStyle]="{'background-color': this.getBackgroundColor(status)}"
+                        *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
+                        {{ status.name }}
+                        <button matChipRemove [attr.aria-label]="'remove ' + status.name">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
                     </mat-chip-row>
                 </mat-chip-grid>
-                <input
-                  #statusInput
-                  name="currentStatus"
-                  placeholder="New Status..."
-                  [formControl]="statusControls" 
-                  [matChipInputFor]="chipGrid"
-                  [matAutocomplete]="auto!"
-                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                  (matChipInputTokenEnd)="add($event)"
-                />
+                <input #statusInput name="currentStatus" placeholder="New Status..." [formControl]="statusControls"
+                    [matChipInputFor]="chipGrid" [matAutocomplete]="auto!"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                    <mat-option *ngFor="let status of this.filteredStatuses | async;" [value]="status">{{ status?.name }}</mat-option>
+                    <mat-option *ngFor="let status of this.filteredStatuses | async;" [value]="status">{{ status?.name
+                        }}</mat-option>
                 </mat-autocomplete>
             </mat-form-field>
 

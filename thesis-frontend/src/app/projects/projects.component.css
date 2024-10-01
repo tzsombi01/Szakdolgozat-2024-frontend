@@ -88,15 +88,16 @@
     flex-direction: column;
     justify-content: left;
     align-items: left;
-    padding-bottom: 2rem;
+    padding-bottom: 0.3rem;
     max-width: 100% !important;
-    margin-top: 40px;
+    margin-top: 4rem;
     background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
     z-index: 1001;
-    width: 1000px;
+    width: 50rem;
+    gap: 1rem;
 
     h1 {
         align-self: center;

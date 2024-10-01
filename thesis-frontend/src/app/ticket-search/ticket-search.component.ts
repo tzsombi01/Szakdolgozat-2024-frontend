@@ -9,7 +9,7 @@ import { State } from '@progress/kendo-data-query';
 import { map, Observable, startWith } from 'rxjs';
 import { CommentInput } from 'src/models/comment';
 import { QueryOptions } from 'src/models/query-options';
-import { Status } from 'src/models/status';
+import { Status, StatusType } from 'src/models/status';
 import { Ticket, TicketInput } from 'src/models/ticket';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { getProjectRequest } from 'src/store/actions/project.actions';
@@ -206,9 +206,9 @@ export class TicketSearchComponent implements OnInit {
       
       this.formGroup.controls['name'].setValue(this.ticket?.name);
       this.formGroup.controls['description'].setValue(this.ticket?.description);
-      this.formGroup.controls['assignee'].setValue(this.ticket?.assignee);
-      
-      this.selectedStatuses = this.statuses.map((status: Status) => this.ticket?.statuses.includes(status.id!));
+      this.formGroup.controls['selectedAssignee'].setValue(this.ticket?.assignee);
+
+      this.selectedStatuses = this.statuses.filter((status: Status) => this.ticket?.statuses.includes(status.id!));
 
       this.isDialogOpen = true;
     } else if (type === 'delete') {
@@ -315,4 +315,26 @@ export class TicketSearchComponent implements OnInit {
 
     return this.statuses.filter(status => status.name.toLowerCase().indexOf(filterValue) === 0);
   }
+
+  getName(id?: string, type?: ('assignee' | 'creator')): string {
+    const user: User | undefined = this.users.find(user => user.id === id); 
+    return user ? user.firstName + ' ' + user.lastName : (type ? 'No assignee' : 'No creator');
+  }
+
+  getBackgroundColor(status: Status): string {
+    switch (status.type) {
+      case StatusType.CRITICAL:
+        return 'red';
+      case StatusType.WORKING_ON_IT:
+        return '#26ff59';
+      case StatusType.TBD:
+        return '#08adff';
+      case StatusType.DONE:
+        return 'lightblue';
+      case StatusType.NORMAL:
+        return 'white';
+      default:
+        return 'white';
+    }
+  }  
 }

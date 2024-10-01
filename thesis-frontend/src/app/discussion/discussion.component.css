@@ -73,6 +73,19 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     z-index: 1001;
     width: 1000px;
+    gap: 1rem;
+
+    input {
+        border-radius: 0.3px;
+    }
+
+    textarea {
+        border-radius: 0.3px;
+    }
+
+    select {
+        border-radius: 0.3px;
+    }
 }
 
 .dialog-content button {

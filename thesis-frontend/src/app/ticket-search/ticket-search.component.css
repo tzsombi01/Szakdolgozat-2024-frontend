@@ -71,11 +71,26 @@
     border-radius: 0.5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     width: 75rem;
+    gap: 1rem;
+
+    input {
+        border-radius: 0.3px;
+    }
+
+    textarea {
+        border-radius: 0.3px;
+    }
+
+    select {
+        border-radius: 0.3px;
+    }
 }
 
 .dialog-content button {
     margin-top: 10px;
 }
+
+
 
 .buttonContainer {
     display: flex;
