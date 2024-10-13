@@ -8,6 +8,8 @@ import { userReducer } from "./user.reducer";
 import { projectReducer } from "./project.reducers";
 import { statisticsReducer } from "./statistics.reducers";
 import { statusReducer } from "./status.reducers";
+import { inviteReducer } from "./invite.reducers";
+import { notificationReducer } from "./notification.reducers";
 
 export const reducers: ActionReducerMap<AppState> = {
     ticketState: ticketReducer,
@@ -18,6 +20,8 @@ export const reducers: ActionReducerMap<AppState> = {
     projectState: projectReducer,
     statisticsState: statisticsReducer,
     statusState: statusReducer,
+    inviteState: inviteReducer,
+    notificationState: notificationReducer,
 };
 
 export function clearState(reducer: ActionReducer<AppState>): ActionReducer<AppState> {

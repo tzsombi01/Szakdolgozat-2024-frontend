@@ -7,6 +7,8 @@ import { User } from "src/models/user";
 import { Project } from "src/models/project";
 import { ProgrammerStatisticsResponse } from "src/models/programmer-statistics";
 import { Status } from "src/models/status";
+import { Invite } from "src/models/invite";
+import { Notification } from 'src/models/notification';
 
 export interface AppState {
     ticketState: TicketState;
@@ -17,6 +19,8 @@ export interface AppState {
     projectState: ProjectState;
     statisticsState: StatisticsState;
     statusState: StatusState;
+    inviteState: InviteState;
+    notificationState: NotificationState;
 }
 
 export interface TicketState extends State {
@@ -64,5 +68,16 @@ export interface StatisticsState extends State {
 export interface StatusState extends State {
     statuses: Status[];
     status: Status;
+    total: number;
+}
+
+export interface InviteState extends State {
+    invites: Invite[];
+    invite: Invite;
+    total: number;
+}
+export interface NotificationState extends State {
+    notifications: Notification[];
+    notification: Notification;
     total: number;
 }
