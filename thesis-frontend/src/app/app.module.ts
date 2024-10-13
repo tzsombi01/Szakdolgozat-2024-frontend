@@ -54,6 +54,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { DiscussionDetailsComponent } from './discussion-details/discussion-details.component';
 import { DocumentationDetailsComponent } from './documentation-details/documentation-details.component';
 import { SearchComponent } from './search/search.component';
+import { NotificationComponent } from './notification/notification.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import { SearchComponent } from './search/search.component';
     SettingsComponent,
     DiscussionDetailsComponent,
     DocumentationDetailsComponent,
-    SearchComponent
+    SearchComponent,
+    NotificationComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),
@@ -113,7 +116,8 @@ import { SearchComponent } from './search/search.component';
     MatChipsModule,
     MatIconModule,
     MatFormFieldModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatBadgeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

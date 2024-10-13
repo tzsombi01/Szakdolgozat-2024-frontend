@@ -1,0 +1,38 @@
+<div (click)="handleClick()" style="cursor: pointer;">
+    <mat-icon [matBadge]="notifications?.length || null" matBadgeColor="warn">event</mat-icon>
+</div>
+
+<div *ngIf="this.isDialogOpen">
+    <div class="dialog-overlay">
+        <div class="dialog-content">
+            <h1>Notifications</h1>
+
+            <div class="container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let notification of this.notifications;">
+                            <td>{{ notification.name }}</td>
+                            <td>{{ notification.message }}</td>
+
+                            <td>
+                                <!-- <button (click)="open('details', notification.id)">Details</button>
+                                <button (click)="open('delete', notification.id)">Delete project</button> -->
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="buttonContainer">
+                <button (click)="close('close')">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

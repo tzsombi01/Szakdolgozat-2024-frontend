@@ -1,4 +1,6 @@
 <div class="header">
+  <app-notification *ngIf="loggedInUser" [loggedInUser]="this.loggedInUser"></app-notification>
+
   <div class="nav-buttons">
     <button routerLink="/home" routerLinkActive="active">Home</button>
     <button *ngIf="loggedInUser" routerLink="/projects" routerLinkActive="active">Projects</button>
