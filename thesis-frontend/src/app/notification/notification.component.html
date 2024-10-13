@@ -7,7 +7,7 @@
         <div class="dialog-content">
             <h1>Notifications</h1>
 
-            <div class="container">
+            <div *ngIf="this.notifications.length > 0" class="container">
                 <table class="table">
                     <thead>
                         <tr>
@@ -22,17 +22,47 @@
                             <td>{{ notification.message }}</td>
 
                             <td>
-                                <!-- <button (click)="open('details', notification.id)">Details</button>
-                                <button (click)="open('delete', notification.id)">Delete project</button> -->
+                                <button (click)="open('details', notification.id)">Notification details</button>
+                                <button (click)="open('delete', notification.id)">Delete notification</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
+            <div *ngIf="this.notifications.length === 0" class="container">
+                <h4>No notifications</h4>
+            </div>
+
             <div class="buttonContainer">
                 <button (click)="close('close')">Close</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isDetailDialogOpen">
+    <div class="dialog-overlay" style="z-index: 10000;"></div>
+    <div class="dialog-content" style="z-index: 10000;">
+        <h3>{{ this.notification?.name }}</h3>
+
+        <p>{{ this.notification?.message }}</p>
+
+        <div class="buttonContainer">
+            <button (click)="closeAdditionals('cancelDetails')">Cancel</button>
+            <button (click)="closeAdditionals('goToPath')">Go to page</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isDeleteDialogOpen">
+    <div class="dialog-overlay" style="z-index: 10000;"></div>
+    <div class="dialog-content" style="z-index: 10000;">
+        <h1>Do you really want to delete this Notification?</h1>
+
+        <div class="buttonContainer">
+            <button (click)="closeAdditionals('cancelDelete')">Cancel</button>
+            <button style="background-color: red;" type="submit" (click)="closeAdditionals('delete')">Delete</button>
         </div>
     </div>
 </div>

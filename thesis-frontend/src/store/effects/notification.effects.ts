@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { NotificationService } from "src/services/notification.service"; // Updated from CommentService
+import { NotificationService } from "src/services/notification.service";
 import {
   createNotificationError,
   createNotificationRequest,
@@ -30,13 +30,14 @@ export class NotificationEffects {
     return this.actions$.pipe(
       ofType(getNotificationsRequest),
       concatMap(({ queryOptions }) => {
+
         return this.notificationService.getNotifications(queryOptions).pipe(
           map((data) => {
             return getNotificationsSuccess({
               payload: {
                 data: {
-                  content: data,
-                  total: data.length
+                  content: data.content,
+                  total: data.numberOfElements
                 },
                 error: '',
                 loading: false

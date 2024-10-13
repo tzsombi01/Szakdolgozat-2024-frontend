@@ -56,6 +56,8 @@ import { DocumentationDetailsComponent } from './documentation-details/documenta
 import { SearchComponent } from './search/search.component';
 import { NotificationComponent } from './notification/notification.component';
 import { MatBadgeModule } from '@angular/material/badge';
+import { NotificationEffects } from 'src/store/effects/notification.effects';
+import { InviteEffects } from 'src/store/effects/invite.effects';
 
 @NgModule({
   declarations: [
@@ -96,7 +98,9 @@ import { MatBadgeModule } from '@angular/material/badge';
       UserEffects,
       ProjectEffects,
       StatisticsEffects,
-      StatusEffects
+      StatusEffects,
+      NotificationEffects,
+      InviteEffects
     ]),
     CommonModule,
     BrowserModule,
