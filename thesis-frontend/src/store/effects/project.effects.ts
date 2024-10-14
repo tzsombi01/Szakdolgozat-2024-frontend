@@ -17,6 +17,9 @@ import {
   getProjectRequest,
   getProjectSuccess,
   getProjectError,
+  getProjectsByIdsRequest,
+  getProjectsByIdsSuccess,
+  getProjectsByIdsError,
 } from "../actions/project.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -58,7 +61,7 @@ export class ProjectEffects {
       })
     );
   });
-
+  
   getProject$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(getProjectRequest),
@@ -85,6 +88,34 @@ export class ProjectEffects {
                 },
               })
             );
+          })
+        );
+      })
+    );
+  });
+
+  getProjectsByIds$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(getProjectsByIdsRequest),
+      concatMap(({ ids }) => {
+        return this.projectService.getProjectsByIdsRequest(ids).pipe(
+          map((data) => {
+            return getProjectsByIdsSuccess({
+              payload: {
+                data,
+                error: '',
+                loading: false
+              }
+            });
+          }),
+          catchError((err) => {
+            return of(getProjectsByIdsError({
+              payload: {
+                data: [],
+                error: err,
+                loading: false
+              }
+            }));
           })
         );
       })

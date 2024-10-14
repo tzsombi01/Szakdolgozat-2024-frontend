@@ -21,13 +21,21 @@ export class ProjectService {
 
     return this.http.post(`${this.BASE_URL}/api/projects/get`, queryOptions, requestHeaders);
   }
-
+  
   public createProject(project: ProjectInput): Observable<any> {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
-
+    
     return this.http.post<any>(`${this.BASE_URL}/api/projects`, project, requestHeaders);
+  }
+  
+  public getProjectsByIdsRequest(ids: string[]): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+
+    return this.http.post(`${this.BASE_URL}/api/projects/byIds`, ids, requestHeaders);
   }
 
   public editProject(id: string, project: ProjectInput): Observable<any> {

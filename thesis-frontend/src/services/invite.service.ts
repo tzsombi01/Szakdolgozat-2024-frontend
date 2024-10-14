@@ -21,12 +21,12 @@ export class InviteService {
     return this.http.post(`${this.BASE_URL}/api/invites/get`, queryOptions, requestHeaders);
   }
 
-  public createInvite(invite: InviteInput): Observable<any> {
+  public acceptInvite(id: string): Observable<any> {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
 
-    return this.http.post<any>(`${this.BASE_URL}/api/invites`, invite, requestHeaders);
+    return this.http.post<any>(`${this.BASE_URL}/api/invites`, id, requestHeaders);
   }
 
   public editInvite(id: string, invite: InviteInput): Observable<any> {
@@ -37,7 +37,7 @@ export class InviteService {
     return this.http.put<any>(`${this.BASE_URL}/api/invites/${id}`, invite, requestHeaders);
   }
 
-  public deleteInvite(id: string): Observable<any> {
+  public declineInvite(id: string): Observable<any> {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };

@@ -28,8 +28,35 @@
         </table>
     </div>
     
+    <div *ngIf="isProjectsEmpty()" class="no-projects-container">
+        <p class="no-projects-text">No projects found!</p>
+    </div>
+
     <div style="margin-top: 2rem; margin-bottom: 2rem;">
         <button (click)="open('create')">Create project</button>
+    </div>
+
+    <h1 class="project-caption">Project invites</h1>
+
+    <div *ngIf="!isProjectInvitesEmpty() && this.projectsByIds.length > 0 && !(projectsLoading$ | async)" class="project-container">
+        <table class="project-table">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let invite of invites; let i = index;">
+                    <td>{{ this.getProjectName(invite.project) }}</td>
+                    
+                    <td>
+                        <button (click)="close('accept', invite.id)">Accept</button>
+                        <button (click)="close('decline', invite.id)">Decline</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div *ngIf="isDialogOpen">
@@ -61,10 +88,4 @@
             </div>
         </div>
     </div>
-
-    <div *ngIf="isProjectsEmpty()" class="no-projects-container">
-        <p class="no-projects-text">No projects found!</p>
-    </div>
 </div>
-
-<app-footer></app-footer>

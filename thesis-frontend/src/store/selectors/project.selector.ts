@@ -23,6 +23,11 @@ export const getProjectsWithTotal = createSelector(
     }
 );
 
+export const getProjectsByIds = createSelector(
+    getProjectState,
+    (state: ProjectState) => state.projectsByIds
+);
+
 export const getProjectLoading = createSelector(
     getProjectState,
     (state: ProjectState) => state.loading

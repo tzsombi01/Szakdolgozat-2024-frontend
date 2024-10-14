@@ -11,14 +11,14 @@ export const getInviteRequest = createAction('[ Invite ] GetInviteRequest', prop
 export const getInviteSuccess = createAction('[ Invite ] GetInviteSuccess', props<{ payload: Payload }>());
 export const getInviteError = createAction('[ Invite ] GetInviteError', props<{ payload: Payload }>());
 
-export const createInviteRequest = createAction('[ Invite ] CreateInviteRequest', props<{ invite: InviteInput }>()); // Updated from comment: CommentInput
-export const createInviteSuccess = createAction('[ Invite ] CreateInviteSuccess', props<{ payload: Payload }>());
-export const createInviteError = createAction('[ Invite ] CreateInviteError', props<{ payload: Payload }>());
+export const acceptInviteRequest = createAction('[ Invite ] AcceptInviteRequest', props<{ id: string }>());
+export const acceptInviteSuccess = createAction('[ Invite ] AcceptInviteSuccess', props<{ payload: Payload }>());
+export const acceptInviteError = createAction('[ Invite ] AcceptInviteError', props<{ payload: Payload }>());
 
 export const editInviteRequest = createAction('[ Invite ] EditInviteRequest', props<{ id: string, invite: InviteInput }>());
 export const editInviteSuccess = createAction('[ Invite ] EditInviteSuccess', props<{ payload: Payload }>());
 export const editInviteError = createAction('[ Invite ] EditInviteError', props<{ payload: Payload }>());
 
-export const deleteInviteRequest = createAction('[ Invite ] DeleteInviteRequest', props<{ id: string }>());
-export const deleteInviteSuccess = createAction('[ Invite ] DeleteInviteSuccess', props<{ payload: Payload }>());
-export const deleteInviteError = createAction('[ Invite ] DeleteInviteError', props<{ payload: Payload }>());
+export const declineInviteRequest = createAction('[ Invite ] DeclineInviteRequest', props<{ id: string }>());
+export const declineInviteSuccess = createAction('[ Invite ] DeclineInviteSuccess', props<{ payload: Payload }>());
+export const declineInviteError = createAction('[ Invite ] DeclineInviteError', props<{ payload: Payload }>());

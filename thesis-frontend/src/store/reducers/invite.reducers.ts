@@ -40,7 +40,7 @@ const _inviteReducer = createReducer(
         };
     }),
 
-    on(inviteActions.createInviteRequest, (state) => {
+    on(inviteActions.acceptInviteRequest, (state) => {
         return {
             ...state,
             error: '',
@@ -48,19 +48,16 @@ const _inviteReducer = createReducer(
         };
     }),
 
-    on(inviteActions.createInviteSuccess, (state, { payload }) => { 
+    on(inviteActions.acceptInviteSuccess, (state, { payload }) => { 
         return {
             ...state,
-            invites: [
-                ...state.invites,
-                (payload.data as unknown) as Invite
-            ],
+            invites: state.invites.filter((invite: Invite) => invite.id !== payload.data.id),
             error: payload.error,
             loading: payload.loading
         };
     }),
 
-    on(inviteActions.createInviteError, (state, { payload }) => {
+    on(inviteActions.acceptInviteError, (state, { payload }) => {
         return {
             ...state,
             error: payload.error,
@@ -95,7 +92,7 @@ const _inviteReducer = createReducer(
         };
     }),
 
-    on(inviteActions.deleteInviteRequest, (state) => {
+    on(inviteActions.declineInviteRequest, (state) => {
         return {
             ...state,
             error: '',
@@ -103,7 +100,7 @@ const _inviteReducer = createReducer(
         };
     }),
 
-    on(inviteActions.deleteInviteSuccess, (state, { payload }) => {
+    on(inviteActions.declineInviteSuccess, (state, { payload }) => {
         return {
             ...state,
             invites: state.invites.filter((invite: Invite) => invite.id !== payload.data.id),
@@ -112,7 +109,7 @@ const _inviteReducer = createReducer(
         };
     }),
 
-    on(inviteActions.deleteInviteError, (state, { payload }) => {
+    on(inviteActions.declineInviteError, (state, { payload }) => {
         return {
             ...state,
             error: payload.error,

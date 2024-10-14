@@ -11,6 +11,10 @@ export const getProjectRequest = createAction('[ Project ] GetProjectRequest', p
 export const getProjectSuccess = createAction('[ Project] GetProjectSuccess', props<{ payload: Payload }>());
 export const getProjectError = createAction('[ Project ] GetProjectError', props<{ payload: Payload }>());
 
+export const getProjectsByIdsRequest = createAction('[ Project ] GetProjectsByIdsRequest', props<{ ids: string[]; }>());
+export const getProjectsByIdsSuccess = createAction('[ Project ] GetProjectsByIdsSuccess', props<{ payload: Payload }>());
+export const getProjectsByIdsError = createAction('[ Project ] getProjectsByIdsError', props<{ payload: Payload }>());
+
 export const createProjectRequest = createAction('[ Project ] CreateProjectRequest', props<{ project: ProjectInput, queryOptions: QueryOptions }>());
 export const createProjectSuccess = createAction('[ Project ] CreateProjectSuccess', props<{ payload: Payload }>());
 export const createProjectError = createAction('[ Project ] CreateProjectError', props<{ payload: Payload }>());

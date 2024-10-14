@@ -6,12 +6,15 @@ import { Store } from '@ngrx/store';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
 import { State } from '@progress/kendo-data-query/dist/npm/state';
 import { Observable } from 'rxjs';
+import { Invite } from 'src/models/invite';
 import { Project, ProjectInput } from 'src/models/project';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
-import { createProjectRequest, deleteProjectRequest, editProjectRequest, getProjectsRequest } from 'src/store/actions/project.actions';
-import { ProjectState } from 'src/store/app.states';
-import { getProjectLoading, getProjectsWithTotal } from 'src/store/selectors/project.selector';
+import { acceptInviteRequest, declineInviteRequest, getInvitesRequest } from 'src/store/actions/invite.actions';
+import { createProjectRequest, deleteProjectRequest, editProjectRequest, getProjectsByIdsRequest, getProjectsRequest } from 'src/store/actions/project.actions';
+import { InviteState, ProjectState } from 'src/store/app.states';
+import { getInvitesWithTotal } from 'src/store/selectors/invite.selector';
+import { getProjectLoading, getProjectsByIds, getProjectsWithTotal } from 'src/store/selectors/project.selector';
 
 @UntilDestroy()
 @Component({
@@ -29,8 +32,22 @@ export class ProjectsComponent implements OnInit {
 
   projects$: Observable<Project[] | any>;
   projects: Project[] = [];
+  projectsByIds$: Observable<Project[] | any>;
+  projectsByIds: Project[] = [];
   project?: Project;
   gridState: State = {
+    skip: 0,
+    take: 10,
+    filter: {
+      filters: [],
+      logic: 'and'
+    }
+  };
+
+  invites$: Observable<Invite[] | any>;
+  invites: Invite[] = [];
+  invite?: Invite;
+  inviteGridState: State = {
     skip: 0,
     take: 10,
     filter: {
@@ -49,9 +66,12 @@ export class ProjectsComponent implements OnInit {
   constructor(
     public route: ActivatedRoute,
     public router: Router,
-    private projectStore: Store<ProjectState>
+    private projectStore: Store<ProjectState>,
+    private inviteStore: Store<InviteState>,
   ) {
     this.projects$ = this.projectStore.select(getProjectsWithTotal);
+    this.projectsByIds$ = this.projectStore.select(getProjectsByIds);
+    this.invites$ = this.inviteStore.select(getInvitesWithTotal);
 
     this.projectsLoading$ = this.projectStore.select(getProjectLoading);
   }
@@ -62,12 +82,24 @@ export class ProjectsComponent implements OnInit {
     this.projects$.pipe(untilDestroyed(this)).subscribe(({ projects, total }) => {
       this.projects = projects;
     });
+
+    this.projectsByIds$.pipe(untilDestroyed(this)).subscribe((projectsByIds) => {
+      this.projectsByIds = projectsByIds;
+    });
+    
+    this.invites$.pipe(untilDestroyed(this)).subscribe(({ invites, total }) => {
+      this.invites = invites;
+      if (this.invites.length > 0) {
+        this.projectStore.dispatch(getProjectsByIdsRequest({ ids: this.invites.map(invite => invite.project) }));
+      }
+    });
   }
 
   onSiteOpen(): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     this.projectStore.dispatch(getProjectsRequest({ queryOptions }));
+    this.inviteStore.dispatch(getInvitesRequest({ queryOptions }));
   }
 
   open(type: ('create' | 'edit' | 'delete' | 'details'), id?: string): void {
@@ -91,10 +123,10 @@ export class ProjectsComponent implements OnInit {
       this.isDeleteDialogOpen = true;
     } else if(type === 'details') {
       this.router.navigate([`/projects/${id}`]);
-    }
+    } 
   }
 
-  close(type: ('cancel' | 'submit' | 'delete')): void {
+  close(type: ('cancel' | 'submit' | 'delete' | 'accept' | 'decline'), id?: string): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     if (type === 'submit') {
@@ -119,16 +151,30 @@ export class ProjectsComponent implements OnInit {
       }
     } else if (type === 'delete') {
       this.projectStore.dispatch(deleteProjectRequest({ id: this.project?.id!, queryOptions }));
+    } else if (type === 'accept') {
+      this.inviteStore.dispatch(acceptInviteRequest({ id: id! }));
+    } else if (type === 'decline') {
+      this.inviteStore.dispatch(declineInviteRequest({ id: id! }));
     }
 
     this.formGroup.reset();
     this.project = undefined;
     this.isDialogOpen = false;
     this.isDeleteDialogOpen = false;
+    
+    this.onSiteOpen();
   }
 
   isProjectsEmpty(): boolean {
     return this.projects.length === 0;
+  }
+  
+  isProjectInvitesEmpty(): boolean {
+    return this.invites.length === 0;
+  }
+  
+  getProjectName(id: string): string {
+    return this.projectsByIds.find(project => project.id === id)!.name;
   }
 
   getTitle(): string {

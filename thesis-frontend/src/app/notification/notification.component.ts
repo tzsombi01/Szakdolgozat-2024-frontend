@@ -69,7 +69,7 @@ export class NotificationComponent {
         ...this.notification,
         seen: true
       };
-      console.log(editedNotification)
+
       this.notificationStore.dispatch(editNotificationRequest({ id: this.notification.id!, notification: editedNotification }));
 
       this.isDetailDialogOpen = true;

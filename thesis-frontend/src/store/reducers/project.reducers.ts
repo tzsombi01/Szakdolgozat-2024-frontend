@@ -6,6 +6,7 @@ import { ProjectState } from 'src/store/app.states'; // Update import to Project
 export const initialState: ProjectState = {
     projects: [],
     project: ({} as unknown) as Project,
+    projectsByIds: [],
     error: '',
     loading: false,
     total: 0
@@ -59,6 +60,31 @@ const _projectReducer = createReducer(
     }),
 
     on(projectActions.getProjectError, (state, { payload }) => {
+        return {
+            ...state,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(projectActions.getProjectsByIdsRequest, (state) => {
+        return {
+            ...state,
+            error: '',
+            loading: true
+        };
+    }),
+    
+    on(projectActions.getProjectsByIdsSuccess, (state, { payload }) => {
+        return {
+            ...state,
+            projectsByIds: payload.data,
+            error: payload.error,
+            loading: payload.loading
+        };
+    }),
+
+    on(projectActions.getProjectsByIdsError, (state, { payload }) => {
         return {
             ...state,
             error: payload.error,

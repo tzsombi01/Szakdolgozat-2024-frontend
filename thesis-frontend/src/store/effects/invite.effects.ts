@@ -1,20 +1,20 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { InviteService } from "src/services/invite.service"; // Updated from CommentService
+import { InviteService } from "src/services/invite.service";
 import {
-  createInviteError,
-  createInviteRequest,
-  createInviteSuccess,
   editInviteError,
   editInviteRequest,
   editInviteSuccess,
-  deleteInviteError,
-  deleteInviteRequest,
-  deleteInviteSuccess,
   getInvitesError,
   getInvitesSuccess,
   getInvitesRequest,
-} from "../actions/invite.actions"; // Updated from comment.actions
+  acceptInviteRequest,
+  acceptInviteSuccess,
+  acceptInviteError,
+  declineInviteRequest,
+  declineInviteSuccess,
+  declineInviteError,
+} from "../actions/invite.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
 
@@ -35,8 +35,8 @@ export class InviteEffects {
             return getInvitesSuccess({
               payload: {
                 data: {
-                  content: data,
-                  total: data.length
+                  content: data.content,
+                  total: data.content.length
                 },
                 error: '',
                 loading: false
@@ -57,14 +57,14 @@ export class InviteEffects {
     );
   });
 
-  createInvite$ = createEffect(() => {
+  acceptInvite$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(createInviteRequest),
-      mergeMap(({ invite }) => {
-        return this.inviteService.createInvite(invite).pipe(
+      ofType(acceptInviteRequest),
+      mergeMap(({ id }) => {
+        return this.inviteService.acceptInvite(id).pipe(
           mergeMap((data) => {
             return of(
-              createInviteSuccess({
+              acceptInviteSuccess({
                 payload: {
                   data: data,
                   error: '',
@@ -75,7 +75,7 @@ export class InviteEffects {
           }),
           catchError((err) => {
             return of(
-              createInviteError({
+              acceptInviteError({
                 payload: {
                   data: [],
                   error: err,
@@ -119,14 +119,14 @@ export class InviteEffects {
     );
   });
 
-  deleteInvite$ = createEffect(() => {
+  declineInvite$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(deleteInviteRequest),
+      ofType(declineInviteRequest),
       mergeMap(({ id }) => {
-        return this.inviteService.deleteInvite(id).pipe(
+        return this.inviteService.declineInvite(id).pipe(
           mergeMap((data) => {
             return of(
-              deleteInviteSuccess({
+              declineInviteSuccess({
                 payload: {
                   data: data,
                   error: '',
@@ -137,7 +137,7 @@ export class InviteEffects {
           }),
           catchError((err) => {
             return of(
-              deleteInviteError({
+              declineInviteError({
                 payload: {
                   data: [],
                   error: err,

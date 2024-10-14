@@ -57,6 +57,7 @@ export interface UserState extends State {
 export interface ProjectState extends State {
     projects: Project[];
     project: Project;
+    projectsByIds: Project[];
     total: number;
 }
 
