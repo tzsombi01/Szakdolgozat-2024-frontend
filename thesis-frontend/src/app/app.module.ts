@@ -16,7 +16,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ProfileComponent } from './profile/profile.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { TicketComponent } from './ticket/ticket.component';
 import { DiscussionComponent } from './discussion/discussion.component';
 import { StatisticComponent } from './statistic/statistic.component';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -70,7 +69,6 @@ import { InviteEffects } from 'src/store/effects/invite.effects';
     ProfileComponent,
     SidebarComponent,
     ProjectsComponent,
-    TicketComponent,
     DiscussionComponent,
     StatisticComponent,
     LoginComponent,

@@ -11,6 +11,7 @@ export interface Ticket extends Entity {
     statuses: string[];
     comments: string[];
     mentionedInCommits: string[];
+    closed: boolean;
 }
 
 export interface TicketInput {
@@ -22,4 +23,5 @@ export interface TicketInput {
     statuses: string[];
     comments: string[];
     mentionedInCommits: string[];
+    closed: boolean;
 }

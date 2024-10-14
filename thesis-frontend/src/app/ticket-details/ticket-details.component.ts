@@ -127,6 +127,12 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       this.ticket = ticket;
 
       if (this.ticket?.id) {
+        if (this.ticket.closed) {
+          this.snackBar.open('This ticket is closed!', 'Close', {
+            duration: 3000
+          });
+        }
+
         this.selectedAssignee = this.ticket.assignee;
         this.selectedCreator = this.ticket.creator;
 
@@ -200,7 +206,8 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,
-        comments: this.ticket?.comments!
+        comments: this.ticket?.comments!,
+        closed: this.ticket?.closed ?? false
       };
 
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -218,7 +225,8 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         mentionedInCommits: this.ticket?.mentionedInCommits!,
         statuses: this.ticket?.statuses!,
         ticketReferences: this.ticket?.ticketReferences!,
-        comments: this.ticket?.comments!
+        comments: this.ticket?.comments!,
+        closed: this.ticket?.closed ?? false
       };
 
       this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -286,7 +294,8 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       mentionedInCommits: this.ticket?.mentionedInCommits!,
       statuses: this.getStatuses(),
       ticketReferences: this.ticket?.ticketReferences!,
-      comments: this.ticket?.comments!
+      comments: this.ticket?.comments!,
+      closed: this.ticket?.closed ?? false
     };
 
     this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -305,7 +314,8 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
       mentionedInCommits: this.ticket?.mentionedInCommits!,
       statuses: this.getStatuses(),
       ticketReferences: this.ticket?.ticketReferences!,
-      comments: this.ticket?.comments!
+      comments: this.ticket?.comments!,
+      closed: this.ticket?.closed ?? false
     };
 
     this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -342,5 +352,25 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
 
   getCommentType(): CommentType | string {
     return CommentType.Ticket;
+  }
+
+  closeSwitch(): void {
+    const editedTicket: TicketInput = {
+      description: this.ticket?.description,
+      name: this.ticket?.name!,
+      project: this.ticket?.project!,
+      assignee: this.selectedAssignee,
+      mentionedInCommits: this.ticket?.mentionedInCommits!,
+      statuses: this.getStatuses(),
+      ticketReferences: this.ticket?.ticketReferences!,
+      comments: this.ticket?.comments!,
+      closed: !(this.ticket?.closed ?? false)
+    };
+
+    this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
+  }
+
+  getClosedButtonText(): string {
+    return this.ticket?.closed ? "Re-open" : "Close";
   }
 }

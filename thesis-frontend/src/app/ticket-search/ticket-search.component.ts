@@ -233,7 +233,8 @@ export class TicketSearchComponent implements OnInit {
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
-          comments: this.ticket?.comments!
+          comments: this.ticket?.comments!,
+          closed: false
         };
 
         this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
@@ -246,7 +247,8 @@ export class TicketSearchComponent implements OnInit {
           mentionedInCommits: [],
           statuses: this.getStatuses(),
           ticketReferences: this.selectedTicketReferences,
-          comments: this.ticket?.comments!
+          comments: this.ticket?.comments!,
+          closed: this.ticket?.closed ?? false
         };
   
         this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));

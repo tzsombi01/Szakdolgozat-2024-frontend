@@ -10,7 +10,7 @@
       </div>
 
       <div *ngIf="!this.isEditingDescription" class="buttonContainer">
-        <button (click)="toggleEditDescription()">Edit Description</button>
+        <button [disabled]="this.ticket.closed" (click)="toggleEditDescription()">Edit Description</button>
       </div>
     </div>
 
@@ -23,11 +23,11 @@
       <textarea style="width: 100%; height: auto;" [(ngModel)]="markdownDescription" autoResize>
       </textarea>
     </div>
-
+<!-- 
     <p class="ticket-info">Ticket References:</p>
     <ul class="ticket-list">
       <li class="ticket-list-item" *ngFor="let reference of this.ticket?.ticketReferences">{{ reference }}</li>
-    </ul>
+    </ul> -->
 
     <app-comment *ngIf="!(this.ticketLoading$ | async) && !(this.usersLoading$ | async)" [parentEntity]="this.ticket"
       [type]="this.getCommentType()" [loggedInUser]="this.loggedInUser" [users]="this.users"></app-comment>
@@ -35,7 +35,7 @@
 
   <div class="sidebar" *ngIf="!(this.usersLoading$ | async)">
     <p><strong>Assignee:</strong></p>
-    <select [(ngModel)]="this.selectedAssignee" (change)="onUserChange('assignee')">
+    <select [disabled]="this.ticket.closed" [(ngModel)]="this.selectedAssignee" (change)="onUserChange('assignee')">
       <option *ngFor="let user of users" [value]="user.id">
         {{ user.firstName + ' ' + user.lastName }}
       </option>
@@ -49,7 +49,7 @@
     <p style="margin-top: 1rem;"><strong>Statuses:</strong></p>
     <mat-form-field style="margin-top: 0.5rem;">
       <mat-label>Statuses</mat-label>
-      <mat-chip-grid #chipGrid aria-label="Select statuses">
+      <mat-chip-grid [disabled]="this.ticket.closed" #chipGrid aria-label="Select statuses">
         <mat-chip-row [ngStyle]="{'background-color': this.getBackgroundColor(status)}"
           *ngFor="let status of selectedStatuses;" (removed)="remove(status)">
           {{ status.name }}
@@ -66,5 +66,9 @@
           }}</mat-option>
       </mat-autocomplete>
     </mat-form-field>
+
+    <div>
+      <button (click)="this.closeSwitch()">{{ this.getClosedButtonText() }}</button>
+    </div>
   </div>
 </div>
