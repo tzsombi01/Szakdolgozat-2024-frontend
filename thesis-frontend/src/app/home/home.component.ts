@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -19,7 +20,8 @@ export class HomeComponent implements OnInit {
   loggedInUser: User | undefined;
 
   constructor(
-    private userStore: Store<UserState>
+    private router: Router,
+    private userStore: Store<UserState>,
   ) {
     this.loggedInUser$ = this.userStore.select(getLoggedInUser);
   }
@@ -29,6 +31,10 @@ export class HomeComponent implements OnInit {
 
     this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
       this.loggedInUser = user;
+      
+      if (user?.id) {
+        this.router.navigate(["/projects"]);
+      }
     });
   }
 }

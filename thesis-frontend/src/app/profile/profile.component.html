@@ -10,11 +10,6 @@
             <li><a (click)="this.open('accessToken')">Set access token</a></li>
             <li><a (click)="this.logout()">Logout</a></li>
         </ul>
-        <div class="statistics">
-            <h2>Statistics</h2>
-            <p>View your statistics here.</p>
-            <a href="statistics">Go to Statistics</a>
-        </div>
     </div>
 
     <div *ngIf="this.isAccessTokenDialogOpened">

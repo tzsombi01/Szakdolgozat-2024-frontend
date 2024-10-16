@@ -26,3 +26,7 @@ export const editProjectError = createAction('[ Project ] EditProjectError', pro
 export const deleteProjectRequest = createAction('[ Project ] DeleteProjectRequest', props<{ id: string, queryOptions: QueryOptions }>());
 export const deleteProjectSuccess = createAction('[ Project ] DeleteProjectSuccess', props<{ payload: Payload }>());
 export const deleteProjectError = createAction('[ Project ] DeleteProjectError', props<{ payload: Payload }>()); 
+
+export const leaveProjectRequest = createAction('[ Project ] LeaveProjectRequest', props<{ id: string, queryOptions: QueryOptions }>());
+export const leaveProjectSuccess = createAction('[ Project ] LeaveProjectSuccess', props<{ payload: Payload }>());
+export const leaveProjectError = createAction('[ Project ] LeaveProjectError', props<{ payload: Payload }>()); 

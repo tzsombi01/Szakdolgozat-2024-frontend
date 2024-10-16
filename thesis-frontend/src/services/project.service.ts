@@ -53,12 +53,20 @@ export class ProjectService {
 
     return this.http.delete<any>(`${this.BASE_URL}/api/projects/${id}`, requestHeaders);
   }
-
+  
   public getProject(id: string): Observable<any> {
     const token: string | null = localStorage.getItem('token');
     let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
     const requestHeaders = { headers: authHeader };
-
+    
     return this.http.get<any>(`${this.BASE_URL}/api/projects/${id}`, requestHeaders);
+  }
+  
+  public leaveProject(id: string): Observable<any> {
+    const token: string | null = localStorage.getItem('token');
+    let authHeader = new HttpHeaders({ Authorization: "Bearer " + token });
+    const requestHeaders = { headers: authHeader };
+    
+    return this.http.post<any>(`${this.BASE_URL}/api/projects/leave/${id}`, null, requestHeaders);
   }
 }

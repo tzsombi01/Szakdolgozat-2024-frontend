@@ -1,0 +1,132 @@
+/* General Styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* Aligns content horizontally at the center */
+}
+
+.profile {
+    text-align: center; /* Centers the text within .profile */
+    margin: auto; /* Centers the .profile div horizontally */
+    padding: 20px;
+    margin-top: 40px;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+/* Sidebar Styles */
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ddd;
+}
+
+.statistics {
+    margin-top: 20px;
+}
+
+.statistics h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.statistics p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.statistics a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+}
+
+.statistics a:hover {
+    background-color: #0056b3;
+}
+
+a {
+    cursor: pointer;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+}
+
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.dialog-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+    padding-bottom: 2rem;
+    max-width: 100% !important;
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    width: 1000px;
+}
+
+.dialog-content button {
+    margin-top: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.buttonContainer button {
+    width: calc(50% - 5px);
+}

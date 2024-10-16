@@ -20,6 +20,9 @@ import {
   getProjectsByIdsRequest,
   getProjectsByIdsSuccess,
   getProjectsByIdsError,
+  leaveProjectRequest,
+  leaveProjectSuccess,
+  leaveProjectError,
 } from "../actions/project.actions";
 import { catchError, concatMap, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
@@ -213,6 +216,39 @@ export class ProjectEffects {
           catchError((err) => {
             return of(
               deleteProjectError({
+                payload: {
+                  data: [],
+                  error: err,
+                  loading: false,
+                },
+              })
+            );
+          })
+        );
+      })
+    );
+  });
+  
+  leaveProject$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(leaveProjectRequest),
+      mergeMap(({ id, queryOptions }) => {
+        return this.projectService.leaveProject(id).pipe(
+          mergeMap((data) => {
+            return of(
+              leaveProjectSuccess({
+                payload: {
+                  data,
+                  error: '',
+                  loading: false,
+                },
+              }),
+              getProjectsRequest({ queryOptions })
+            );
+          }),
+          catchError((err) => {
+            return of(
+              leaveProjectError({
                 payload: {
                   data: [],
                   error: err,

@@ -11,7 +11,7 @@ import { Project, ProjectInput } from 'src/models/project';
 import { QueryOptions } from 'src/models/query-options';
 import { getQueryOptions } from 'src/shared/common-functions';
 import { acceptInviteRequest, declineInviteRequest, getInvitesRequest } from 'src/store/actions/invite.actions';
-import { createProjectRequest, deleteProjectRequest, editProjectRequest, getProjectsByIdsRequest, getProjectsRequest } from 'src/store/actions/project.actions';
+import { createProjectRequest, deleteProjectRequest, editProjectRequest, getProjectsByIdsRequest, getProjectsRequest, leaveProjectRequest } from 'src/store/actions/project.actions';
 import { InviteState, ProjectState } from 'src/store/app.states';
 import { getInvitesWithTotal } from 'src/store/selectors/invite.selector';
 import { getProjectLoading, getProjectsByIds, getProjectsWithTotal } from 'src/store/selectors/project.selector';
@@ -26,6 +26,7 @@ export class ProjectsComponent implements OnInit {
 
   isDialogOpen: boolean = false;
   isDeleteDialogOpen: boolean = false;
+  isLeaveDialogOpen: boolean = false;
   isEdit: boolean = false;
 
   projectsLoading$: Observable<boolean | any>;
@@ -102,7 +103,7 @@ export class ProjectsComponent implements OnInit {
     this.inviteStore.dispatch(getInvitesRequest({ queryOptions }));
   }
 
-  open(type: ('create' | 'edit' | 'delete' | 'details'), id?: string): void {
+  open(type: ('create' | 'edit' | 'delete' | 'details' | 'leave'), id?: string): void {
     if (type === 'create') {
       this.isEdit = false;
 
@@ -123,10 +124,14 @@ export class ProjectsComponent implements OnInit {
       this.isDeleteDialogOpen = true;
     } else if(type === 'details') {
       this.router.navigate([`/projects/${id}`]);
-    } 
+    } else if (type === 'leave') {
+      this.project = this.projects.find((project: Project) => project.id === id);
+
+      this.isLeaveDialogOpen = true;
+    }
   }
 
-  close(type: ('cancel' | 'submit' | 'delete' | 'accept' | 'decline'), id?: string): void {
+  close(type: ('cancel' | 'submit' | 'delete' | 'accept' | 'decline' | 'leave'), id?: string): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
     if (type === 'submit') {
@@ -155,12 +160,15 @@ export class ProjectsComponent implements OnInit {
       this.inviteStore.dispatch(acceptInviteRequest({ id: id! }));
     } else if (type === 'decline') {
       this.inviteStore.dispatch(declineInviteRequest({ id: id! }));
+    } else if (type === 'leave') {
+      this.projectStore.dispatch(leaveProjectRequest({ id: this.project?.id!, queryOptions }));
     }
 
     this.formGroup.reset();
     this.project = undefined;
     this.isDialogOpen = false;
     this.isDeleteDialogOpen = false;
+    this.isLeaveDialogOpen = false;
     
     this.onSiteOpen();
   }
