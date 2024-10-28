@@ -12,13 +12,7 @@ export class UserService {
 
   private readonly BASE_URL: string = environment.baseUrl;
 
-  constructor(
-    private http: HttpClient
-  ) {
-  }
-
-  ngOnInit(): void {
-  }
+  constructor(private http: HttpClient) {}
   
   getLoggedInUser(): Observable<any> {
     const token: string | null = localStorage.getItem('token');
