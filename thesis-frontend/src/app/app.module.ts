@@ -57,6 +57,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { MatBadgeModule } from '@angular/material/badge';
 import { NotificationEffects } from 'src/store/effects/notification.effects';
 import { InviteEffects } from 'src/store/effects/invite.effects';
+import { CommitHeatmapComponent } from './commit-heatmap/commit-heatmap.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { InviteEffects } from 'src/store/effects/invite.effects';
     DiscussionDetailsComponent,
     DocumentationDetailsComponent,
     SearchComponent,
-    NotificationComponent
+    NotificationComponent,
+    CommitHeatmapComponent
   ],
   imports: [
     StoreModule.forRoot(reducers, { metaReducers }),

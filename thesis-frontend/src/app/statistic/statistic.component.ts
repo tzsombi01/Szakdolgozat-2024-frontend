@@ -114,12 +114,15 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.userStore.dispatch(getUsersRequest({ queryOptions }));
+        
+        const startDate = new Date();
+        startDate.setFullYear(startDate.getFullYear() - 1);
 
         // for (const value of this.types) {
-        const programmerStatisticsRequest: ProgrammerStatisticsRequest = {
+        let programmerStatisticsRequest: ProgrammerStatisticsRequest = {
           ids: this.project?.users!,
-          type: StatisticsType.COMMITS_PER_PROJECT,
-          from: undefined,
+          type: StatisticsType.DAILY_COMMITS_FOR_YEAR,
+          from: startDate.getTime(),
           until: undefined
         };
 
@@ -144,30 +147,46 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   getChartData(type: StatisticsType | string): Highcharts.Options {
     return {
       chart: {
-        type: this.getChartType(type)
+        type: this.getChartType(type),
+        plotBorderWidth: this.getPlotBorderWidth(type)
       },
       title: {
         text: this.getChartTitle(type)
       },
+      subtitle: {
+        text: this.getSubtitle(type)
+      },
       xAxis: {
-        categories: this.getXAxisDataTypes(type), // Names on X-axis
+        categories: this.getXAxisDataTypes(type),
         title: {
           text: this.getXAxisTitle(type)
+        },
+        opposite: this.getOpposite(type),
+        lineWidth: this.getLineWidth(type),
+        labels: {
+          style: {
+            fontWeight: 'bold'
+          }
         }
       },
       yAxis: {
         title: {
           text: this.getYAxisTitle(type)
-        }
+        },
+        visible: this.isVisible(type)
       },
       series: [
         {
           name: this.getBarTitle(type),
           type: this.getChartType(type),
           data: this.populateChart(type),
+          dataLabels: this.getDataLabel(type),
           showInLegend: false
         }
-      ]
+      ],
+      colorAxis: this.getColorAxis(type),
+      tooltip: this.getTooltip(type),
+      legend: this.getLegend(type)
     };
   }
 
@@ -182,10 +201,29 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
             color: 'blue'
           }
         });
-        // return this.users.map(user => ({
-        //   y: user.commits,
-        //   color: user.color
-        // }))
+      }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
+        
+        return response.statisticsInfos.map(info => {
+          return {
+            y: info.averageSize,
+            color: 'blue'
+          }
+        });
+      }
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
+
+        let infos: any = response.statisticsInfos[0];
+        return infos.map((info: any) => {
+          return {
+            x: info.x,
+            y: info.y,
+            value: info.value,
+            date: info
+          }
+        });
       }
       default: {
         return 'Statistic';
@@ -199,7 +237,16 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
 
         return response.statisticsInfos.map(info => info.name);
-        // return this.users.map(user => user.userName);
+      }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
+
+        return response.statisticsInfos.map(info => info.name);
+      }
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        // const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
+
+        return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       }
       default: {
         return this.users.map(user => user.userName);
@@ -212,6 +259,12 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'column';
       }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        return 'column';
+      }
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return 'heatmap';
+      }
       default: {
         return 'column';
       }
@@ -222,6 +275,12 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Commits per project';
+      }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        return 'Average commit size';
+      }
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return 'Commit Activity Heatmap (Yearly)';
       }
       default: {
         return 'Statistic';
@@ -234,6 +293,9 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Commits from user';
       }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        return 'Average commit size from user';
+      }
       default: {
         return 'Statistic';
       }
@@ -243,6 +305,9 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   private getXAxisTitle(type: StatisticsType | string): string {
     switch (type) {
       case StatisticsType.COMMITS_PER_PROJECT: {
+        return 'Users';
+      }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
         return 'Users';
       }
       default: {
@@ -256,8 +321,133 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       case StatisticsType.COMMITS_PER_PROJECT: {
         return 'Number of commits';
       }
+      case StatisticsType.AVERAGE_COMMIT_SIZE: {
+        return 'Average commit size';
+      }
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return '';
+      }
       default: {
         return 'Statistic';
+      }
+    }
+  }
+
+  private getPlotBorderWidth(type: StatisticsType | string): number {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return 1;
+      }
+      default: {
+        return 0;
+      }
+    }
+  }
+ 
+  private getLineWidth(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return 1;
+      }
+      default: {
+        return undefined;
+      }
+    }
+  }
+ 
+  private getOpposite(type: StatisticsType | string): boolean {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return true;
+      }
+      default: {
+        return false;
+      }
+    }
+  }
+  
+  private isVisible(type: StatisticsType | string): boolean {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return false;
+      }
+      default: {
+        return true;
+      }
+    }
+  }
+  
+  private getColorAxis(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return {
+          min: 0,
+          max: 10,
+          stops: [
+            [0, '#dceeff'],
+            [0.3, '#7cb5ec'],
+            [1, '#1f4e99']
+          ],
+          labels: {
+            format: '{value} commits'
+          }
+        };
+      }
+      default: {
+        return {};
+      }
+    }
+  }
+  
+  private getTooltip(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return {
+          headerFormat: '',
+          pointFormat: '{point.options.date:%A, %b %e, %Y}: <b>{point.value}</b> commits'
+        };
+      }
+      default: {
+        return {};
+      }
+    }
+  }
+  
+  private getLegend(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return {
+          align: 'right',
+          layout: 'vertical',
+          verticalAlign: 'middle'
+        };
+      }
+      default: {
+        return {};
+      }
+    }
+  }
+  
+  private getDataLabel(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return {
+          enabled: true
+        };
+      }
+      default: {
+        return {};
+      }
+    }
+  }
+  
+  private getSubtitle(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return 'Daily commit activity over the past year';
+      }
+      default: {
+        return '';
       }
     }
   }
