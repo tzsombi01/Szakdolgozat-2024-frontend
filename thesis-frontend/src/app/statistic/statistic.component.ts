@@ -19,6 +19,11 @@ import { ProjectState, StatisticsState, UserState } from 'src/store/app.states';
 import { getProject } from 'src/store/selectors/project.selector';
 import { getProgrammerStatistics, getStatisticsLoading } from 'src/store/selectors/statistics.selectos';
 import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
+import Heatmap from 'highcharts/modules/heatmap';
+import HighchartsMore from 'highcharts/highcharts-more';
+
+HighchartsMore(Highcharts);
+Heatmap(Highcharts);
 
 @UntilDestroy()
 @Component({
@@ -114,22 +119,44 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.userStore.dispatch(getUsersRequest({ queryOptions }));
-        
+
+        for (const type of this.types) {
+          let programmerStatisticsRequest: ProgrammerStatisticsRequest = {
+            ids: this.getUserIds(type),
+            type: type,
+            from: this.getFrom(type),
+            until: undefined
+          };
+
+          this.statisticsStore.dispatch(getProgrammerStatisticsRequest({ projectId: this.projectId!, programmerStatisticsRequest }));
+        }
+      }
+    });
+  }
+
+  getUserIds(type: StatisticsType | string): string[] {
+    switch(type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        return [this.project?.users[0]!];
+      }
+      default: {
+        return this.project?.users!;
+      }
+    }
+  }
+  
+  getFrom(type: StatisticsType | string): any {
+    switch(type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
         const startDate = new Date();
         startDate.setFullYear(startDate.getFullYear() - 1);
 
-        // for (const value of this.types) {
-        let programmerStatisticsRequest: ProgrammerStatisticsRequest = {
-          ids: this.project?.users!,
-          type: StatisticsType.DAILY_COMMITS_FOR_YEAR,
-          from: startDate.getTime(),
-          until: undefined
-        };
-
-        this.statisticsStore.dispatch(getProgrammerStatisticsRequest({ projectId: this.projectId!, programmerStatisticsRequest }));
-        // }
+        return startDate.getTime();
       }
-    });
+      default: {
+        return undefined;
+      }
+    }
   }
 
   ngAfterViewInit(): void {
@@ -204,7 +231,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case StatisticsType.AVERAGE_COMMIT_SIZE: {
         const response: ProgrammerStatisticsResponse = this.programmerStatisticsResponses.find(response => response.type === type)!;
-        
+
         return response.statisticsInfos.map(info => {
           return {
             y: info.averageSize,
@@ -343,7 +370,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
- 
+
   private getLineWidth(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -354,7 +381,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
- 
+
   private getOpposite(type: StatisticsType | string): boolean {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -365,7 +392,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   private isVisible(type: StatisticsType | string): boolean {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -376,7 +403,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   private getColorAxis(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -394,17 +421,20 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         };
       }
       default: {
-        return {};
+        return undefined;
       }
     }
   }
-  
+
   private getTooltip(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
         return {
           headerFormat: '',
-          pointFormat: '{point.options.date:%A, %b %e, %Y}: <b>{point.value}</b> commits'
+          pointFormatter: function () {
+            const formattedDate = Highcharts.dateFormat('%A, %b %e, %Y', this.date.date);
+            return `${formattedDate}: <b>${this.value}</b> commits`;
+          }
         };
       }
       default: {
@@ -412,7 +442,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   private getLegend(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -427,7 +457,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   private getDataLabel(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -440,7 +470,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   private getSubtitle(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
@@ -448,6 +478,22 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       default: {
         return '';
+      }
+    }
+  }
+
+  doWeHaveDataForType(type: StatisticsType | string): boolean {
+    return !!this.programmerStatisticsResponses.find(response => response.type === type);
+  }
+
+  getChartStyles(type: StatisticsType | string): any {
+    switch (type) {
+      case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
+        console.log()
+        return {'width': '100%', 'height': '50rem', 'display': 'block'};
+      }
+      default: {
+        return {};
       }
     }
   }
