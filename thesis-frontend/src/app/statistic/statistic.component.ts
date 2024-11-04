@@ -18,7 +18,7 @@ import { getUsersRequest } from 'src/store/actions/user.actions';
 import { ProjectState, StatisticsState, UserState } from 'src/store/app.states';
 import { getProject } from 'src/store/selectors/project.selector';
 import { getProgrammerStatistics, getStatisticsLoading } from 'src/store/selectors/statistics.selectos';
-import { getUserLoading, getUsers } from 'src/store/selectors/user.selector';
+import { getLoggedInUser, getUserLoading, getUsers } from 'src/store/selectors/user.selector';
 import Heatmap from 'highcharts/modules/heatmap';
 import HighchartsMore from 'highcharts/highcharts-more';
 
@@ -58,6 +58,9 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   };
 
+  loggedInUser$: Observable<User | any>;
+   loggedInUser: User | undefined;
+
   types: (StatisticsType[]) = Object.values(StatisticsType);
 
   constructor(
@@ -72,12 +75,17 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     this.programmerStatisticsResponses$ = this.statisticsStore.select(getProgrammerStatistics);
     this.project$ = this.projectStore.select(getProject);
     this.users$ = this.userStore.select(getUsers);
+    this.loggedInUser$ = this.userStore.select(getLoggedInUser);
 
     this.statisticsLoading$ = this.statisticsStore.select(getStatisticsLoading);
     this.usersLoading$ = this.userStore.select(getUserLoading);
   }
 
   ngOnInit(): void {
+    this.snackBar.open('The statistics might take a while to load', 'Close', {
+       duration: 3000
+    });
+
     this.route.parent?.paramMap.subscribe(params => {
       this.projectId = params.get('id') ?? '';
 
@@ -132,6 +140,18 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }
     });
+
+    this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+      this.loggedInUser = user;
+
+      if (Object.keys(this.loggedInUser)) {
+        if (this.loggedInUser.accessToken === undefined || this.loggedInUser.accessToken.length === 0) {
+          this.snackBar.open('Without being authenticated, you can only see the commits by users and daily commits in the last year!', 'Close', {
+            duration: 3000
+          });
+        }
+      }
+    });
   }
 
   getUserIds(type: StatisticsType | string): string[] {
@@ -144,7 +164,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
-  
+
   getFrom(type: StatisticsType | string): any {
     switch(type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
