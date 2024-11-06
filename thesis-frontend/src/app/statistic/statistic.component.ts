@@ -59,7 +59,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   };
 
   loggedInUser$: Observable<User | any>;
-   loggedInUser: User | undefined;
+  loggedInUser: User | undefined;
 
   types: (StatisticsType[]) = Object.values(StatisticsType);
 
@@ -83,7 +83,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.snackBar.open('The statistics might take a while to load', 'Close', {
-       duration: 3000
+      duration: 3000
     });
 
     this.route.parent?.paramMap.subscribe(params => {
@@ -144,8 +144,8 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
       this.loggedInUser = user;
 
-      if (Object.keys(this.loggedInUser)) {
-        if (this.loggedInUser.accessToken === undefined || this.loggedInUser.accessToken.length === 0) {
+      if (Object.keys(user).length > 0) {
+        if (this.loggedInUser?.accessToken) {
           this.snackBar.open('Without being authenticated, you can only see the commits by users and daily commits in the last year!', 'Close', {
             duration: 3000
           });
@@ -155,7 +155,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getUserIds(type: StatisticsType | string): string[] {
-    switch(type) {
+    switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
         return [this.project?.users[0]!];
       }
@@ -166,7 +166,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getFrom(type: StatisticsType | string): any {
-    switch(type) {
+    switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
         const startDate = new Date();
         startDate.setFullYear(startDate.getFullYear() - 1);
@@ -510,7 +510,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
         console.log()
-        return {'width': '100%', 'height': '50rem', 'display': 'block'};
+        return { 'width': '100%', 'height': '50rem', 'display': 'block' };
       }
       default: {
         return {};

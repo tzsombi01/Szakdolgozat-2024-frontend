@@ -6,6 +6,7 @@ export interface User extends Entity {
     lastName: string;
     email: string;
     gitUserNames: string[];
+    accessToken: boolean;
 }
 
 export interface UserInput {
