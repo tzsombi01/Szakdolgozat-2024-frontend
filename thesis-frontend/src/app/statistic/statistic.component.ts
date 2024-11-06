@@ -88,18 +88,6 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.route.parent?.paramMap.subscribe(params => {
       this.projectId = params.get('id') ?? '';
-
-      if (!this.projectId) {
-        this.snackBar.open('No project ID provided', 'Close', {
-          duration: 3000
-        });
-
-        this.router.navigate(["/home"]);
-      }
-
-      this.projectStore.dispatch(getProjectRequest({ id: this.projectId }));
-
-      this.onSiteOpen();
     });
 
     this.programmerStatisticsResponses$
@@ -143,7 +131,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
       this.loggedInUser = user;
-
+      console.log(user)
       if (Object.keys(user).length > 0) {
         if (this.loggedInUser?.accessToken) {
           this.snackBar.open('Without being authenticated, you can only see the commits by users and daily commits in the last year!', 'Close', {
