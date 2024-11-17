@@ -2,7 +2,7 @@
     <h1 class="discussion-caption">Discussions</h1>
 
     <div class="search-bar">
-        <app-search [searchType]="'Discussion'" [queryOptions]="this.getQueryOptions()"></app-search>
+        <app-search *ngIf="this.project?.id" [searchType]="'Discussion'" [queryOptions]="this.getQueryOptions()"></app-search>
         <button class="create-discussion-btn" (click)="open('create')">Create new Discussion</button>
     </div>
 

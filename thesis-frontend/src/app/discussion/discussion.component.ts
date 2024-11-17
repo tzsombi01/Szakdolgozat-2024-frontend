@@ -128,7 +128,7 @@ export class DiscussionComponent implements OnInit {
       type: 'string',
       value: this.projectId
     });
-
+    
     this.discussionStore.dispatch(getDiscussionsRequest({ queryOptions }));
   }
 
@@ -157,7 +157,7 @@ export class DiscussionComponent implements OnInit {
 
   close(type: ('cancel' | 'submit' | 'delete')): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
-    
+
     if (type === 'submit') {
       if (!this.isEdit) {
         const newDiscussion: DiscussionInput = {
@@ -194,7 +194,7 @@ export class DiscussionComponent implements OnInit {
 
   getCreatorName(discussion: Discussion): string {
     const user: User = this.users.find((user) => user.id === discussion.creator)!;
-    return user.userName;
+    return user?.userName;
   }
 
   getTitle(): string {
@@ -202,6 +202,15 @@ export class DiscussionComponent implements OnInit {
   }
 
   getQueryOptions(): QueryOptions {
-    return getQueryOptions(this.gridState as DataStateChangeEvent);
+    const queryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.project?.id
+    });
+
+    return queryOptions;
   }
 }

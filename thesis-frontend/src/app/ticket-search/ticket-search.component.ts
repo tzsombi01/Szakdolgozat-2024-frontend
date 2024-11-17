@@ -223,6 +223,13 @@ export class TicketSearchComponent implements OnInit {
   close(type: ('cancel' | 'submit' | 'delete')): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
     
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.project?.id
+    });
+
     if (type === 'submit') {
       if (!this.isEdit) {
         const newTicket: TicketInput = {
@@ -237,7 +244,7 @@ export class TicketSearchComponent implements OnInit {
           closed: false
         };
 
-        this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions: ({} as Object) as QueryOptions }));
+        this.ticketStore.dispatch(createTicketRequest({ ticket: newTicket, queryOptions }));
       } else {
         const editedTicket: TicketInput = {
           description: this.formGroup.controls['description'].value,
@@ -251,7 +258,7 @@ export class TicketSearchComponent implements OnInit {
           closed: this.ticket?.closed ?? false
         };
   
-        this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions: ({} as Object) as QueryOptions }));
+        this.ticketStore.dispatch(editTicketRequest({ id: this.ticket?.id!, ticket: editedTicket, queryOptions }));
       }
     } else if (type === 'delete') {
       this.ticketStore.dispatch(deleteTicketRequest({ id: this.ticket?.id!, queryOptions }));
@@ -341,6 +348,15 @@ export class TicketSearchComponent implements OnInit {
   }
 
   getQueryOptions(): QueryOptions {
-    return getQueryOptions(this.gridState as DataStateChangeEvent);
+    const queryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.project?.id
+    });
+
+    return queryOptions;
   }
 }

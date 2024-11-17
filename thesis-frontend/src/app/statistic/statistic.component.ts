@@ -97,7 +97,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .subscribe((programmerStatisticsResponses) => {
         this.programmerStatisticsResponses = programmerStatisticsResponses;
-        console.log(programmerStatisticsResponses);
+
         this.cdr.markForCheck();
       });
 
@@ -131,7 +131,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loggedInUser$.pipe(untilDestroyed(this)).subscribe((user) => {
       this.loggedInUser = user;
-      console.log(user)
+
       if (Object.keys(user).length > 0) {
         if (this.loggedInUser?.accessToken) {
           this.snackBar.open('Without being authenticated, you can only see the commits by users and daily commits in the last year!', 'Close', {
@@ -497,8 +497,7 @@ export class StatisticComponent implements OnInit, AfterViewInit, OnDestroy {
   getChartStyles(type: StatisticsType | string): any {
     switch (type) {
       case StatisticsType.DAILY_COMMITS_FOR_YEAR: {
-        console.log()
-        return { 'width': '100%', 'height': '50rem', 'display': 'block' };
+        return { 'width': '100%', 'height': '70rem', 'display': 'block' };
       }
       default: {
         return {};

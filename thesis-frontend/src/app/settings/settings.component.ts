@@ -131,6 +131,13 @@ export class SettingsComponent implements OnInit {
   close(type: ('cancel' | 'submit' | 'delete')): void {
     const queryOptions: QueryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
 
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.project?.id
+    });
+
     if(type === 'submit') {
       if (this.formGroup.invalid) {
         this.formGroup.markAllAsTouched();

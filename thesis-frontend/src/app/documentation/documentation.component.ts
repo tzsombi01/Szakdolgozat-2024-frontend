@@ -192,7 +192,7 @@ export class DocumentationComponent implements OnInit {
 
   getCreatorName(documentation: Documentation): string {
     const user: User = this.users.find((user) => user.id === documentation.creator)!;
-    return user.userName;
+    return user?.userName;
   }
 
   getTitle(): string {
@@ -200,6 +200,15 @@ export class DocumentationComponent implements OnInit {
   }
 
   getQueryOptions(): QueryOptions {
-    return getQueryOptions(this.gridState as DataStateChangeEvent);
+    const queryOptions = getQueryOptions(this.gridState as DataStateChangeEvent);
+
+    queryOptions.filters?.push({
+      field: 'project',
+      operator: 'eq',
+      type: 'string',
+      value: this.project?.id
+    });
+
+    return queryOptions;
   }
 }
