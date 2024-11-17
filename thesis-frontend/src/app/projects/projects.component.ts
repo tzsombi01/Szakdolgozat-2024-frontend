@@ -143,7 +143,7 @@ export class ProjectsComponent implements OnInit {
           tickets: []
         };
 
-        this.projectStore.dispatch(createProjectRequest({ project: newProject, queryOptions: ({} as Object) as QueryOptions }));
+        this.projectStore.dispatch(createProjectRequest({ project: newProject, queryOptions }));
       } else {
         const editedProject: ProjectInput = {
           name: this.formGroup.controls['name'].value,
@@ -152,7 +152,7 @@ export class ProjectsComponent implements OnInit {
           tickets: this.project?.tickets || []
         };
   
-        this.projectStore.dispatch(editProjectRequest({ id: this.project?.id!, project: editedProject, queryOptions: ({} as Object) as QueryOptions }));
+        this.projectStore.dispatch(editProjectRequest({ id: this.project?.id!, project: editedProject, queryOptions }));
       }
     } else if (type === 'delete') {
       this.projectStore.dispatch(deleteProjectRequest({ id: this.project?.id!, queryOptions }));
